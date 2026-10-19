@@ -1,0 +1,5 @@
+.venv/
+output/
+rosters/bbl_rosters.txt
+__pycache__/
+.DS_Store

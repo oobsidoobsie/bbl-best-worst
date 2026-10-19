@@ -1,0 +1,4 @@
+# BBL Best & Worst settings
+# Your fantasy team's name exactly as it shows on CBS (optional). It gets a ★ in the team legend.
+# Example: my_team=Pucs
+my_team=
