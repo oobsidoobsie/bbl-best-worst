@@ -12,6 +12,11 @@ Results go to output/<date>/:
 """
 import datetime as dt, glob, os, shutil, subprocess, sys
 
+# Windows opens text files in an old code page by default; run everything in UTF-8 (emojis, names like ᴛɪɴᴏʟᴀ)
+if not sys.flags.utf8_mode:
+    raise SystemExit(subprocess.run([sys.executable, "-X", "utf8"] + sys.argv, env=dict(os.environ, PYTHONUTF8="1")).returncode)
+os.environ["PYTHONUTF8"] = "1"
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BBL = os.path.join(ROOT, "bbl")
 ROST_DIR = os.path.join(ROOT, "rosters")
@@ -49,7 +54,7 @@ def refresh_rosters():
 
 def nightly(box, label, mode=None, env=None):
     cmd = [PY, os.path.join(BBL, "nightly.py"), box, ROSTERS, label] + ([mode] if mode else [])
-    r = subprocess.run(cmd, cwd=BBL, env=env, capture_output=True, text=True)
+    r = subprocess.run(cmd, cwd=BBL, env=env, capture_output=True, text=True, encoding="utf-8")
     if r.returncode != 0:
         sys.stderr.write(r.stdout + r.stderr)
         raise SystemExit(f"Building the {mode or 'table'} failed (details above).")
@@ -81,7 +86,7 @@ def main():
     else:
         refresh_rosters()
         say(f"Fetching box scores for {label} from ESPN…")
-        r = subprocess.run([PY, os.path.join(BBL, "fetch_box.py"), date, box], capture_output=True, text=True)
+        r = subprocess.run([PY, os.path.join(BBL, "fetch_box.py"), date, box], capture_output=True, text=True, encoding="utf-8")
         say(r.stdout.strip())
         if r.returncode != 0:
             raise SystemExit(r.stderr.strip() or "ESPN fetch failed")
@@ -118,8 +123,11 @@ def main():
         except FileNotFoundError:
             pass
     say(f"\n✅ Done: {out}")
-    if sys.platform == "darwin" and "--no-open" not in args:
-        subprocess.run(["open", out])
+    if "--no-open" not in args:
+        if sys.platform == "darwin":
+            subprocess.run(["open", out])
+        elif sys.platform == "win32":
+            os.startfile(out)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 # 🏀 BBL Best & Worst
 
-Builds the **Best & Worst performances of the night** for the BBL (CBS fantasy basketball) on your Mac:
+Builds the **Best & Worst performances of the night** for the BBL (CBS fantasy basketball) on a Mac or Windows PC:
 
 - `best_worst.html`: the full page: Player of the night, JACKPOT callouts, podium, Top 10, honorable mentions, 🥶 Oof Zone
 - `best_worst_table.html`: the detailed stat table (best slot, base, minutes, every stat)
@@ -23,6 +23,15 @@ plus the **best-slot bonus** (G slot +1 per rebound, F slot +1 per assist, C slo
 **3. Install the roster bookmark.** Open `rosters/Install roster bookmark.html` and drag the purple **🏀 BBL roster export** button onto your bookmarks bar.
 
 **4. Export rosters.** Go to the CBS league site, sign in, and click the bookmark. After about 20 seconds, `bbl_rosters.txt` appears in Downloads.
+
+## Windows PC instead of a Mac
+
+Same steps, using the Windows files:
+
+1. Install **Python 3** from <https://www.python.org/downloads/windows/>. On the first installer screen, **tick "Add python.exe to PATH"**.
+2. Unzip the folder (right-click the zip → **Extract All**), then double-click **`1 - Setup (Windows).bat`**. If Windows shows *"Windows protected your PC"*, click **More info** → **Run anyway** (this happens once).
+3. Roster bookmark: same as the Mac steps 3–4 (Chrome or Edge work well).
+4. Each game night, double-click **`2 - BBL Tonight (Windows).bat`** and press **Enter** (or type `demo`).
 
 ## Every game night
 
@@ -73,8 +82,10 @@ cd ~/Documents/bbl-best-worst
 ## What's in here
 
 ```
-1 - Setup.command          one-time setup
-2 - BBL Tonight.command    run each game night
+1 - Setup.command          one-time setup (Mac)
+2 - BBL Tonight.command    run each game night (Mac)
+1 - Setup (Windows).bat    one-time setup (Windows)
+2 - BBL Tonight (Windows).bat   run each game night (Windows)
 config.txt                 optional: your team name
 bbl/fetch_box.py           ESPN box scores
 bbl/nightly.py             scoring, rankings, HTML pages
