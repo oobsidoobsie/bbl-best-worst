@@ -68,7 +68,9 @@ def badge(team):
 def logo(team,sz=18):
     if EMAIL: return ''
     u=LOGO.get(team)
-    return f'<img src="{u if u.startswith('data:') else u+'?width=48&height=48'}" width="{sz}" height="{sz}" alt="" style="border-radius:4px;vertical-align:middle;margin-right:3px">' if u else ''
+    if not u: return ''
+    src=u if u.startswith('data:') else u+'?width=48&height=48'
+    return f'<img src="{src}" width="{sz}" height="{sz}" alt="" style="border-radius:4px;vertical-align:middle;margin-right:3px">' if u else ''
 def own(n,stk=False):
     o=owner.get(n,'FA')
     k=STK.get(tname(n),0) if stk else 0

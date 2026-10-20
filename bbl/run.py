@@ -90,7 +90,7 @@ def main():
         say(r.stdout.strip())
         if r.returncode != 0:
             raise SystemExit(r.stderr.strip() or "ESPN fetch failed")
-        first = open(box).readline().lstrip("#").split("|")
+        first = open(box, encoding="utf-8").readline().strip().lstrip("#").split("|")
         if first[0] == "0":
             raise SystemExit(f"No NBA games on {label}. Nothing to build.")
         if first[1] == "0":
@@ -116,7 +116,7 @@ def main():
     say("Drawing the Top 10 image…")
     r = subprocess.run([PY, os.path.join(BBL, "render.py"), os.path.join(BBL, "nightly_top10.html"), os.path.join(out, "top10.png")])
     if r.returncode != 0:
-        say("⚠️  The image couldn't be drawn. Run setup again (README step 2), then retry.")
+        say("⚠️  The image couldn't be drawn. Run '1 - Setup' again, then retry.")
     for f in ("box.txt", "nightly.html", "nightly_share.html", "nightly_share.txt", "nightly_share_subject.txt", "nightly_top10.html"):
         try:
             os.remove(os.path.join(BBL, f))
