@@ -61,11 +61,47 @@ def nightly(box, label, mode=None, env=None):
 
 
 def page(title, body, dark=False):
+    """Light content card on a light page (kept for reference)."""
     bg = "#0b1030" if dark else "#f6f7f9"
     return (f'<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>{title}</title><style>body{{margin:0;padding:20px;background:{bg};font-family:-apple-system,Helvetica,Arial,sans-serif}}'
             f'.wrap{{max-width:1100px;margin:0 auto;background:#fff;border-radius:14px;padding:18px}}</style></head>'
             f'<body><div class="wrap">{body}</div></body></html>')
+
+
+def page_dark(title, body):
+    """The detailed table in the Command Center's dark theme."""
+    css = (":root{--bg:#11151c;--panel:#181e27;--fg:#e6e9ef;--muted:#98a2b3;--line:#2a3240;--accent:#fb923c;--ok:#4ade80;--warn:#fbbf24;--bad:#f87171;color-scheme:dark}"
+           "body{margin:0;padding:20px;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,'Segoe UI',Helvetica,Arial,sans-serif}"
+           ".wrap{max-width:1180px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;overflow-x:auto}"
+           ".wrap,.wrap *{color:var(--fg)}.wrap table{border-collapse:collapse;width:100%}"
+           ".wrap th,.wrap td{color:var(--fg)!important;border-color:var(--line)!important;background-color:transparent}"
+           ".wrap th{color:var(--muted)!important}.wrap h3{color:var(--accent)}.wrap p,.wrap small{color:var(--muted)}"
+           "@media (max-width:600px){body{padding:8px}.wrap{padding:10px}}")
+    return (f'<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+            f'<title>{title}</title><style>{css}</style></head><body><div class="wrap">{body}</div></body></html>')
+
+
+def page_fancy(title, body, label, logo=None):
+    """The shareable page: the Top 10 image's night-sky background with the content on a white card."""
+    css = ("*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:24px 16px 40px;font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;color:#1b2230;"
+           "background:radial-gradient(60% 30% at 85% 0%,rgba(34,211,238,.30),transparent 70%),radial-gradient(70% 30% at 5% 6%,rgba(255,94,58,.34),transparent 70%),"
+           "repeating-conic-gradient(from 200deg at 50% -10%,rgba(255,255,255,.04) 0 6deg,transparent 6deg 14deg),linear-gradient(180deg,#141a4d 0%,#0a0f30 45%,#070b24 100%) fixed;background-color:#070b24}"
+           "body:before{content:'';position:fixed;inset:0;background:radial-gradient(rgba(255,255,255,.07) 1.2px,transparent 1.6px) 0 0/18px 18px;"
+           "-webkit-mask:linear-gradient(180deg,#000,transparent 45%);mask:linear-gradient(180deg,#000,transparent 45%);pointer-events:none}"
+           ".hero{max-width:1100px;margin:0 auto 18px;display:flex;align-items:center;gap:16px;position:relative}"
+           ".hero img{width:72px;height:72px;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,.4)}"
+           ".eyebrow{font:800 12px Arial,sans-serif;letter-spacing:.25em;text-transform:uppercase;color:#7dd3fc}"
+           ".title{font:900 44px/1 Arial,sans-serif;letter-spacing:-.01em;transform:skewX(-8deg);background:linear-gradient(180deg,#fff7c2,#ffd23f 40%,#ff7a18 75%,#ff3d5a);"
+           "-webkit-background-clip:text;background-clip:text;color:transparent;margin:4px 0 2px}"
+           ".sub{color:#cbd5e1;font-size:14px}"
+           ".wrap{max-width:820px;margin:0 auto;background:#fff;border-radius:20px;padding:20px;position:relative;"
+           "box-shadow:0 0 0 1px rgba(255,255,255,.08),0 20px 60px rgba(0,0,0,.45);overflow-x:auto}"
+           "@media (max-width:600px){.title{font-size:30px}.hero img{width:52px;height:52px}.wrap{padding:12px}}")
+    lg = f'<img src="{logo}" alt="">' if logo else ''
+    return (f'<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+            f'<title>{title}</title><style>{css}</style></head><body>'
+            f'<div class="wrap">{body}</div></body></html>')
 
 
 def main():
@@ -109,8 +145,13 @@ def main():
     nightly(box, label, None, env)
     nightly(box, label, "share", env)
     nightly(box, label, "top10", env)
-    open(os.path.join(out, "best_worst.html"), "w").write(page(f"BBL Best & Worst · {label}", open(os.path.join(BBL, "nightly_share.html")).read()))
-    open(os.path.join(out, "best_worst_table.html"), "w").write(page(f"BBL Best & Worst table · {label}", open(os.path.join(BBL, "nightly.html")).read()))
+    try:
+        import base64
+        logo = "data:image/png;base64," + base64.b64encode(open(os.path.join(BBL, "league_logo.png"), "rb").read()).decode()
+    except OSError:
+        logo = None
+    open(os.path.join(out, "best_worst.html"), "w", encoding="utf-8").write(page_fancy(f"BBL Best & Worst · {label}", open(os.path.join(BBL, "nightly_share.html"), encoding="utf-8").read(), label, logo))
+    open(os.path.join(out, "best_worst_table.html"), "w", encoding="utf-8").write(page_dark(f"BBL Best & Worst table · {label}", open(os.path.join(BBL, "nightly.html"), encoding="utf-8").read()))
     shutil.copy2(os.path.join(BBL, "nightly_share.txt"), os.path.join(out, "best_worst.txt"))
 
     say("Drawing the Top 10 image…")
