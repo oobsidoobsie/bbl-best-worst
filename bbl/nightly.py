@@ -190,7 +190,7 @@ def rk(L,i):
     '''Display rank for position i (1-based) in list L.'''
     return str(i)  # plain ranks; ties are already ordered by base score, then minutes
 
-# ---- stack tiers and extra callouts (runaway winner, waiver-wire gem, NBA team sweep, brick layer)
+# ---- stack tiers and extra callouts (runaway winner, waiver-wire gem, brick layer)
 def stack_title(k):
     return {3:'🎰 JACKPOT!',4:'💎 MEGA JACKPOT!!',5:'👑 GRAND JACKPOT!!!',6:'🌋 ERUPTION!!!!'}.get(k,'🏆 TOTAL DOMINATION' if k>=7 else '🤝 DOUBLE UP')
 STKBG={6:('#7f1d1d','linear-gradient(120deg,#0b0000,#450a0a 30%,#b91c1c 65%,#f97316)','#ffffff','#f97316'),
@@ -200,7 +200,7 @@ NBA={'ATL':'Atlanta','BOS':'Boston','BKN':'Brooklyn','CHA':'Charlotte','CHI':'Ch
      'HOU':'Houston','IND':'Indiana','LAC':'Clippers','LAL':'Lakers','MEM':'Memphis','MIA':'Miami','MIL':'Milwaukee','MIN':'Minnesota','NO':'New Orleans','NY':'Knicks',
      'OKC':'OKC','ORL':'Orlando','PHI':'Philly','PHX':'Phoenix','PHO':'Phoenix','POR':'Portland','SAC':'Sacramento','SA':'San Antonio','TOR':'Toronto','UTAH':'Utah','UTA':'Utah','WSH':'Washington','WAS':'Washington'}
 def extras(best):
-    """Extra callouts for the top of the page: (emoji, title, line, chips, style)."""
+    """Extra callouts for the top of the page (runaway winner, waiver wire gem): (emoji, title, line, chips, style)."""
     X=[]
     if len(best)>1 and best[0]['fp']-best[1]['fp']>=15:
         g=best[0]['fp']-best[1]['fp']
@@ -208,11 +208,6 @@ def extras(best):
     for i,p in enumerate(best[:3],1):
         if owner.get(p['n'],'FA')=='FA':
             X.append(('👀','WAIVER WIRE GEM',f'<b>{html.escape(p["n"])}</b> ({p["t"]}) finished #{i} and nobody owns him. First come, first served',[f'#{i} {shortn(p["n"])} <b>{fpt(p["fp"])}</b>'],'gem'))
-    tm={}
-    for i,p in enumerate(best[:10],1): tm.setdefault(p['t'],[]).append((i,p))
-    for t,L in sorted(tm.items(),key=lambda x:-len(x[1])):
-        if len(L)>=3:
-            X.append(('🏟️',f'{NBA.get(t,t).upper()} PARTY',f'{len(L)} {html.escape(t)} players crashed the top 10',[f'#{i} {shortn(p["n"])} <b>{fpt(p["fp"])}</b>' for i,p in L],'party'))
     return X
 XST={'run':('#0369a1','linear-gradient(110deg,#0c4a6e,#0284c7 55%,#22d3ee)','#ffffff'),
      'gem':('#047857','linear-gradient(110deg,#064e3b,#059669 55%,#34d399)','#ffffff'),
