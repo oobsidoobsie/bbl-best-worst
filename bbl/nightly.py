@@ -259,7 +259,7 @@ else:
     hm=lambda L:', '.join(html.escape(p['n'])+f' ({p["fp"]}'+(', '+(('yours' if not SHARE else MYTEAM) if owner[p["n"]]=='Yours' else html.escape(owner[p["n"]])) if owner.get(p['n'],'FA')!='FA' else '')+')' for p in L)
     note=(f'<p style="font-size:12px;color:#667085">{ndone} of {ngames} games final; {nlive} still in progress and not included.</p>' if nlive else '')
     if PAGE_STACK: STK.update({o:len(L) for o,L in stacks(best[:10],2)})
-    out=('<div style="overflow-x:auto">'+legend()+headline(best[0],EMAIL)+(page_stacks(best[:10]) if PAGE_STACK else stack_html(best[:10],EMAIL))+''.join(xcard_html(*x) for x in extras(best))+f'<h3>🔥 Top 10 performances of the night · {html.escape(label)}</h3>'+table(best[:10],hot,'#1f9d55',best[10:15],PAGE_STACK)+
+    out=('<div style="overflow-x:auto">'+legend()+headline(best[0],EMAIL)+(page_stacks(best[:10]) if PAGE_STACK else stack_html(best[:10],EMAIL))+f'<h3>🔥 Top 10 performances of the night · {html.escape(label)}</h3>'+table(best[:10],hot,'#1f9d55',best[10:15],PAGE_STACK)+
          f'<h3>🤮 Top 10 worst performances of the night</h3>'+(xcard_html(*brick(worst)) if worst else '')+table(worst[:10],cold,'inherit')+
          f'<p><b>Honorable mentions:</b> {hm(worst[10:15])}</p><p style="font-size:12px;color:#667085"><b>How the lists are ranked.</b> Top 10: highest best-slot points; ties go to the higher base score (more of his points came from his own stats, not the slot bonus), then to fewer minutes played. Worst 10: lowest best-slot points among players with 20+ minutes; ties go to the lower base score, then to more minutes.</p>'+note+'</div>')
 if WEB and P:   # shareable page in the Command Center theme (slate, orange, Barlow Condensed): nightly_web.html, also drawn as a PNG
@@ -282,8 +282,13 @@ if WEB and P:   # shareable page in the Command Center theme (slate, orange, Bar
             e,t=stack_title(k).split(' ',1); lvl='t3' if k==3 else ('t4' if k<=5 else ('t6' if k==6 else 't7'))
             line=(f'<b>{on}</b> hit {k}-of-a-kind in the top 10' if k==3 else f'<b>{on}</b> owns {k} of the top 10')
             calls+=f'<div class="card call {lvl}"><div class="e">{e}</div><div><div class="ct">{t}</div><div class="sub">{line}</div><div>{chips_(L)}<span class="chip pay">💰 {fpt(tot_)} PTS</span></div></div></div>'
-    for e,t,line,chs,st in extras(best):
-        calls+=f'<div class="card call x{st}"><div class="e">{e}</div><div><div class="ct">{t}</div><div class="sub">{line}</div><div>'+''.join(f'<span class="chip">{c}</span>' for c in chs)+'</div></div></div>'
+    GEM={p['n'] for p in best[:3] if owner.get(p['n'],'FA')=='FA'}
+    def own_(p):
+        o=tname(p['n'])
+        if o!='FA': return html.escape(o)
+        return '<span class="gem" title="Finished top 3 and nobody owns him">👀 Free agent</span>' if p['n'] in GEM else 'Free agent'
+    gap=best[0]['fp']-best[1]['fp'] if len(best)>1 else 0
+    RUN=f' · <span class="run">🚀 won by {fpt(gap)}</span>' if gap>=15 else ''
     pods=''.join(f'<div class="pod{" p1" if i==1 else ""}"><div class="rk">#{i}</div><div class="nm">{html.escape(p["n"])}</div><div class="tm">{p["t"]} · {own_(p)}</div><div class="big">{big_(p)}</div><div class="sl">{sl_(p)}</div><div class="st">{stl_(p)}</div></div>' for i,p in enumerate(best[:3],1))
     def row_(i,p,cls=''):
         return f'<div class="row{cls}"><div class="rn">{i}</div><div class="who"><b>{html.escape(p["n"])}</b> <span class="tm">{p["t"]}</span><div class="ow">{own_(p)} · {stl_(p)}</div></div><div class="pts">{big_(p)}<small>{sl_(p)}</small></div></div>'
@@ -314,8 +319,7 @@ h1{{font:700 64px/.95 {D};text-transform:uppercase;margin:6px 0 2px}}
 .call.t4{{border:1px solid #fbbf24;border-left:6px solid #fbbf24;background:linear-gradient(90deg,rgba(251,191,36,.12),#181e27 70%)}}
 .call.t6{{border:1px solid #f87171;border-left:6px solid #f87171;background:linear-gradient(90deg,rgba(248,113,113,.16),#181e27 70%)}}.call.t6 .ct{{color:#f87171}}
 .call.t7{{border:2px solid #fde68a;border-left:8px solid #fde68a;background:linear-gradient(90deg,rgba(253,230,138,.18),#181e27 75%)}}.call.t7 .ct{{color:#fde68a;font-size:32px}}
-.call.xgem{{border-left-color:#4ade80}}.call.xgem .ct{{color:#4ade80}}
-.call.xrun{{border-left-color:#38bdf8}}.call.xrun .ct{{color:#38bdf8}}
+.gem{{color:#e6e9ef;border:1px dashed #5d6678;border-radius:999px;padding:0 7px;white-space:nowrap}}.run{{color:#e6e9ef}}
 .chip{{display:inline-block;font:600 12px {M};background:rgba(251,146,60,.13);color:#fdba74;border-radius:999px;padding:2px 9px;margin:6px 5px 0 0}}.chip b{{color:#fff}}
 .chip.pay{{background:#fb923c;color:#11151c}}.chip.pay b{{color:#11151c}}.chip.mute{{background:#202835;color:#98a2b3}}
 .dbl{{font-size:14px;color:#98a2b3;padding:6px 2px 10px}}.dbl .lab{{display:inline;color:#98a2b3}}.dbl b{{color:#e6e9ef}}
@@ -334,7 +338,7 @@ h2{{font:700 28px {D};text-transform:uppercase;letter-spacing:.04em;margin:20px 
 .oof{{border-left:4px solid #f87171}}.oof .lab{{color:#f87171}}.bkn b{{font:700 24px {D};text-transform:uppercase}}.neg{{color:#f87171!important}}
 .foot{{margin-top:16px;font:600 11px {M};letter-spacing:.12em;color:#5d6678;text-transform:uppercase}}"""
     potn=(f'<div class="card potn"><div><div class="lab">⭐ Player of the night</div><div class="hl">{html.escape(hl)}</div>'
-          f'<div class="sub">{own_(best[0])} · {stl_(best[0])}</div></div><div class="huge">{big_(best[0])}<small>BBL PTS</small></div></div>')
+          f'<div class="sub">{own_(best[0])} · {stl_(best[0])}{RUN}</div></div><div class="huge">{big_(best[0])}<small>BBL PTS</small></div></div>')
     page=(f'<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BBL Best &amp; Worst · {html.escape(label)}</title>'
           '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap">'
           f'<style>{css}</style></head><body><div id="page"><div class="kick">BBL · BOMBASTIC BASKETBALL LEAGUE</div><h1>Best &amp; Worst</h1>'
@@ -348,7 +352,7 @@ if TOP10 and P:   # mobile-friendly top-10 image (rendered from nightly_top10.ht
     STK.update({o:len(L) for o,L in stacks(best[:10],2)})
     def mtag(p):
         o=tname(p['n'])
-        if o=='FA': return '<span class="fa">Free agent</span>'
+        if o=='FA': return '<span class="fa">'+('👀 ' if p in best[:3] else '')+'Free agent</span>'
         k=STK.get(o,0); cls=f' t{min(k,4)}' if k>=2 else ''
         return f'{logo(o,30)}<span class="mt{cls}">{html.escape(o)}</span>'
     def row(i,p):
@@ -369,7 +373,7 @@ if TOP10 and P:   # mobile-friendly top-10 image (rendered from nightly_top10.ht
         else:
             ttl=stack_title(k); cls='c4'+(' c6' if k==6 else (' c7' if k>=7 else ''))
             calls+=f'<div class="{cls}"><div class="c4k">{k} OF A KIND</div><div class="c4h">{ttl}</div><div class="c4l"><b>{on}</b> owns {k} of the top 10</div><div class="cc">{ch}<span class="pay">💰 {fpt(tot_)} PTS</span></div></div>'
-    for e,t,line,chs,st in extras(best):
+    for e,t,line,chs,st in []:
         calls+=f'<div class="xc {st}"><div class="xch">{e} {t}</div><div class="xcl">{line}</div><div class="cc">'+''.join(f'<span>{c}</span>' for c in chs)+'</div></div>'
     hmt=' · '.join(f'<span><b>{i}</b> {html.escape(p["n"])} <i>({html.escape(tname(p["n"]) if tname(p["n"])!="FA" else "Free agent")})</i> <b>{fpt(p["fp"])}</b></span>' for i,p in enumerate(best[10:15],11))
     LL=('<img class="ll" src="data:image/png;base64,'+base64.b64encode(open('league_logo.png','rb').read()).decode()+'" alt="BBL">') if os.path.exists('league_logo.png') else ''
