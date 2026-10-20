@@ -377,51 +377,45 @@ if TOP10 and P:   # mobile-friendly top-10 image (rendered from nightly_top10.ht
         calls+=f'<div class="xc {st}"><div class="xch">{e} {t}</div><div class="xcl">{line}</div><div class="cc">'+''.join(f'<span>{c}</span>' for c in chs)+'</div></div>'
     hmt=' · '.join(f'<span><b>{i}</b> {html.escape(p["n"])} <i>({html.escape(tname(p["n"]) if tname(p["n"])!="FA" else "Free agent")})</i> <b>{fpt(p["fp"])}</b></span>' for i,p in enumerate(best[10:15],11))
     LL=('<img class="ll" src="data:image/png;base64,'+base64.b64encode(open('league_logo.png','rb').read()).decode()+'" alt="BBL">') if os.path.exists('league_logo.png') else ''
-    CSS="""*{box-sizing:border-box;margin:0}body{background:#070b24}
-#card{width:1080px;padding:34px 40px 28px;font-family:Poppins,Inter,Arial,sans-serif;color:#fff;
- background:radial-gradient(60% 22% at 88% 3%,rgba(34,211,238,.33),transparent 70%),radial-gradient(70% 22% at 4% 6%,rgba(255,94,58,.36),transparent 70%),linear-gradient(180deg,#141a4d 0%,#0a0f30 35%,#070b24 100%)}
-.head{display:flex;align-items:center;gap:24px;margin-bottom:20px}.ll{width:130px;filter:drop-shadow(0 8px 24px rgba(255,94,58,.45))}
-.kick{display:inline-block;font:800 19px Inter,Arial;letter-spacing:.2em;color:#0a0f30;background:#22d3ee;padding:5px 12px;border-radius:8px;transform:skewX(-10deg)}
-.title{font:900 74px/.95 'Inter Display',Inter,Arial;letter-spacing:-.02em;margin:10px 0 4px;transform:skewX(-8deg);background:linear-gradient(180deg,#fff7c2,#ffd23f 40%,#ff7a18 75%,#ff3d5a);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sub{font:700 25px Poppins,Arial;color:#c7d2fe}
-.cc{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.cc span{font:600 21px Inter,Arial;border-radius:999px;padding:4px 14px;white-space:nowrap}
-.c2{border-left:5px solid #94a3b8;border-radius:12px;padding:10px 18px;margin:0 0 10px;background:rgba(148,163,184,.08)}
-.c2h{font:600 23px Inter,Arial;color:#cbd5e1}.c2 .cc span{border:1px solid rgba(203,213,225,.35);color:#e2e8f0}.c2 .pay{color:#94a3b8!important}
-.c3{border-radius:20px;padding:14px 22px;margin:0 0 12px;background:linear-gradient(100deg,#ffd23f,#ff9f1c 55%,#ff6b35);color:#2a1500;border:3px dashed #7c2d12}
-.c3h{font:800 28px Poppins,Arial}.c3h i{font:900 italic 34px 'Inter Display',Inter,Arial}.c3 .cc span{background:#fff3c4;border:1px solid #b45309}.c3 .pay{background:#2a1500!important;color:#ffd23f;border:0!important;font-weight:800!important}
-.c4{border-radius:24px;padding:22px 26px;margin:0 0 14px;background:linear-gradient(120deg,#7c3aed,#c026d3 55%,#f59e0b);box-shadow:0 0 0 4px rgba(192,38,211,.35),0 14px 40px rgba(124,58,237,.45)}
-.c4k{font:800 17px Inter,Arial;letter-spacing:.25em;opacity:.85}.c4h{font:900 italic 46px/1.05 'Inter Display',Inter,Arial;margin:4px 0;text-shadow:0 3px 0 rgba(0,0,0,.25)}.c4l{font:500 23px Poppins,Arial}
-.c4 .cc span{background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.5)}.c4 .pay{background:#1b1030!important;color:#ffd23f;font-weight:800!important}
-.c4.c6{background:linear-gradient(120deg,#0b0000,#450a0a 30%,#b91c1c 65%,#f97316);box-shadow:0 0 0 4px rgba(249,115,22,.4),0 14px 40px rgba(185,28,28,.5)}
-.c4.c7{background:linear-gradient(120deg,#78350f,#b45309 30%,#f59e0b 62%,#fde68a);color:#1c1000;box-shadow:0 0 0 4px rgba(253,230,138,.5),0 14px 40px rgba(245,158,11,.5)}.c4.c7 .c4h{text-shadow:0 2px 0 rgba(255,255,255,.4)}
-.xc{border-radius:20px;padding:14px 22px;margin:0 0 12px;color:#fff}.xch{font:900 italic 32px/1.1 'Inter Display',Inter,Arial}.xcl{font:500 22px Poppins,Arial;margin-top:4px}
-.xc .cc span{background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.5)}
-.xc.run{background:linear-gradient(110deg,#0c4a6e,#0284c7 55%,#22d3ee)}.xc.gem{background:linear-gradient(110deg,#064e3b,#059669 55%,#34d399)}.xc.party{background:linear-gradient(110deg,#1e1b4b,#4338ca 55%,#818cf8)}
-.colh{display:grid;grid-template-columns:76px 1fr 190px 110px;gap:16px;padding:14px 18px 8px;font:800 17px Inter,Arial;letter-spacing:.14em;color:#94a3b8}
-.colh div:nth-child(3),.colh div:nth-child(4){text-align:center}.colh .hl{color:#ffd23f}
-.row{display:grid;grid-template-columns:76px 1fr 190px 110px;gap:16px;align-items:center;padding:9px 18px;margin-bottom:8px;border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09)}
-.row.e3{box-shadow:inset 7px 0 0 #f59e0b;background:rgba(245,158,11,.10)}.row.e4{box-shadow:inset 8px 0 0 #d946ef;background:rgba(192,38,211,.16)}
-.rk span{display:flex;width:64px;height:64px;align-items:center;justify-content:center;border-radius:16px;font:900 32px 'Inter Display',Inter,Arial;background:linear-gradient(135deg,#3b82f6,#a855f7)}
-.rk.m{font-size:56px;line-height:64px;text-align:center}
-.nm{font:700 31px/1.15 Poppins,Arial}.nm em{font:600 19px Inter,Arial;font-style:normal;color:#818cf8;letter-spacing:.06em}
-.mg{display:flex;align-items:center;gap:8px;margin-top:6px;font:500 21px Inter,Arial;color:#c7d2fe}.mg img{border-radius:7px;margin:0!important}
-.mt{padding:2px 0}.mt.t2{border:2px dashed #cbd5e1;border-radius:999px;padding:1px 12px;color:#fff;font-weight:700}
-.mt.t3{background:#f59e0b;color:#2a1500;border-radius:999px;padding:2px 13px;font-weight:800}
-.mt.t4{background:linear-gradient(90deg,#7c3aed,#d946ef);color:#fff;border-radius:999px;padding:2px 13px;font-weight:800}
-.fa{color:#94a3b8;font-style:italic}
-.bs{text-align:center;position:relative;border-radius:16px;padding:6px 0;background:rgba(255,210,63,.10);border:1px solid rgba(255,210,63,.28)}
-.bs b{display:block;font:900 italic 58px/1 'Inter Display',Inter,Arial;color:#ffd23f}.bs small{display:block;font:700 17px Inter,Arial;color:#c7d2fe;letter-spacing:.08em;margin-top:2px}
-.bs .em{position:absolute;top:-12px;right:-6px;font-size:34px}
-.bz{text-align:center;font:800 38px 'Inter Display',Inter,Arial;color:#e2e8f0}
-.hm{margin-top:16px;padding:14px 22px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font:500 21px/1.65 Inter,Arial;color:#cbd5e1}
-.hm .h{font:800 17px Inter,Arial;letter-spacing:.2em;color:#94a3b8;margin-bottom:6px}.hm b{color:#fff}.hm i{color:#94a3b8;font-style:normal}.hm span{white-space:nowrap}
-.foot{margin-top:12px;font:500 17px/1.45 Inter,Arial;color:#8b93b8}.foot b{color:#c7d2fe}"""
-    page=(f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=Poppins:wght@500;600;700;800;900&display=swap"><style>{CSS}</style></head><body><div id="card">'
+    CSS="""*{box-sizing:border-box;margin:0}body{background:#11151c}
+#card{width:1080px;padding:40px 44px 30px;font-family:'Source Sans 3','Segoe UI',Arial,sans-serif;color:#e6e9ef;background:#11151c}
+.head{display:flex;align-items:center;gap:26px;margin-bottom:24px}.ll{width:120px;border-radius:18px}
+.kick{font:600 18px 'JetBrains Mono',Consolas,ui-monospace,monospace;letter-spacing:.2em;color:#fb923c}
+.title{font:700 92px/.9 'Barlow Condensed','Arial Narrow',Arial,sans-serif;text-transform:uppercase;letter-spacing:.005em;margin:8px 0 6px;color:#e6e9ef}
+.sub{font:400 26px 'Source Sans 3','Segoe UI',Arial,sans-serif;color:#98a2b3}
+.cc{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.cc span{font:600 19px 'JetBrains Mono',Consolas,ui-monospace,monospace;border-radius:999px;padding:4px 14px;white-space:nowrap;background:rgba(251,146,60,.13);color:#fdba74}.cc span b{color:#fff}
+.cc .pay{background:#fb923c!important;color:#11151c!important}.cc .pay b{color:#11151c}
+.c2{padding:6px 2px 14px;font:400 23px 'Source Sans 3','Segoe UI',Arial,sans-serif;color:#98a2b3}.c2h b{color:#e6e9ef}.c2 .cc span{background:#202835;color:#98a2b3}.c2 .cc .pay{background:#202835!important;color:#98a2b3!important}
+.c3,.c4,.xc{background:#181e27;border:1px solid #2a3240;border-left:6px solid #fb923c;border-radius:16px;padding:18px 24px;margin:0 0 14px}
+.c3h{font:400 24px 'Source Sans 3','Segoe UI',Arial,sans-serif;color:#98a2b3}.c3h i{font:700 44px/1 'Barlow Condensed','Arial Narrow',Arial,sans-serif;font-style:normal;text-transform:uppercase;color:#fb923c;margin-bottom:4px}
+.c4{border:1px solid #fbbf24;border-left:8px solid #fbbf24;background:linear-gradient(90deg,rgba(251,191,36,.12),#181e27 70%)}
+.c4k{font:600 16px 'JetBrains Mono',Consolas,ui-monospace,monospace;letter-spacing:.2em;color:#98a2b3}.c4h{font:700 54px/1 'Barlow Condensed','Arial Narrow',Arial,sans-serif;text-transform:uppercase;color:#fbbf24;margin:4px 0}.c4l{font:400 24px 'Source Sans 3','Segoe UI',Arial,sans-serif;color:#98a2b3}.c4l b{color:#e6e9ef}
+.c4.c6{border-color:#f87171;background:linear-gradient(90deg,rgba(248,113,113,.16),#181e27 70%)}.c4.c6 .c4h{color:#f87171}
+.c4.c7{border:2px solid #fde68a;border-left:10px solid #fde68a;background:linear-gradient(90deg,rgba(253,230,138,.18),#181e27 75%)}.c4.c7 .c4h{color:#fde68a}
+.colh{display:grid;grid-template-columns:76px 1fr 190px 110px;gap:16px;padding:16px 20px 8px;font:600 16px 'JetBrains Mono',Consolas,ui-monospace,monospace;letter-spacing:.16em;color:#98a2b3}
+.colh div:nth-child(3),.colh div:nth-child(4){text-align:center}.colh .hl{color:#fb923c}
+.row{display:grid;grid-template-columns:76px 1fr 190px 110px;gap:16px;align-items:center;padding:10px 20px;margin-bottom:8px;border-radius:14px;background:#181e27;border:1px solid #2a3240}
+.row.e3{box-shadow:inset 6px 0 0 #fb923c}.row.e4{box-shadow:inset 7px 0 0 #fbbf24}
+.rk span{display:flex;width:62px;height:62px;align-items:center;justify-content:center;border-radius:12px;font:600 28px 'JetBrains Mono',Consolas,ui-monospace,monospace;color:#98a2b3;background:#202835}
+.rk.m{font-size:52px;line-height:62px;text-align:center}
+.nm{font:700 38px/1.05 'Barlow Condensed','Arial Narrow',Arial,sans-serif;text-transform:uppercase}.nm em{font:600 18px 'JetBrains Mono',Consolas,ui-monospace,monospace;font-style:normal;color:#98a2b3;letter-spacing:.04em;margin-left:4px}
+.mg{display:flex;align-items:center;gap:8px;margin-top:6px;font:400 22px 'Source Sans 3','Segoe UI',Arial,sans-serif;color:#98a2b3}.mg img{border-radius:7px;margin:0!important}
+.mt{padding:2px 0}.mt.t2{border:2px dashed #5d6678;border-radius:999px;padding:1px 12px;color:#e6e9ef;font-weight:600}
+.mt.t3{background:#fb923c;color:#11151c;border-radius:999px;padding:2px 13px;font-weight:700}
+.mt.t4{background:#fbbf24;color:#11151c;border-radius:999px;padding:2px 13px;font-weight:700}
+.fa{color:#98a2b3}
+.bs{text-align:center;position:relative;border-radius:12px;padding:6px 0;background:#202835;border:1px solid #2a3240}
+.bs b{display:block;font:700 66px/1 'Barlow Condensed','Arial Narrow',Arial,sans-serif;color:#fb923c}.bs small{display:block;font:600 16px 'JetBrains Mono',Consolas,ui-monospace,monospace;color:#98a2b3;letter-spacing:.06em;margin-top:2px}
+.bs .em{position:absolute;top:-12px;right:-6px;font-size:32px}
+.bz{text-align:center;font:700 44px 'Barlow Condensed','Arial Narrow',Arial,sans-serif;color:#e6e9ef}
+.hm{margin-top:16px;padding:16px 22px;border-radius:14px;border:1px dashed #2a3240;font:400 22px/1.65 'Source Sans 3','Segoe UI',Arial,sans-serif;color:#98a2b3}
+.hm .h{font:600 16px 'JetBrains Mono',Consolas,ui-monospace,monospace;letter-spacing:.2em;color:#98a2b3;margin-bottom:6px}.hm b{color:#e6e9ef}.hm i{color:#98a2b3;font-style:normal}.hm span{white-space:nowrap}
+.foot{margin-top:14px;font:600 15px/1.5 'JetBrains Mono',Consolas,ui-monospace,monospace;letter-spacing:.06em;color:#5d6678}.foot b{color:#98a2b3}"""
+    page=(f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap"><style>{CSS}</style></head><body><div id="card">'
           f'<div class="head">{LL}<div><div class="kick">BBL · TOP 10</div><div class="title">BEST OF<br>THE NIGHT</div><div class="sub">{html.escape(label)}</div></div></div>'
           f'{calls}<div class="colh"><div>#</div><div>PLAYER · MANAGER</div><div class="hl">BEST SLOT</div><div>BASE</div></div>'
           +''.join(row(i,p) for i,p in enumerate(best[:10],1))+
           f'<div class="hm"><div class="h">HONORABLE MENTIONS</div>{hmt}</div>'
-          f'<div class="foot"><b>Best slot</b> = BBL points in his best eligible slot (G +1/reb · F +1/ast · C +1/3PM). <b>Base</b> = BBL points without the slot bonus. Ties go to the higher base, then fewer minutes. Highlighted managers have 2+ players in the top 10.</div>'
           '</div></body></html>')
     open('nightly_top10.html','w').write(page); print('top10 ok'); sys.exit(0)
 if CARD and P:   # shareable PNG infographic: phone-first, high-energy poster (rendered from nightly_card.html)
