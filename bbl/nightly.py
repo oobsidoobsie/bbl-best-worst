@@ -54,7 +54,8 @@ CC_LINK=os.environ.get('BBL_CC_LINK','')  # Command Center link in the share ema
 EMAIL=len(sys.argv)>4 and sys.argv[4] in ('email','short','share')
 TOP10=len(sys.argv)>4 and sys.argv[4]=='top10'   # mobile top-10 image (rendered from nightly_top10.html)
 CARD=len(sys.argv)>4 and sys.argv[4]=='card'   # shareable PNG infographic (rendered from nightly_card.html)
-SHARE=(len(sys.argv)>4 and sys.argv[4]=='share') or CARD or TOP10  # league-friendly copy: no 'yours', owners shown by team name
+WEB=len(sys.argv)>4 and sys.argv[4]=='web'   # shareable web page + PNG in the Command Center theme (nightly_web.html)
+SHARE=(len(sys.argv)>4 and sys.argv[4]=='share') or CARD or TOP10 or WEB  # league-friendly copy: no 'yours', owners shown by team name
 SHORT=len(sys.argv)>4 and sys.argv[4]=='short'
 BADGE={'Oobsidoobsie':('OOB','#c2410c'),'Binkas&Yams':('B&Y','#7c3aed'),'Deep Bag':('DB','#0f766e'),'My Shaila':('MS','#db2777'),
  'Phil the new champion':('PHIL','#2563eb'),'Pucs':('PUCS','#4d7c0f'),'Rudy Jobert':('RJ','#dc2626'),'SOGGY':('SOG','#0e7490'),
@@ -261,6 +262,87 @@ else:
     out=('<div style="overflow-x:auto">'+legend()+headline(best[0],EMAIL)+(page_stacks(best[:10]) if PAGE_STACK else stack_html(best[:10],EMAIL))+''.join(xcard_html(*x) for x in extras(best))+f'<h3>🔥 Top 10 performances of the night · {html.escape(label)}</h3>'+table(best[:10],hot,'#1f9d55',best[10:15],PAGE_STACK)+
          f'<h3>🤮 Top 10 worst performances of the night</h3>'+(xcard_html(*brick(worst)) if worst else '')+table(worst[:10],cold,'inherit')+
          f'<p><b>Honorable mentions:</b> {hm(worst[10:15])}</p><p style="font-size:12px;color:#667085"><b>How the lists are ranked.</b> Top 10: highest best-slot points; ties go to the higher base score (more of his points came from his own stats, not the slot bonus), then to fewer minutes played. Worst 10: lowest best-slot points among players with 20+ minutes; ties go to the lower base score, then to more minutes.</p>'+note+'</div>')
+if WEB and P:   # shareable page in the Command Center theme (slate, orange, Barlow Condensed): nightly_web.html, also drawn as a PNG
+    import re as _re
+    hl=_re.sub(r'<[^>]+>','',headline(best[0],True).split('</div>')[0]).strip()
+    def own_(p): o=tname(p['n']); return 'Free agent' if o=='FA' else html.escape(o)
+    def stl_(p):
+        b=[f"{p['pts']} PTS",f"{p['reb']} REB",f"{p['ast']} AST"]+([f"{p['stl']} STL"] if p['stl'] else [])+([f"{p['blk']} BLK"] if p['blk'] else [])+([f"{p['to']} TO"] if p['to']>=4 else [])+[f"{p['fgm']}-{p['fga']} FG"]
+        return ' · '.join(b)
+    def big_(p):
+        t=tier(p['fp']); return fpt(p['fp'])+(f'<i class="tier">{t[1]}</i>' if t else '')
+    def sl_(p): return f'{p["slot"]}{(" +"+str(p["bonus"])) if p["bonus"] else ""}'
+    def chips_(L): return ''.join(f'<span class="chip">#{i} {html.escape(shortn(p["n"]))} <b>{fpt(p["fp"])}</b></span>' for i,p in L)
+    calls=''
+    for o,L in stacks(best[:10],2):
+        k=len(L); tot_=sum(p['fp'] for _,p in L); on=html.escape(o)
+        if k==2:
+            calls+=f'<div class="dbl"><span class="lab">🤝 Double up</span> <b>{on}</b> has 2 in the top 10 {chips_(L)}<span class="chip mute">{fpt(tot_)} PTS</span></div>'
+        else:
+            e,t=stack_title(k).split(' ',1); lvl='t3' if k==3 else ('t4' if k<=5 else ('t6' if k==6 else 't7'))
+            line=(f'<b>{on}</b> hit {k}-of-a-kind in the top 10' if k==3 else f'<b>{on}</b> owns {k} of the top 10')
+            calls+=f'<div class="card call {lvl}"><div class="e">{e}</div><div><div class="ct">{t}</div><div class="sub">{line}</div><div>{chips_(L)}<span class="chip pay">💰 {fpt(tot_)} PTS</span></div></div></div>'
+    for e,t,line,chs,st in extras(best):
+        calls+=f'<div class="card call x{st}"><div class="e">{e}</div><div><div class="ct">{t}</div><div class="sub">{line}</div><div>'+''.join(f'<span class="chip">{c}</span>' for c in chs)+'</div></div></div>'
+    pods=''.join(f'<div class="pod{" p1" if i==1 else ""}"><div class="rk">#{i}</div><div class="nm">{html.escape(p["n"])}</div><div class="tm">{p["t"]} · {own_(p)}</div><div class="big">{big_(p)}</div><div class="sl">{sl_(p)}</div><div class="st">{stl_(p)}</div></div>' for i,p in enumerate(best[:3],1))
+    def row_(i,p,cls=''):
+        return f'<div class="row{cls}"><div class="rn">{i}</div><div class="who"><b>{html.escape(p["n"])}</b> <span class="tm">{p["t"]}</span><div class="ow">{own_(p)} · {stl_(p)}</div></div><div class="pts">{big_(p)}<small>{sl_(p)}</small></div></div>'
+    rows=''.join(row_(i,p) for i,p in enumerate(best[3:10],4))
+    hm=' · '.join(f'<span><b>{i}</b> {html.escape(p["n"])} <i>({own_(p)})</i> <b>{fpt(p["fp"])}</b></span>' for i,p in enumerate(best[10:15],11))
+    bk=''
+    if worst:
+        w=worst[0]
+        bk=(f'<div class="card oof"><div class="lab">🥶 Brick layer of the night</div><div class="bkn"><b>{html.escape(w["n"])}</b> <span class="tm">{w["t"]} · {own_(w)}</span></div>'
+            f'<div class="sub">{w["pts"]} pts on {w["fgm"]}-{w["fga"]} FG in {w["m"]} minutes, {w["to"]} TO · <b class="neg">{fpt(w["fp"])} BBL pts</b></div></div>')
+    wrows=''.join(row_(i,p,' bad') for i,p in enumerate(worst[:5],1))
+    D="'Barlow Condensed','Arial Narrow',Arial,sans-serif"; B="'Source Sans 3','Segoe UI',Arial,sans-serif"; M="'JetBrains Mono',Consolas,ui-monospace,monospace"
+    css=f"""*{{box-sizing:border-box}}body{{margin:0;background:#0b0e13;font:15px/1.45 {B};color:#e6e9ef}}
+#page{{width:820px;margin:0 auto;padding:30px 30px 26px;background:#11151c}}
+.kick{{font:600 11px {M};letter-spacing:.2em;color:#fb923c}}
+h1{{font:700 64px/.95 {D};text-transform:uppercase;margin:6px 0 2px}}
+.date{{color:#98a2b3;font-size:15px;margin-bottom:18px}}
+.card{{background:#181e27;border:1px solid #2a3240;border-radius:12px;padding:14px 16px;margin-bottom:10px}}
+.potn{{display:flex;justify-content:space-between;align-items:center;gap:14px;border-left:4px solid #fb923c}}
+.lab{{font:600 10px {M};letter-spacing:.18em;color:#fb923c;text-transform:uppercase;margin-bottom:4px}}
+.hl{{font:700 32px/1.05 {D};text-transform:uppercase}}
+.sub{{color:#98a2b3;font-size:14px;margin-top:3px}}.sub b{{color:#e6e9ef}}
+.huge{{font:700 80px/.9 {D};color:#fb923c;text-align:right;white-space:nowrap}}.huge small{{display:block;font:600 10px {M};letter-spacing:.18em;color:#98a2b3}}
+.tier{{font-style:normal;font-size:.45em;vertical-align:top;margin-left:2px}}
+.call{{display:flex;gap:14px;align-items:center;border-left:4px solid #fbbf24}}.call .e{{font-size:30px}}
+.ct{{font:700 26px/1 {D};text-transform:uppercase;letter-spacing:.02em;color:#fbbf24}}
+.call.t3{{border-left-color:#fb923c}}.call.t3 .ct{{color:#fb923c}}
+.call.t4{{border:1px solid #fbbf24;border-left:6px solid #fbbf24;background:linear-gradient(90deg,rgba(251,191,36,.12),#181e27 70%)}}
+.call.t6{{border:1px solid #f87171;border-left:6px solid #f87171;background:linear-gradient(90deg,rgba(248,113,113,.16),#181e27 70%)}}.call.t6 .ct{{color:#f87171}}
+.call.t7{{border:2px solid #fde68a;border-left:8px solid #fde68a;background:linear-gradient(90deg,rgba(253,230,138,.18),#181e27 75%)}}.call.t7 .ct{{color:#fde68a;font-size:32px}}
+.call.xgem{{border-left-color:#4ade80}}.call.xgem .ct{{color:#4ade80}}
+.call.xrun{{border-left-color:#38bdf8}}.call.xrun .ct{{color:#38bdf8}}
+.chip{{display:inline-block;font:600 12px {M};background:rgba(251,146,60,.13);color:#fdba74;border-radius:999px;padding:2px 9px;margin:6px 5px 0 0}}.chip b{{color:#fff}}
+.chip.pay{{background:#fb923c;color:#11151c}}.chip.pay b{{color:#11151c}}.chip.mute{{background:#202835;color:#98a2b3}}
+.dbl{{font-size:14px;color:#98a2b3;padding:6px 2px 10px}}.dbl .lab{{display:inline;color:#98a2b3}}.dbl b{{color:#e6e9ef}}
+h2{{font:700 28px {D};text-transform:uppercase;letter-spacing:.04em;margin:20px 0 10px;display:flex;align-items:center;gap:12px}}h2:after{{content:"";flex:1;height:2px;background:#2a3240}}
+.pods{{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px}}
+.pod{{background:#181e27;border:1px solid #2a3240;border-radius:12px;padding:14px 10px;text-align:center}}.pod.p1{{border:2px solid #fb923c}}
+.rk{{font:600 12px {M};color:#98a2b3}}.p1 .rk{{color:#fb923c}}
+.nm{{font:700 21px/1.05 {D};text-transform:uppercase;margin-top:3px}}.tm{{color:#98a2b3;font:600 11px {M}}}
+.big{{font:700 58px/1 {D};margin-top:6px}}.p1 .big{{color:#fb923c}}.sl{{color:#98a2b3;font:600 11px {M}}}.st{{font-size:12px;color:#98a2b3;margin-top:6px}}
+.row{{display:flex;align-items:center;gap:12px;background:#181e27;border:1px solid #2a3240;border-radius:10px;padding:9px 14px;margin-bottom:6px}}
+.rn{{width:32px;height:32px;flex:none;border-radius:8px;background:#202835;display:flex;align-items:center;justify-content:center;font:600 13px {M};color:#98a2b3}}
+.who{{flex:1;min-width:0}}.who b{{font:700 21px {D};text-transform:uppercase}}.ow{{color:#98a2b3;font-size:13px}}
+.pts{{font:700 38px/1 {D};text-align:right;white-space:nowrap}}.pts small{{display:block;font:600 10px {M};color:#98a2b3}}
+.row.bad .pts{{color:#f87171}}
+.hm{{margin-top:12px;padding:12px 16px;border-radius:12px;border:1px dashed #2a3240;font-size:14px;color:#98a2b3;line-height:1.7}}.hm .lab{{color:#98a2b3}}.hm b{{color:#e6e9ef}}.hm i{{font-style:normal}}.hm span{{white-space:nowrap}}
+.oof{{border-left:4px solid #f87171}}.oof .lab{{color:#f87171}}.bkn b{{font:700 24px {D};text-transform:uppercase}}.neg{{color:#f87171!important}}
+.foot{{margin-top:16px;font:600 11px {M};letter-spacing:.12em;color:#5d6678;text-transform:uppercase}}"""
+    potn=(f'<div class="card potn"><div><div class="lab">⭐ Player of the night</div><div class="hl">{html.escape(hl)}</div>'
+          f'<div class="sub">{own_(best[0])} · {stl_(best[0])}</div></div><div class="huge">{big_(best[0])}<small>BBL PTS</small></div></div>')
+    page=(f'<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BBL Best &amp; Worst · {html.escape(label)}</title>'
+          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap">'
+          f'<style>{css}</style></head><body><div id="page"><div class="kick">BBL · BOMBASTIC BASKETBALL LEAGUE</div><h1>Best &amp; Worst</h1>'
+          f'<div class="date">{html.escape(label)} · {ndone}/{ngames} games final{f" · {nlive} still in progress" if nlive else ""}</div>'
+          f'{potn}{calls}<h2>🔥 Top 10</h2><div class="pods">{pods}</div>{rows}'
+          +(f'<div class="hm"><span class="lab">Honorable mentions</span><br>{hm}</div>' if hm else '')
+          +f'<h2>🥶 Oof zone</h2>{bk}{wrows}<div class="foot">BBL scoring · best eligible slot · worst list = 20+ minutes</div></div></body></html>')
+    open('nightly_web.html','w',encoding='utf-8').write(page); print('web ok'); sys.exit(0)
 if TOP10 and P:   # mobile-friendly top-10 image (rendered from nightly_top10.html): best slot + base, stack callouts, honorable mentions as text
     import base64
     STK.update({o:len(L) for o,L in stacks(best[:10],2)})
