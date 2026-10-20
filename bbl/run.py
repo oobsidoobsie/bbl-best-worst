@@ -74,7 +74,7 @@ def page_dark(title, body):
     css = (":root{--bg:#11151c;--panel:#181e27;--fg:#e6e9ef;--muted:#98a2b3;--line:#2a3240;--accent:#fb923c;--ok:#4ade80;--warn:#fbbf24;--bad:#f87171;color-scheme:dark}"
            "body{margin:0;padding:20px;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,'Segoe UI',Helvetica,Arial,sans-serif}"
            ".wrap{max-width:1180px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;overflow-x:auto}"
-           ".wrap,.wrap *{color:var(--fg)}.wrap table{border-collapse:collapse;width:100%}"
+           ".wrap{color:var(--fg)}.wrap table{border-collapse:collapse;width:100%}"
            ".wrap th,.wrap td{color:var(--fg)!important;border-color:var(--line)!important;background-color:transparent}"
            ".wrap th{color:var(--muted)!important}.wrap h3{color:var(--accent)}.wrap p,.wrap small{color:var(--muted)}"
            "@media (max-width:600px){body{padding:8px}.wrap{padding:10px}}")

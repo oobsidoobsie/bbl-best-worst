@@ -148,7 +148,7 @@ def stack_html(top,email=False):
     out=''
     for o,L in stacks(top):
         k=len(L); tot_=sum(p['fp'] for _,p in L)
-        title={3:'🎰 JACKPOT!',4:'🎰 MEGA JACKPOT!!'}.get(k,'💎 GRAND JACKPOT!!!')
+        title=stack_title(k)
         line=f'{html.escape(o)} hit {k}-of-a-kind in the top 10'
         chips=' · '.join(f'#{rk(top,i)} {html.escape(shortn(p["n"]))} <b>{fpt(p["fp"])}</b>' for i,p in L)
         if email:
@@ -177,8 +177,9 @@ def page_stacks(top):
                   f'<div style="font:800 18px/1.3 Arial,sans-serif"><span style="color:#d97706">🎰 JACKPOT!</span> {on} hit 3-of-a-kind in the top 10</div>'
                   f'<div style="font-size:13px;color:var(--muted,#667085);margin-top:3px">{ch("#d97706")} · 💰 Payout <b style="color:var(--fg,#1b2230)">{fpt(tot_)}</b> BBL pts</div></div>')
         else:
-            title='💎 MEGA JACKPOT!!' if k==4 else '👑 GRAND JACKPOT!!!'
-            out+=(f'<div style="margin:6px 0 12px;padding:18px 22px;border-radius:16px;color:#fff;background:linear-gradient(120deg,#7c3aed,#c026d3 55%,#f59e0b);box-shadow:0 0 0 3px rgba(192,38,211,.3),0 10px 30px rgba(124,58,237,.35)">'
+            title=stack_title(k); sb=stkbg(k)
+            bgx=sb[1] if sb else 'linear-gradient(120deg,#7c3aed,#c026d3 55%,#f59e0b)'; fgx=sb[2] if sb else '#fff'
+            out+=(f'<div style="margin:6px 0 12px;padding:18px 22px;border-radius:16px;color:{fgx};background:{bgx};box-shadow:0 0 0 3px rgba(192,38,211,.3),0 10px 30px rgba(124,58,237,.35)">'
                   f'<div style="font:800 11px Arial,sans-serif;letter-spacing:.25em;opacity:.85">{k} OF A KIND</div>'
                   f'<div style="font:900 italic 30px/1.1 \'Arial Black\',Arial,sans-serif;margin:2px 0 4px;text-shadow:0 2px 0 rgba(0,0,0,.25)">{title}</div>'
                   f'<div style="font-size:15px;margin-bottom:6px"><b>{on}</b> owns {k} of the top 10 tonight</div>'
@@ -188,6 +189,51 @@ def page_stacks(top):
 def rk(L,i):
     '''Display rank for position i (1-based) in list L.'''
     return str(i)  # plain ranks; ties are already ordered by base score, then minutes
+
+# ---- stack tiers and extra callouts (runaway winner, waiver-wire gem, NBA team sweep, brick layer)
+def stack_title(k):
+    return {3:'🎰 JACKPOT!',4:'💎 MEGA JACKPOT!!',5:'👑 GRAND JACKPOT!!!',6:'🌋 ERUPTION!!!!'}.get(k,'🏆 TOTAL DOMINATION' if k>=7 else '🤝 DOUBLE UP')
+STKBG={6:('#7f1d1d','linear-gradient(120deg,#0b0000,#450a0a 30%,#b91c1c 65%,#f97316)','#ffffff','#f97316'),
+       7:('#b45309','linear-gradient(120deg,#78350f,#b45309 30%,#f59e0b 62%,#fde68a)','#1c1000','#fde68a')}
+def stkbg(k): return STKBG[min(k,7)] if k>=6 else None
+NBA={'ATL':'Atlanta','BOS':'Boston','BKN':'Brooklyn','CHA':'Charlotte','CHI':'Chicago','CLE':'Cleveland','DAL':'Dallas','DEN':'Denver','DET':'Detroit','GS':'Golden State',
+     'HOU':'Houston','IND':'Indiana','LAC':'Clippers','LAL':'Lakers','MEM':'Memphis','MIA':'Miami','MIL':'Milwaukee','MIN':'Minnesota','NO':'New Orleans','NY':'Knicks',
+     'OKC':'OKC','ORL':'Orlando','PHI':'Philly','PHX':'Phoenix','PHO':'Phoenix','POR':'Portland','SAC':'Sacramento','SA':'San Antonio','TOR':'Toronto','UTAH':'Utah','UTA':'Utah','WSH':'Washington','WAS':'Washington'}
+def extras(best):
+    """Extra callouts for the top of the page: (emoji, title, line, chips, style)."""
+    X=[]
+    if len(best)>1 and best[0]['fp']-best[1]['fp']>=15:
+        g=best[0]['fp']-best[1]['fp']
+        X.append(('🚀','RUNAWAY WINNER',f'<b>{html.escape(best[0]["n"])}</b> lapped the field by {fpt(g)}',[f'#1 {shortn(best[0]["n"])} <b>{fpt(best[0]["fp"])}</b>',f'#2 {shortn(best[1]["n"])} <b>{fpt(best[1]["fp"])}</b>'],'run'))
+    for i,p in enumerate(best[:3],1):
+        if owner.get(p['n'],'FA')=='FA':
+            X.append(('👀','WAIVER WIRE GEM',f'<b>{html.escape(p["n"])}</b> ({p["t"]}) finished #{i} and nobody owns him. First come, first served',[f'#{i} {shortn(p["n"])} <b>{fpt(p["fp"])}</b>'],'gem'))
+    tm={}
+    for i,p in enumerate(best[:10],1): tm.setdefault(p['t'],[]).append((i,p))
+    for t,L in sorted(tm.items(),key=lambda x:-len(x[1])):
+        if len(L)>=3:
+            X.append(('🏟️',f'{NBA.get(t,t).upper()} PARTY',f'{len(L)} {html.escape(t)} players crashed the top 10',[f'#{i} {shortn(p["n"])} <b>{fpt(p["fp"])}</b>' for i,p in L],'party'))
+    return X
+XST={'run':('#0369a1','linear-gradient(110deg,#0c4a6e,#0284c7 55%,#22d3ee)','#ffffff'),
+     'gem':('#047857','linear-gradient(110deg,#064e3b,#059669 55%,#34d399)','#ffffff'),
+     'party':('#4338ca','linear-gradient(110deg,#1e1b4b,#4338ca 55%,#818cf8)','#ffffff'),
+     'ouch':('#0369a1','linear-gradient(110deg,#e0f2fe,#bae6fd 60%,#7dd3fc)','#082f49')}
+def xcard_html(e,t,line,chips,st,big=False):
+    bc,bg,fg=XST[st] if st!='ouch' else ('#0369a1','linear-gradient(110deg,#082f49,#0369a1 60%,#38bdf8)','#ffffff'); sz=26 if big else 20
+    ch=''.join(f'<span style="display:inline-block;font-size:13px;border:1px solid rgba(255,255,255,.45);background:rgba(0,0,0,.18);border-radius:999px;padding:1px 9px;margin:4px 5px 0 0;white-space:nowrap">{c}</span>' for c in chips) if st!='ouch' else ''
+    return (f'<div style="margin:6px 0 10px;padding:12px 16px;border-radius:14px;color:{fg};background:{bc};background-image:{bg};border:1px solid {bc}">'
+            f'<div style="font:900 italic {sz}px/1.15 Arial,sans-serif">{e} {t}</div><div style="font-size:14px;margin-top:3px">{line}</div><div>{ch}</div></div>')
+def xcard_mail(e,t,line,chips,st):
+    bc,bg,fg=XST[st]
+    ch=''.join(f'<span style="display:inline-block;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:700;color:{fg};border:1px solid {fg};border-radius:999px;padding:2px 10px;margin:6px 6px 0 0">{c}</span>' for c in chips) if st!='ouch' else ''
+    return (f'<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 14px"><tr><td bgcolor="{bc}" style="background:{bc};background-image:{bg};border:3px solid {bc};border-radius:18px;padding:14px 20px">'
+            f'<table cellpadding="0" cellspacing="0"><tr><td style="font-size:44px;padding-right:14px;vertical-align:middle">{e}</td><td><div style="font-family:\'Arial Black\',Arial,sans-serif;font-size:26px;font-style:italic;font-weight:900;color:{fg};line-height:1.05">{t}</div>'
+            f'<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:{fg};margin-top:4px">{line}</div>{ch}</td></tr></table></td></tr></table>')
+def brick(worst):
+    if not worst: return None
+    p=worst[0]; o=owner.get(p['n'],'FA'); o=(MYTEAM if o=='Yours' else o)
+    who='a free agent' if o=='FA' else html.escape(o)
+    return ('🥶','BRICK LAYER OF THE NIGHT',f'<b>{html.escape(p["n"])}</b> ({p["t"]}, {who}): {fpt(p["fp"])} BBL pts in {p["m"]} minutes · {p["pts"]} pts on {p["fgm"]}-{p["fga"]} FG, {p["to"]} TO',[],'ouch')
 def table(rows,emo,col='#2b8a9e',hm=(),stk=False):
     cols=['#','Player','Best slot','Base','MIN','PTS','FG','FT','3PM','REB','AST','STL','BLK','TO','PF']
     h='<table style="border-collapse:collapse;width:100%;font-family:Arial,sans-serif"><tr>'+''.join(f'<th {TH}>{c}</th>' for c in cols)+'</tr>'
@@ -217,8 +263,8 @@ else:
     hm=lambda L:', '.join(html.escape(p['n'])+f' ({p["fp"]}'+(', '+(('yours' if not SHARE else MYTEAM) if owner[p["n"]]=='Yours' else html.escape(owner[p["n"]])) if owner.get(p['n'],'FA')!='FA' else '')+')' for p in L)
     note=(f'<p style="font-size:12px;color:#667085">{ndone} of {ngames} games final; {nlive} still in progress and not included.</p>' if nlive else '')
     if PAGE_STACK: STK.update({o:len(L) for o,L in stacks(best[:10],2)})
-    out=('<div style="overflow-x:auto">'+legend()+headline(best[0],EMAIL)+(page_stacks(best[:10]) if PAGE_STACK else stack_html(best[:10],EMAIL))+f'<h3>🔥 Top 10 performances of the night · {html.escape(label)}</h3>'+table(best[:10],hot,'#1f9d55',best[10:15],PAGE_STACK)+
-         f'<h3>🤮 Top 10 worst performances of the night</h3>'+table(worst[:10],cold,'inherit')+
+    out=('<div style="overflow-x:auto">'+legend()+headline(best[0],EMAIL)+(page_stacks(best[:10]) if PAGE_STACK else stack_html(best[:10],EMAIL))+''.join(xcard_html(*x) for x in extras(best))+f'<h3>🔥 Top 10 performances of the night · {html.escape(label)}</h3>'+table(best[:10],hot,'#1f9d55',best[10:15],PAGE_STACK)+
+         f'<h3>🤮 Top 10 worst performances of the night</h3>'+(xcard_html(*brick(worst)) if worst else '')+table(worst[:10],cold,'inherit')+
          f'<p><b>Honorable mentions:</b> {hm(worst[10:15])}</p><p style="font-size:12px;color:#667085"><b>How the lists are ranked.</b> Top 10: highest best-slot points; ties go to the higher base score (more of his points came from his own stats, not the slot bonus), then to fewer minutes played. Worst 10: lowest best-slot points among players with 20+ minutes; ties go to the lower base score, then to more minutes.</p>'+note+'</div>')
 if TOP10 and P:   # mobile-friendly top-10 image (rendered from nightly_top10.html): best slot + base, stack callouts, honorable mentions as text
     import base64
@@ -244,8 +290,10 @@ if TOP10 and P:   # mobile-friendly top-10 image (rendered from nightly_top10.ht
         if k==2: calls+=f'<div class="c2"><div class="c2h">🤝 DOUBLE UP · <b>{on}</b> has 2 in the top 10</div><div class="cc">{ch}<span class="pay">{fpt(tot_)} PTS</span></div></div>'
         elif k==3: calls+=f'<div class="c3"><div class="c3h"><i>🎰 JACKPOT!</i> {on} hit 3-of-a-kind</div><div class="cc">{ch}<span class="pay">💰 {fpt(tot_)} PTS</span></div></div>'
         else:
-            ttl='💎 MEGA JACKPOT!!' if k==4 else '👑 GRAND JACKPOT!!!'
-            calls+=f'<div class="c4"><div class="c4k">{k} OF A KIND</div><div class="c4h">{ttl}</div><div class="c4l"><b>{on}</b> owns {k} of the top 10</div><div class="cc">{ch}<span class="pay">💰 {fpt(tot_)} PTS</span></div></div>'
+            ttl=stack_title(k); cls='c4'+(' c6' if k==6 else (' c7' if k>=7 else ''))
+            calls+=f'<div class="{cls}"><div class="c4k">{k} OF A KIND</div><div class="c4h">{ttl}</div><div class="c4l"><b>{on}</b> owns {k} of the top 10</div><div class="cc">{ch}<span class="pay">💰 {fpt(tot_)} PTS</span></div></div>'
+    for e,t,line,chs,st in extras(best):
+        calls+=f'<div class="xc {st}"><div class="xch">{e} {t}</div><div class="xcl">{line}</div><div class="cc">'+''.join(f'<span>{c}</span>' for c in chs)+'</div></div>'
     hmt=' · '.join(f'<span><b>{i}</b> {html.escape(p["n"])} <i>({html.escape(tname(p["n"]) if tname(p["n"])!="FA" else "Free agent")})</i> <b>{fpt(p["fp"])}</b></span>' for i,p in enumerate(best[10:15],11))
     LL=('<img class="ll" src="data:image/png;base64,'+base64.b64encode(open('league_logo.png','rb').read()).decode()+'" alt="BBL">') if os.path.exists('league_logo.png') else ''
     CSS="""*{box-sizing:border-box;margin:0}body{background:#070b24}
@@ -263,6 +311,11 @@ if TOP10 and P:   # mobile-friendly top-10 image (rendered from nightly_top10.ht
 .c4{border-radius:24px;padding:22px 26px;margin:0 0 14px;background:linear-gradient(120deg,#7c3aed,#c026d3 55%,#f59e0b);box-shadow:0 0 0 4px rgba(192,38,211,.35),0 14px 40px rgba(124,58,237,.45)}
 .c4k{font:800 17px Inter,Arial;letter-spacing:.25em;opacity:.85}.c4h{font:900 italic 46px/1.05 'Inter Display',Inter,Arial;margin:4px 0;text-shadow:0 3px 0 rgba(0,0,0,.25)}.c4l{font:500 23px Poppins,Arial}
 .c4 .cc span{background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.5)}.c4 .pay{background:#1b1030!important;color:#ffd23f;font-weight:800!important}
+.c4.c6{background:linear-gradient(120deg,#0b0000,#450a0a 30%,#b91c1c 65%,#f97316);box-shadow:0 0 0 4px rgba(249,115,22,.4),0 14px 40px rgba(185,28,28,.5)}
+.c4.c7{background:linear-gradient(120deg,#78350f,#b45309 30%,#f59e0b 62%,#fde68a);color:#1c1000;box-shadow:0 0 0 4px rgba(253,230,138,.5),0 14px 40px rgba(245,158,11,.5)}.c4.c7 .c4h{text-shadow:0 2px 0 rgba(255,255,255,.4)}
+.xc{border-radius:20px;padding:14px 22px;margin:0 0 12px;color:#fff}.xch{font:900 italic 32px/1.1 'Inter Display',Inter,Arial}.xcl{font:500 22px Poppins,Arial;margin-top:4px}
+.xc .cc span{background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.5)}
+.xc.run{background:linear-gradient(110deg,#0c4a6e,#0284c7 55%,#22d3ee)}.xc.gem{background:linear-gradient(110deg,#064e3b,#059669 55%,#34d399)}.xc.party{background:linear-gradient(110deg,#1e1b4b,#4338ca 55%,#818cf8)}
 .colh{display:grid;grid-template-columns:76px 1fr 190px 110px;gap:16px;padding:14px 18px 8px;font:800 17px Inter,Arial;letter-spacing:.14em;color:#94a3b8}
 .colh div:nth-child(3),.colh div:nth-child(4){text-align:center}.colh .hl{color:#ffd23f}
 .row{display:grid;grid-template-columns:76px 1fr 190px 110px;gap:16px;align-items:center;padding:9px 18px;margin-bottom:8px;border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09)}
@@ -402,10 +455,11 @@ if SHARE and not CARD and P:   # high-energy Best & Worst email (Yahoo-safe: tab
     b0=best[0]; t0=tier(b0['fp'])
     jk=''
     for o,L in stacks(best[:10]):
-        tt={3:'JACKPOT!',4:'MEGA JACKPOT!!'}.get(len(L),'GRAND JACKPOT!!!')
-        jk+=(f'<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 16px"><tr><td bgcolor="#ffb020" style="background:#ffb020;background-image:linear-gradient(100deg,#ffd23f,#ff9f1c 55%,#ff6b35);border:3px dashed #b45309;border-radius:18px;padding:16px 20px">'
-             f'<table cellpadding="0" cellspacing="0"><tr><td style="font-size:50px;padding-right:14px">🎰</td><td><div style="{F};font-size:32px;font-style:italic;font-weight:900;color:#2a1500;line-height:1">{tt}</div>'
-             f'<div style="{A};font-size:16px;color:#2a1500;margin:4px 0 8px"><b>{html.escape(o)}</b> hit {len(L)}-of-a-kind in the top 10</div>'
+        em_,tt=stack_title(len(L)).split(' ',1); sb=stkbg(len(L))
+        c0,cbg,cfg,cbd=(sb[0],sb[1],sb[2],sb[3]) if sb else ('#ffb020','linear-gradient(100deg,#ffd23f,#ff9f1c 55%,#ff6b35)','#2a1500','#b45309')
+        jk+=(f'<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 16px"><tr><td bgcolor="{c0}" style="background:{c0};background-image:{cbg};border:3px {"solid" if sb else "dashed"} {cbd};border-radius:18px;padding:16px 20px">'
+             f'<table cellpadding="0" cellspacing="0"><tr><td style="font-size:50px;padding-right:14px">{em_}</td><td><div style="{F};font-size:32px;font-style:italic;font-weight:900;color:{cfg};line-height:1">{tt}</div>'
+             f'<div style="{A};font-size:16px;color:{cfg};margin:4px 0 8px"><b>{html.escape(o)}</b> {"owns "+str(len(L))+" of the top 10" if sb else "hit "+str(len(L))+"-of-a-kind in the top 10"}</div>'
              +''.join(f'<span style="display:inline-block;{A};font-size:14px;font-weight:700;color:#2a1500;background:#fff3c4;border:1px solid #b45309;border-radius:999px;padding:2px 10px;margin:0 6px 4px 0">#{i} {html.escape(shortn(p["n"]))} <b>{fpt(p["fp"])}</b></span>' for i,p in L)
              +f'<span style="display:inline-block;{A};font-size:14px;font-weight:900;color:#ffd23f;background:#2a1500;border-radius:999px;padding:3px 12px">💰 {fpt(sum(p["fp"] for _,p in L))} PTS</span></td></tr></table></td></tr></table>')
     sec=lambda t,c: f'<table width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 10px"><tr><td style="{F};font-size:30px;font-style:italic;font-weight:900;color:#0f172a;white-space:nowrap;padding-right:12px">{t}</td><td width="100%" style="border-bottom:6px solid {c}"></td></tr></table>'
@@ -419,9 +473,9 @@ if SHARE and not CARD and P:   # high-energy Best & Worst email (Yahoo-safe: tab
       f'<table width="100%" cellpadding="0" cellspacing="0"><tr><td valign="middle"><div style="display:inline-block;{A};font-size:12px;font-weight:900;letter-spacing:3px;color:#ffffff;background:#ff3d5a;padding:4px 10px;border-radius:999px">⭐ PLAYER OF THE NIGHT</div>'
       f'<div style="{F};font-size:32px;font-weight:900;color:#ffffff;margin:8px 0 6px;line-height:1.1">{html.escape(hl)}</div><div style="{A};font-size:15px;color:#c7d2fe;margin-bottom:8px">{ow(b0)}</div>{chips(b0)}</td>'
       f'<td width="160" align="center" valign="middle"><div style="{F};font-size:84px;font-weight:900;font-style:italic;color:#ffd23f;line-height:1">{fpt(b0["fp"])}{(f"<sup style=font-size:30px>{t0[1]}</sup>") if t0 else ""}</div><div style="{A};font-size:13px;font-weight:900;letter-spacing:3px;color:#c7d2fe">BBL PTS</div></td></tr></table></td></tr></table>'
-      +jk+sec('🔥 TOP 10','#ff7a18')+pod+rest
+      +jk+''.join(xcard_mail(*x) for x in extras(best))+sec('🔥 TOP 10','#ff7a18')+pod+rest
       +(f'<div style="{A};font-size:12px;font-weight:900;letter-spacing:3px;color:#94a3b8;margin:14px 0 4px">HONORABLE MENTIONS</div><table width="100%" cellpadding="0" cellspacing="0">{hmr}</table>' if hmr else '')
-      +sec('🥶 OOF ZONE','#38bdf8')+f'<div style="{A};font-size:14px;color:#0369a1;margin:-4px 0 10px;font-weight:700">Worst 5 of the night · 20+ minutes</div>'+wst
+      +sec('🥶 OOF ZONE','#38bdf8')+f'<div style="{A};font-size:14px;color:#0369a1;margin:-4px 0 10px;font-weight:700">Worst 5 of the night · 20+ minutes</div>'+(xcard_mail(*brick(worst)) if worst else '')+wst
       +f'<p style="{A};font-size:12px;color:#64748b;margin-top:16px"><b>BBL pts</b> = league scoring in the player\'s best slot (G +1 per reb · F +1 per ast · C +1 per 3PM). Top 10 ties go to the higher base score, then fewer minutes; worst list ties to the lower base score, then more minutes. Next to each player: the BBL team that owns him, or Free agent.</p></div>')
     open('nightly_share.html','w').write(_re.sub(r'\s+',' ',out))
     on=lambda p:(MYTEAM if owner.get(p['n'],'FA')=='Yours' else owner.get(p['n'],'FA'))
