@@ -476,7 +476,7 @@ if SHARE and not CARD and P:   # high-energy Best & Worst email (Yahoo-safe: tab
       +jk+''.join(xcard_mail(*x) for x in extras(best))+sec('🔥 TOP 10','#ff7a18')+pod+rest
       +(f'<div style="{A};font-size:12px;font-weight:900;letter-spacing:3px;color:#94a3b8;margin:14px 0 4px">HONORABLE MENTIONS</div><table width="100%" cellpadding="0" cellspacing="0">{hmr}</table>' if hmr else '')
       +sec('🥶 OOF ZONE','#38bdf8')+f'<div style="{A};font-size:14px;color:#0369a1;margin:-4px 0 10px;font-weight:700">Worst 5 of the night · 20+ minutes</div>'+(xcard_mail(*brick(worst)) if worst else '')+wst
-      +f'<p style="{A};font-size:12px;color:#64748b;margin-top:16px"><b>BBL pts</b> = league scoring in the player\'s best slot (G +1 per reb · F +1 per ast · C +1 per 3PM). Top 10 ties go to the higher base score, then fewer minutes; worst list ties to the lower base score, then more minutes. Next to each player: the BBL team that owns him, or Free agent.</p></div>')
+      +'</div>')
     open('nightly_share.html','w').write(_re.sub(r'\s+',' ',out))
     on=lambda p:(MYTEAM if owner.get(p['n'],'FA')=='Yours' else owner.get(p['n'],'FA'))
     open('nightly_share.txt','w').write(f'BBL Best & Worst · {label}\n\nTOP 10\n'+''.join(f"{i}. {p['n']} ({p['t']}, {on(p)}) {fpt(p['fp'])} BBL pts · {p['pts']} pts, {p['reb']} reb, {p['ast']} ast, {p['stl']} stl, {p['blk']} blk, {p['fgm']}-{p['fga']} FG\n" for i,p in enumerate(best[:10],1))+'\nWORST 5 (20+ min)\n'+''.join(f"{i}. {p['n']} ({p['t']}, {on(p)}) {fpt(p['fp'])} BBL pts · {p['pts']} pts, {p['reb']} reb, {p['ast']} ast, {p['fgm']}-{p['fga']} FG\n" for i,p in enumerate(worst[:5],1)))

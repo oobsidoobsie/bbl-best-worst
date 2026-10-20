@@ -95,10 +95,18 @@ def page_fancy(title, body, label, logo=None):
            ".title{font:900 44px/1 Arial,sans-serif;letter-spacing:-.01em;transform:skewX(-8deg);background:linear-gradient(180deg,#fff7c2,#ffd23f 40%,#ff7a18 75%,#ff3d5a);"
            "-webkit-background-clip:text;background-clip:text;color:transparent;margin:4px 0 2px}"
            ".sub{color:#cbd5e1;font-size:14px}"
-           ".wrap{max-width:820px;margin:0 auto;background:#fff;border-radius:20px;padding:20px;position:relative;"
-           "box-shadow:0 0 0 1px rgba(255,255,255,.08),0 20px 60px rgba(0,0,0,.45);overflow-x:auto}"
+           ".wrap{max-width:780px;margin:0 auto;position:relative;overflow-x:auto}"
            "@media (max-width:600px){.title{font-size:30px}.hero img{width:52px;height:52px}.wrap{padding:12px}}")
     lg = f'<img src="{logo}" alt="">' if logo else ''
+    # the share HTML is built for a white email; put it straight on the night sky instead:
+    # player rows and honorable mentions become white cards, headings and labels turn light
+    for old, new in [('color:#0f172a;white-space:nowrap', 'color:#ffffff;white-space:nowrap'),
+                     ('border-radius:16px"><tr>', 'border-radius:16px;background:#ffffff"><tr>'),
+                     ('HONORABLE MENTIONS</div><table width="100%" cellpadding="0" cellspacing="0">',
+                      'HONORABLE MENTIONS</div><table width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:14px;overflow:hidden">'),
+                     ('color:#0369a1;margin:-4px', 'color:#7dd3fc;margin:-4px'),
+                     ('font-size:12px;color:#64748b;margin-top:16px', 'font-size:12px;color:#94a3b8;margin-top:16px')]:
+        body = body.replace(old, new)
     return (f'<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>{title}</title><style>{css}</style></head><body>'
             f'<div class="wrap">{body}</div></body></html>')
