@@ -215,7 +215,7 @@ else:
     best=sorted(P,key=lambda p:(-p['fp'],-p['base'],p['m']))   # ties: higher base, then fewer minutes
     q=[p for p in P if p['m']>=20]; worst=sorted(q,key=lambda p:(p['fp'],p['base'],-p['m']))   # ties: lower base, then more minutes
     hm=lambda L:', '.join(html.escape(p['n'])+f' ({p["fp"]}'+(', '+(('yours' if not SHARE else MYTEAM) if owner[p["n"]]=='Yours' else html.escape(owner[p["n"]])) if owner.get(p['n'],'FA')!='FA' else '')+')' for p in L)
-    note=f'<p style="font-size:12px;color:#667085">{ndone} of {ngames} games final{f"; {nlive} still in progress and not included" if nlive else ""}. Best slot = BBL points if started in his best eligible slot (G: rebounds ×2, F: assists ×3, C: 3PM +1), shown in large bold type, with the slot and bonus in light gray; 80+ gets a 🔥 with an indigo highlight, 90+ a ☄️ with violet, 100+ a 👑 with gold; Base = BBL points without slot bonuses. Lists are ranked by best slot. '+('Next to each player: the BBL team that owns him, or FA.' if SHARE else '★ = your player; otherwise the fantasy team that owns him, or FA.')+'</p>'
+    note=(f'<p style="font-size:12px;color:#667085">{ndone} of {ngames} games final; {nlive} still in progress and not included.</p>' if nlive else '')
     if PAGE_STACK: STK.update({o:len(L) for o,L in stacks(best[:10],2)})
     out=('<div style="overflow-x:auto">'+legend()+headline(best[0],EMAIL)+(page_stacks(best[:10]) if PAGE_STACK else stack_html(best[:10],EMAIL))+f'<h3>🔥 Top 10 performances of the night · {html.escape(label)}</h3>'+table(best[:10],hot,'#1f9d55',best[10:15],PAGE_STACK)+
          f'<h3>🤮 Top 10 worst performances of the night</h3>'+table(worst[:10],cold,'inherit')+
