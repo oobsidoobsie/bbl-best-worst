@@ -154,23 +154,32 @@ def main():
     nightly(box, label, "share", env)
     nightly(box, label, "top10", env)
     nightly(box, label, "web", env)
-    F_PAGE = os.path.join(out, "Best & Worst.html")
-    F_TABLE = os.path.join(out, "Best & Worst - Full Table.html")
-    shutil.copy2(os.path.join(BBL, "nightly_web.html"), F_PAGE)
-    open(F_TABLE, "w", encoding="utf-8").write(page_dark(f"BBL Best & Worst table · {label}", open(os.path.join(BBL, "nightly.html"), encoding="utf-8").read()))
+    F_BEST = os.path.join(out, "Best of the Night.html")
+    F_WORST = os.path.join(out, "Worst of the Night.html")
+    F_TBEST = os.path.join(out, "Full Table - Best.html")
+    F_TWORST = os.path.join(out, "Full Table - Worst.html")
+    shutil.copy2(os.path.join(BBL, "nightly_web.html"), F_BEST)
+    shutil.copy2(os.path.join(BBL, "nightly_web_worst.html"), F_WORST)
+    tbl = open(os.path.join(BBL, "nightly.html"), encoding="utf-8").read()
+    cut = tbl.find("<h3>🤮")
+    t_best, t_worst = (tbl[:cut] + "</div>", '<div style="overflow-x:auto">' + tbl[cut:]) if cut > 0 else (tbl, "")
+    open(F_TBEST, "w", encoding="utf-8").write(page_dark(f"BBL Best of the Night · table · {label}", t_best))
+    open(F_TWORST, "w", encoding="utf-8").write(page_dark(f"BBL Worst of the Night · table · {label}", t_worst))
     shutil.copy2(os.path.join(BBL, "nightly_share.txt"), os.path.join(out, "Best & Worst - Text.txt"))
 
     say("Drawing the images…")
     jobs = [(os.path.join(BBL, "nightly_top10.html"), "Top 10 - Mobile Friendly.png", "#card", "1080", "1"),
-            (F_PAGE, "Best & Worst.png", "#page", "900", "1.5"),
-            (F_TABLE, "Best & Worst - Full Table.png", ".wrap", "1240", "1.25")]
+            (F_BEST, "Best of the Night.png", "#page", "900", "1.5"),
+            (F_WORST, "Worst of the Night.png", "#page", "900", "1.5"),
+            (F_TBEST, "Full Table - Best.png", ".wrap", "1240", "1.25"),
+            (F_TWORST, "Full Table - Worst.png", ".wrap", "1240", "1.25")]
     bad = 0
     for src, name, sel, w, sc in jobs:
         r = subprocess.run([PY, os.path.join(BBL, "render.py"), src, os.path.join(out, name), sel, w, sc])
         bad += r.returncode != 0
     if bad:
         say("⚠️  Some images couldn't be drawn. Run '1 - Setup' again, then retry.")
-    for f in ("box.txt", "nightly.html", "nightly_share.html", "nightly_share.txt", "nightly_share_subject.txt", "nightly_top10.html", "nightly_web.html"):
+    for f in ("box.txt", "nightly.html", "nightly_share.html", "nightly_share.txt", "nightly_share_subject.txt", "nightly_top10.html", "nightly_web.html", "nightly_web_worst.html"):
         try:
             os.remove(os.path.join(BBL, f))
         except FileNotFoundError:

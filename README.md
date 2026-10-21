@@ -2,8 +2,9 @@
 
 Builds the **Best & Worst performances of the night** for the BBL (CBS fantasy basketball) on a **Windows PC or Mac**:
 
-- **Best & Worst** (`.html` and `.png`): Player of the night, callouts, podium, Top 10, honorable mentions and the 🥶 Oof Zone
-- **Best & Worst - Full Table** (`.html` and `.png`): the detailed stat table (best slot, base, minutes, every stat)
+- **Best of the Night** (`.html` and `.png`): Player of the night, Manager of the night, callouts, podium, Top 10 and honorable mentions
+- **Worst of the Night** (`.html` and `.png`): the Brick layer of the night and the worst 10 (20+ minutes)
+- **Full Table - Best** and **Full Table - Worst** (`.html` and `.png`): the detailed stat tables (best slot, base, minutes, every stat)
 - **Top 10 - Mobile Friendly.png**: a tall Top 10 image sized for phones and group chats
 - **Best & Worst - Text.txt**: the same lists as plain text
 
@@ -86,7 +87,8 @@ Double-click **`2 - BBL Tonight`** and press **Enter**. The results folder opens
    - **Top 10:** ties go to the higher base score, then fewer minutes.
    - **Worst list:** players with 20+ minutes only; ties go to the lower base score, then more minutes.
    - **Milestones:** 80+ 🔥, 90+ ☄️, 100+ 👑.
-   - **Callouts:** 2 players from one manager in the top 10 = 🤝 DOUBLE UP, 3 = 🎰 JACKPOT!, 4 = 💎 MEGA JACKPOT!!, 5 = 👑 GRAND JACKPOT!!!, 6 = 🌋 ERUPTION, 7+ = 🏆 TOTAL DOMINATION. A free agent in the top 3 gets a 👀 tag, a #1 who wins by 15+ gets a 🚀 note, and the worst player gets the 🥶 Brick layer card.
+   - **Manager of the night:** the fantasy team whose 5 best players that night scored the most BBL points.
+   - **Callouts:** 3 players from one manager in the top 10 = 🎰 JACKPOT!, 4 = 💎 MEGA JACKPOT!!, 5 = 👑 GRAND JACKPOT!!!, 6 = 🌋 ERUPTION, 7+ = 🏆 TOTAL DOMINATION. A free agent in the top 3 gets a 👀 tag, a #1 who wins by 15+ gets a 🚀 note, and the worst player gets the 🥶 Brick layer card.
 4. `bbl/render.py` takes a screenshot of the Top 10 page to make the PNG.
 
 ## Troubleshooting

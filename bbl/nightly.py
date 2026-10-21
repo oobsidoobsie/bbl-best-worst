@@ -83,6 +83,7 @@ def own(n,stk=False):
     if o=='FA': return ' <span style="font-size:11px;color:#667085">FA</span>'
     return f' {logo(o)}<span style="font-size:11px;color:#667085">{html.escape(o)}</span>'
 def legend():
+    return ''  # the manager list at the top was removed (too busy)
     if not LOGO or EMAIL: return ''
     items=sorted(LOGO,key=lambda t:(t!=MYTEAM,t.lower()))
     return '<p style="font-size:12px;line-height:24px">'+' &nbsp; '.join(f'<span style="white-space:nowrap">{logo(t,20)}{html.escape(t)}{" ★" if t==MYTEAM else ""}</span>' for t in items)+'</p>'
@@ -143,6 +144,30 @@ def stacks(top,mn=3):
         o=tname(p['n'])
         if o!='FA': c.setdefault(o,[]).append((i,p))
     return sorted([(o,L) for o,L in c.items() if len(L)>=mn],key=lambda x:(-len(x[1]),-sum(p['fp'] for _,p in x[1])))
+def brick_line(worst):
+    p=worst[0]; o=tname(p['n']); o='Free agent' if o=='FA' else display_team(o)
+    return (f'<p style="margin:4px 0 10px;font-size:14px">🥶 <b>Brick layer of the night:</b> {html.escape(p["n"])} ({p["t"]}, {html.escape(o)}) · '
+            f'{p["pts"]} pts on {p["fgm"]}-{p["fga"]} FG in {p["m"]} min · <b>{fpt(p["fp"])} BBL pts</b></p>')
+def mon_line(P):
+    m=manager_of_night(P)
+    if not m: return ''
+    o,L,t=m
+    return (f'<div style="margin:4px 0 10px;padding:10px 14px;border-radius:10px;border:1px solid rgba(251,191,36,.45);border-left:5px solid #fbbf24">'
+            f'<span style="font:800 11px Arial,sans-serif;letter-spacing:.12em;color:#fbbf24">🏆 MANAGER OF THE NIGHT</span> '
+            f'<b style="font-size:16px">{html.escape(display_team(o))}</b> · <b>{fpt(t)}</b> BBL pts from his best 5 tonight'
+            f'<div style="font-size:13px;color:var(--muted,#667085);margin-top:2px">'+' · '.join(f'{html.escape(shortn(p["n"]))} {fpt(p["fp"])}' for p in L)+'</div>'
+            +''.join(f'<div style="font-size:13px;margin-top:4px"><b style="color:#d97706">{stack_title(len(S))}</b> {len(S)} in the top 10</div>' for so,S in stacks(sorted(P,key=lambda p:(-p['fp'],-p['base'],p['m']))[:10],3) if so==o)+'</div>')
+def display_team(t): return "TINOLA JO'CHIĆK" if 'ɪɴᴏʟᴀ' in t else t
+def manager_of_night(P):
+    '''The fantasy team whose 5 best performers tonight (one night's lineup) scored the most BBL points.'''
+    T={}
+    for p in P:
+        o=tname(p['n'])
+        if o!='FA': T.setdefault(o,[]).append(p)
+    if not T: return None
+    best5={o:sorted(L,key=lambda p:-p['fp'])[:5] for o,L in T.items()}
+    o=max(best5,key=lambda o:(sum(p['fp'] for p in best5[o]),len(best5[o])))
+    return o,best5[o],sum(p['fp'] for p in best5[o])
 def shortn(n):
     w=n.split(); return w[-1] if w[-1] not in ('Jr.','Sr.','II','III','IV') else w[-2]
 def stack_html(top,email=False):
@@ -167,7 +192,9 @@ TAGS={2:'border:1px dashed var(--muted,#667085);color:inherit',
 def tagstyle(k): return 'font-size:11px;font-weight:700;border-radius:999px;padding:0 7px;white-space:nowrap;'+TAGS[min(k,4)]
 def page_stacks(top):
     out=''
-    for o,L in stacks(top,2):
+    _m=manager_of_night(P)
+    for o,L in stacks(top,3):
+        if _m and o==_m[0]: continue   # shown inside the Manager of the Night box
         k=len(L); tot_=sum(p['fp'] for _,p in L); on=html.escape(o)
         ch=lambda bc,extra='':''.join(f'<span style="display:inline-block;font-size:12.5px;border:1px solid {bc};border-radius:999px;padding:1px 8px;margin:2px 3px 2px 0;white-space:nowrap;{extra}">#{rk(top,i)} {html.escape(shortn(p["n"]))} <b>{fpt(p["fp"])}</b></span>' for i,p in L)
         if k==2:
@@ -258,9 +285,9 @@ else:
     q=[p for p in P if p['m']>=20]; worst=sorted(q,key=lambda p:(p['fp'],p['base'],-p['m']))   # ties: lower base, then more minutes
     hm=lambda L:', '.join(html.escape(p['n'])+f' ({p["fp"]}'+(', '+(('yours' if not SHARE else MYTEAM) if owner[p["n"]]=='Yours' else html.escape(owner[p["n"]])) if owner.get(p['n'],'FA')!='FA' else '')+')' for p in L)
     note=(f'<p style="font-size:12px;color:#667085">{ndone} of {ngames} games final; {nlive} still in progress and not included.</p>' if nlive else '')
-    if PAGE_STACK: STK.update({o:len(L) for o,L in stacks(best[:10],2)})
-    out=('<div style="overflow-x:auto">'+legend()+headline(best[0],EMAIL)+(page_stacks(best[:10]) if PAGE_STACK else stack_html(best[:10],EMAIL))+f'<h3>🔥 Top 10 performances of the night · {html.escape(label)}</h3>'+table(best[:10],hot,'#1f9d55',best[10:15],PAGE_STACK)+
-         f'<h3>🤮 Top 10 worst performances of the night</h3>'+(xcard_html(*brick(worst)) if worst else '')+table(worst[:10],cold,'inherit')+
+    if PAGE_STACK: STK.update({o:len(L) for o,L in stacks(best[:10],3)})
+    out=('<div style="overflow-x:auto">'+legend()+headline(best[0],EMAIL)+mon_line(P)+(page_stacks(best[:10]) if PAGE_STACK else stack_html(best[:10],EMAIL))+f'<h3>🔥 Top 10 performances of the night · {html.escape(label)}</h3>'+table(best[:10],hot,'#1f9d55',best[10:15],PAGE_STACK)+
+         f'<h3>🤮 Top 10 worst performances of the night</h3>'+(brick_line(worst) if worst else '')+table(worst[:10],cold,'inherit')+
          f'<p><b>Honorable mentions:</b> {hm(worst[10:15])}</p><p style="font-size:12px;color:#667085"><b>How the lists are ranked.</b> Top 10: highest best-slot points; ties go to the higher base score (more of his points came from his own stats, not the slot bonus), then to fewer minutes played. Worst 10: lowest best-slot points among players with 20+ minutes; ties go to the lower base score, then to more minutes.</p>'+note+'</div>')
 if WEB and P:   # shareable page in the Command Center theme (slate, orange, Barlow Condensed): nightly_web.html, also drawn as a PNG
     import re as _re
@@ -273,9 +300,13 @@ if WEB and P:   # shareable page in the Command Center theme (slate, orange, Bar
         t=tier(p['fp']); return fpt(p['fp'])+(f'<i class="tier">{t[1]}</i>' if t else '')
     def sl_(p): return f'{p["slot"]}{(" +"+str(p["bonus"])) if p["bonus"] else ""}'
     def chips_(L): return ''.join(f'<span class="chip">#{i} {html.escape(shortn(p["n"]))} <b>{fpt(p["fp"])}</b></span>' for i,p in L)
-    calls=''
-    for o,L in stacks(best[:10],2):
+    calls=''; _mon=manager_of_night(P); MERGED=''
+    for o,L in stacks(best[:10],3):
         k=len(L); tot_=sum(p['fp'] for _,p in L); on=html.escape(o)
+        if _mon and o==_mon[0]:
+            e,t=stack_title(k).split(' ',1)
+            MERGED=f'<div class="mstk">{e} <b>{t}</b> {k} in the top 10: {chips_(L)}</div>'
+            continue
         if k==2:
             calls+=f'<div class="dbl"><span class="lab">🤝 Double up</span> <b>{on}</b> has 2 in the top 10 {chips_(L)}<span class="chip mute">{fpt(tot_)} PTS</span></div>'
         else:
@@ -287,6 +318,12 @@ if WEB and P:   # shareable page in the Command Center theme (slate, orange, Bar
         o=tname(p['n'])
         if o!='FA': return html.escape(o)
         return '<span class="gem" title="Finished top 3 and nobody owns him">👀 Free agent</span>' if p['n'] in GEM else 'Free agent'
+    MON=manager_of_night(P); mon=''
+    if MON:
+        mo,ml,mt=MON
+        mon=(f'<div class="card mon"><div><div class="lab">🏆 Manager of the night</div><div class="mt">{html.escape(display_team(mo))}</div>'
+             f'<div class="sub">Best 5 tonight: '+' · '.join(f'{html.escape(shortn(p["n"]))} <b>{fpt(p["fp"])}</b>' for p in ml)+f'</div>{MERGED}</div>'
+             f'<div class="huge2">{fpt(mt)}<small>BBL PTS</small></div></div>')
     gap=best[0]['fp']-best[1]['fp'] if len(best)>1 else 0
     RUN=f' · <span class="run">🚀 won by {fpt(gap)}</span>' if gap>=15 else ''
     pods=''.join(f'<div class="pod{" p1" if i==1 else ""}"><div class="rk">#{i}</div><div class="nm">{html.escape(p["n"])}</div><div class="tm">{p["t"]} · {own_(p)}</div><div class="big">{big_(p)}</div><div class="sl">{sl_(p)}</div><div class="st">{stl_(p)}</div></div>' for i,p in enumerate(best[:3],1))
@@ -297,9 +334,9 @@ if WEB and P:   # shareable page in the Command Center theme (slate, orange, Bar
     bk=''
     if worst:
         w=worst[0]
-        bk=(f'<div class="card oof"><div class="lab">🥶 Brick layer of the night</div><div class="bkn"><b>{html.escape(w["n"])}</b> <span class="tm">{w["t"]} · {own_(w)}</span></div>'
-            f'<div class="sub">{w["pts"]} pts on {w["fgm"]}-{w["fga"]} FG in {w["m"]} minutes, {w["to"]} TO · <b class="neg">{fpt(w["fp"])} BBL pts</b></div></div>')
-    wrows=''.join(row_(i,p,' bad') for i,p in enumerate(worst[:5],1))
+        bk=(f'<p class="tag">🥶 <b>Brick layer of the night:</b> {html.escape(w["n"])} ({w["t"]}, {own_(w)}) · '
+            f'{w["pts"]} pts on {w["fgm"]}-{w["fga"]} FG in {w["m"]} min · <b class="neg">{fpt(w["fp"])} BBL pts</b></p>')
+    wrows=''.join(row_(i,p,' bad') for i,p in enumerate(worst[:10],1))
     D="'Barlow Condensed','Arial Narrow',Arial,sans-serif"; B="'Source Sans 3','Segoe UI',Arial,sans-serif"; M="'JetBrains Mono',Consolas,ui-monospace,monospace"
     css=f"""*{{box-sizing:border-box}}body{{margin:0;background:#0b0e13;font:15px/1.45 {B};color:#e6e9ef}}
 #page{{width:820px;margin:0 auto;padding:30px 30px 26px;background:#11151c}}
@@ -336,20 +373,27 @@ h2{{font:700 28px {D};text-transform:uppercase;letter-spacing:.04em;margin:20px 
 .row.bad .pts{{color:#f87171}}
 .hm{{margin-top:12px;padding:12px 16px;border-radius:12px;border:1px dashed #2a3240;font-size:14px;color:#98a2b3;line-height:1.7}}.hm .lab{{color:#98a2b3}}.hm b{{color:#e6e9ef}}.hm i{{font-style:normal}}.hm span{{white-space:nowrap}}
 .oof{{border-left:4px solid #f87171}}.oof .lab{{color:#f87171}}.bkn b{{font:700 24px {D};text-transform:uppercase}}.neg{{color:#f87171!important}}
+.mon{{display:flex;justify-content:space-between;align-items:center;gap:14px;border-left:4px solid #fbbf24}}.mon .lab{{color:#fbbf24}}
+.mt{{font:700 30px/1.05 {D};text-transform:uppercase}}.huge2{{font:700 56px/.9 {D};color:#fbbf24;text-align:right;white-space:nowrap}}.huge2 small{{display:block;font:600 10px {M};letter-spacing:.18em;color:#98a2b3}}
+.mstk{{margin-top:6px;font-size:14px;color:#98a2b3}}.mstk b{{color:#fb923c;font-family:{D};font-size:18px;text-transform:uppercase;letter-spacing:.02em}}
+.tag{{margin:0 0 12px;color:#98a2b3;font-size:15px}}.tag b{{color:#e6e9ef}}
 .foot{{margin-top:16px;font:600 11px {M};letter-spacing:.12em;color:#5d6678;text-transform:uppercase}}"""
     potn=(f'<div class="card potn"><div><div class="lab">⭐ Player of the night</div><div class="hl">{html.escape(hl)}</div>'
           f'<div class="sub">{own_(best[0])} · {stl_(best[0])}{RUN}</div></div><div class="huge">{big_(best[0])}<small>BBL PTS</small></div></div>')
-    page=(f'<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BBL Best &amp; Worst · {html.escape(label)}</title>'
-          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap">'
-          f'<style>{css}</style></head><body><div id="page"><div class="kick">BBL · BOMBASTIC BASKETBALL LEAGUE</div><h1>Best &amp; Worst</h1>'
-          f'<div class="date">{html.escape(label)} · {ndone}/{ngames} games final{f" · {nlive} still in progress" if nlive else ""}</div>'
-          f'{potn}{calls}<h2>🔥 Top 10</h2><div class="pods">{pods}</div>{rows}'
-          +(f'<div class="hm"><span class="lab">Honorable mentions</span><br>{hm}</div>' if hm else '')
-          +f'<h2>🥶 Oof zone</h2>{bk}{wrows}<div class="foot">BBL scoring · best eligible slot · worst list = 20+ minutes</div></div></body></html>')
+    def doc(title,h1,body):
+        return (f'<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{title} · {html.escape(label)}</title>'
+                '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap">'
+                f'<style>{css}</style></head><body><div id="page"><div class="kick">BBL · BOMBASTIC BASKETBALL LEAGUE</div><h1>{h1}</h1>'
+                f'<div class="date">{html.escape(label)} · {ndone}/{ngames} games final{f" · {nlive} still in progress" if nlive else ""}</div>'
+                f'{body}<div class="foot">BBL scoring · best eligible slot</div></div></body></html>')
+    page=doc('BBL Best of the Night','Best of the night',f'{potn}{mon}{calls}<h2>Top 10</h2><div class="pods">{pods}</div>{rows}'
+             +(f'<div class="hm"><span class="lab">Honorable mentions</span><br>{hm}</div>' if hm else ''))
+    wpage=doc('BBL Worst of the Night','Worst of the night',f'{bk}<h2>Worst 10 · 20+ minutes</h2>{wrows}')
+    open('nightly_web_worst.html','w',encoding='utf-8').write(wpage)
     open('nightly_web.html','w',encoding='utf-8').write(page); print('web ok'); sys.exit(0)
 if TOP10 and P:   # mobile-friendly top-10 image (rendered from nightly_top10.html): best slot + base, stack callouts, honorable mentions as text
     import base64
-    STK.update({o:len(L) for o,L in stacks(best[:10],2)})
+    STK.update({o:len(L) for o,L in stacks(best[:10],3)})
     def mtag(p):
         o=tname(p['n'])
         if o=='FA': return '<span class="fa">'+('👀 ' if p in best[:3] else '')+'Free agent</span>'
@@ -364,15 +408,20 @@ if TOP10 and P:   # mobile-friendly top-10 image (rendered from nightly_top10.ht
         sl=f'{p["slot"]}{(" +"+str(p["bonus"])) if p["bonus"] else ""}'
         return (f'<div class="row{rc}">{rk}<div class="who"><div class="nm">{html.escape(p["n"])} <em>{p["t"]}</em></div><div class="mg">{mtag(p)}</div></div>'
                 f'<div class="bs"><b>{fpt(p["fp"])}</b>{em}<small>{sl}</small></div><div class="bz">{p["base"]}</div></div>')
-    calls=''
-    for o,L in stacks(best[:10],2):
+    calls=''; _m=manager_of_night(P); _mst=''
+    for o,L in stacks(best[:10],3):
         k=len(L); tot_=sum(p['fp'] for _,p in L); on=html.escape(o)
+        if _m and o==_m[0]:
+            _mst=f'<div class="c4l" style="margin-top:6px">{stack_title(k)} · {k} in the top 10</div>'; continue
         ch=''.join(f'<span>#{i} {html.escape(shortn(p["n"]))} <b>{fpt(p["fp"])}</b></span>' for i,p in L)
         if k==2: calls+=f'<div class="c2"><div class="c2h">🤝 DOUBLE UP · <b>{on}</b> has 2 in the top 10</div><div class="cc">{ch}<span class="pay">{fpt(tot_)} PTS</span></div></div>'
         elif k==3: calls+=f'<div class="c3"><div class="c3h"><i>🎰 JACKPOT!</i> {on} hit 3-of-a-kind</div><div class="cc">{ch}<span class="pay">💰 {fpt(tot_)} PTS</span></div></div>'
         else:
             ttl=stack_title(k); cls='c4'+(' c6' if k==6 else (' c7' if k>=7 else ''))
             calls+=f'<div class="{cls}"><div class="c4k">{k} OF A KIND</div><div class="c4h">{ttl}</div><div class="c4l"><b>{on}</b> owns {k} of the top 10</div><div class="cc">{ch}<span class="pay">💰 {fpt(tot_)} PTS</span></div></div>'
+    if _m:
+        calls=(f'<div class="c4 cmon"><div class="c4k">MANAGER OF THE NIGHT</div><div class="c4h">🏆 {html.escape(display_team(_m[0]))}</div>'
+                f'<div class="c4l"><b>{fpt(_m[2])} BBL pts</b> from his best 5 tonight</div><div class="cc">'+''.join(f'<span>{html.escape(shortn(p["n"]))} <b>{fpt(p["fp"])}</b></span>' for p in _m[1])+f'</div>{_mst}</div>')+calls
     for e,t,line,chs,st in []:
         calls+=f'<div class="xc {st}"><div class="xch">{e} {t}</div><div class="xcl">{line}</div><div class="cc">'+''.join(f'<span>{c}</span>' for c in chs)+'</div></div>'
     hmt=' · '.join(f'<span><b>{i}</b> {html.escape(p["n"])} <i>({html.escape(tname(p["n"]) if tname(p["n"])!="FA" else "Free agent")})</i> <b>{fpt(p["fp"])}</b></span>' for i,p in enumerate(best[10:15],11))
@@ -390,6 +439,7 @@ if TOP10 and P:   # mobile-friendly top-10 image (rendered from nightly_top10.ht
 .c3h{font:400 24px 'Source Sans 3','Segoe UI',Arial,sans-serif;color:#98a2b3}.c3h i{font:700 44px/1 'Barlow Condensed','Arial Narrow',Arial,sans-serif;font-style:normal;text-transform:uppercase;color:#fb923c;margin-bottom:4px}
 .c4{border:1px solid #fbbf24;border-left:8px solid #fbbf24;background:linear-gradient(90deg,rgba(251,191,36,.12),#181e27 70%)}
 .c4k{font:600 16px 'JetBrains Mono',Consolas,ui-monospace,monospace;letter-spacing:.2em;color:#98a2b3}.c4h{font:700 54px/1 'Barlow Condensed','Arial Narrow',Arial,sans-serif;text-transform:uppercase;color:#fbbf24;margin:4px 0}.c4l{font:400 24px 'Source Sans 3','Segoe UI',Arial,sans-serif;color:#98a2b3}.c4l b{color:#e6e9ef}
+.c4.cmon{border:1px solid #2a3240;border-left:8px solid #fbbf24;background:#181e27}.c4.cmon .c4h{color:#e6e9ef;font-size:46px}
 .c4.c6{border-color:#f87171;background:linear-gradient(90deg,rgba(248,113,113,.16),#181e27 70%)}.c4.c6 .c4h{color:#f87171}
 .c4.c7{border:2px solid #fde68a;border-left:10px solid #fde68a;background:linear-gradient(90deg,rgba(253,230,138,.18),#181e27 75%)}.c4.c7 .c4h{color:#fde68a}
 .colh{display:grid;grid-template-columns:76px 1fr 190px 110px;gap:16px;padding:16px 20px 8px;font:600 16px 'JetBrains Mono',Consolas,ui-monospace,monospace;letter-spacing:.16em;color:#98a2b3}
