@@ -403,10 +403,17 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
         c=TC.get(p['t'],'#94a3b8')
         sl=f'{p["slot"]}{(" +"+str(p["bonus"])) if p["bonus"] else ""}' if p['slot'] else '&nbsp;'
         lv=f'{p["stl"]+p["blk"]}' if last=='stk' else f'{p["to"]}'
+        e=hot(p) if last=='stk' else cold(p)
+        if last=='stk': e['stk']=max(e.get('stl',''),e.get('blk',''),key=len)
+        def sb(k,v,cls='st'):
+            m=e.get(k,'')
+            if not m: return f'<div class="{cls}">{v}</div>'
+            hc=' hot' if ('🔥' in m) else (' ugly' if '🤮' in m else ' cold')
+            return f'<div class="{cls}{hc}">{v}<span class="em">{m}</span></div>'
         return (f'<div class="r"><div class="rk{" hi" if i<=3 and top3 else ""}">{i}</div>'
                 f'<div class="pc"><div class="pn">{html.escape(p["n"])}</div><div class="pm"><span class="tm" style="border-color:{c}">{TSHOW.get(p["t"],p["t"])}</span><span class="mg">{html.escape(mgr(p))}</span></div></div>'
                 f'<div class="pt" style="color:{acc}">{fpt(p["fp"])}<div class="sl">{sl}</div></div><div class="st b">{p["base"]}</div>'
-                f'<div class="st">{p["pts"]}</div><div class="st">{p["reb"]}</div><div class="st">{p["ast"]}</div><div class="st">{lv}</div><div class="st">{p["fgm"]}-{p["fga"]}</div></div>')
+                +sb('pts',p['pts'])+sb('reb',p['reb'])+sb('ast',p['ast'])+sb('stk' if last=='stk' else 'to',lv)+sb('fg',f'{p["fgm"]}-{p["fga"]}')+'</div>')
     def hrow(i,p,acc,last='stk'):
         return trow(i,p,acc,False,last).replace('class="r"','class="r h"',1)
     D="'Barlow Condensed','Arial Narrow','Roboto Condensed','TeX Gyre Heros Cn',Arial,sans-serif"
@@ -430,7 +437,11 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
 .tm{{flex:none;display:inline-block;min-width:62px;text-align:center;border:2px solid;border-radius:9px;padding:0 6px;font:800 22px/1.3 {D};color:#fff;background:#0b1222}}
 .mg{{font:500 24px {D};color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 .pt{{font:900 italic 60px/1 {D};text-align:center;border-left:1px solid #22314f}}.sl{{font:700 20px {D};font-style:normal;color:#94a3b8;letter-spacing:.06em;margin-top:2px}}
-.st{{font:600 30px {D};text-align:center;background:#16223a;border-radius:8px;padding:8px 0;color:#e2e8f0}}.st.b{{color:#fff;font-weight:800;background:#1b2b4a}}
+.st{{font:600 30px {D};text-align:center;background:#16223a;border-radius:8px;padding:8px 0;color:#e2e8f0}}.st.b{{color:#fff;font-weight:800;background:#1b2b4a}}.st{{position:relative}}
+.st.hot{{color:#fff;font-weight:800;background:linear-gradient(180deg,#4a1d0c,#2a1410);box-shadow:inset 0 0 0 2px #f97316,0 0 14px rgba(249,115,22,.35)}}
+.st.cold{{color:#fff;font-weight:800;background:linear-gradient(180deg,#0c3a55,#0b2236);box-shadow:inset 0 0 0 2px #38bdf8,0 0 14px rgba(56,189,248,.3)}}
+.st.ugly{{color:#fff;font-weight:800;background:linear-gradient(180deg,#2d3a0e,#1a240b);box-shadow:inset 0 0 0 2px #84cc16,0 0 14px rgba(132,204,22,.3)}}
+.em{{position:absolute;top:-14px;right:-10px;font:26px/1 'Noto Color Emoji','Segoe UI Emoji','Apple Color Emoji',sans-serif;letter-spacing:-6px}}
 .lg{{margin-top:18px;text-align:center;font:500 22px {D};color:#64748b;letter-spacing:.03em}}.lg span{{white-space:nowrap;margin:0 10px}}
 .hm{{margin-top:26px;border:2px solid #1e3a5f;border-radius:20px;padding:20px 16px 12px;background:#0a1324}}
 .ht{{display:flex;align-items:center;gap:20px;font:800 46px {D};letter-spacing:.12em;color:#22d3ee;margin:0 10px 14px;text-transform:uppercase}}.ht:after{{content:"";flex:1;height:3px;background:#1e5f8a}}
@@ -438,7 +449,7 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
         hd=f'<div class="hd"><div>#</div><div>PLAYER · MANAGER</div><div class="p">BEST SLOT</div><div>BASE</div><div>PTS</div><div>REB</div><div>AST</div><div>{last}</div><div>FG</div></div>'
         return (f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap"><style>{css}</style></head><body><div id="card">'
                 f'<div class="t"><span class="a">{title1}</span> '+(f'<span class="w">{tw}</span> ' if tw else '')+f'<span class="b">{title2}</span></div><div class="s">BBL Nightly Report · {html.escape(label)}</div>'
-                f'{box}{hd}{rows}'+(f'<div class="hm"><div class="ht">{hm_title}</div>{hd}{hm_rows}</div>' if hm_rows else '')+'<div class="lg"><span>BEST SLOT = BBL pts in his best slot (G +1/REB · F +1/AST · C +1/3PM)</span> <span>BASE = before the slot bonus</span> <span>'+('STK = STL + BLK' if last=='STK' else 'TO = turnovers')+'</span></div></div></body></html>')
+                f'{box}{hd}{rows}'+(f'<div class="hm"><div class="ht">{hm_title}</div>{hd}{hm_rows}</div>' if hm_rows else '')+'<div class="lg"><span>BEST SLOT = BBL pts in his best slot (G +1/REB · F +1/AST · C +1/3PM)</span> <span>BASE = before the slot bonus</span> <span>'+('STK = STL + BLK' if last=='STK' else 'TO = turnovers')+'</span> <span>'+('🔥 big night in that stat · 🧊 cold' if last=='STK' else '🥶 cold · 🤮 ugly')+'</span></div></div></body></html>')
     # best
     top=best[:10]; _m=manager_of_night(P); box=''
     if _m:
