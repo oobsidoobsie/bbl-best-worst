@@ -391,83 +391,77 @@ h2{{font:700 28px {D};text-transform:uppercase;letter-spacing:.04em;margin:20px 
     wpage=doc('BBL Worst of the Night','Worst of the night',f'{bk}<h2>Worst 10 · 20+ minutes</h2>{wrows}')
     open('nightly_web_worst.html','w',encoding='utf-8').write(wpage)
     open('nightly_web.html','w',encoding='utf-8').write(page); print('web ok'); sys.exit(0)
-if TOP10 and P:   # mobile-friendly top-10 image (rendered from nightly_top10.html): best slot + base, stack callouts, honorable mentions as text
-    import base64
-    STK.update({o:len(L) for o,L in stacks(best[:10],3)})
-    def mtag(p):
-        o=tname(p['n'])
-        if o=='FA': return '<span class="fa">'+('👀 ' if p in best[:3] else '')+'Free agent</span>'
-        k=STK.get(o,0); cls=f' t{min(k,4)}' if k>=2 else ''
-        return f'{logo(o,30)}<span class="mt{cls}">{html.escape(o)}</span>'
-    def row(i,p):
-        k=STK.get(tname(p['n']),0) if tname(p['n'])!='FA' else 0
-        rc=' e3' if k==3 else (' e4' if k>=4 else '')
-        t=tier(p['fp']); em=f'<span class="em">{t[1]}</span>' if t else ''
-        med={1:'🥇',2:'🥈',3:'🥉'}.get(i)
-        rk=f'<div class="rk m">{med}</div>' if med else f'<div class="rk"><span>{i}</span></div>'
-        sl=f'{p["slot"]}{(" +"+str(p["bonus"])) if p["bonus"] else ""}'
-        return (f'<div class="row{rc}">{rk}<div class="who"><div class="nm">{html.escape(p["n"])} <em>{p["t"]}</em></div><div class="mg">{mtag(p)}</div></div>'
-                f'<div class="bs"><b>{fpt(p["fp"])}</b>{em}<small>{sl}</small></div><div class="bz">{p["base"]}</div></div>')
-    calls=''; _m=manager_of_night(P); _mst=''
-    for o,L in stacks(best[:10],3):
-        k=len(L); tot_=sum(p['fp'] for _,p in L); on=html.escape(o)
-        if _m and o==_m[0]:
-            _mst=f'<div class="c4l" style="margin-top:6px">{stack_title(k)} · {k} in the top 10</div>'; continue
-        ch=''.join(f'<span>#{i} {html.escape(shortn(p["n"]))} <b>{fpt(p["fp"])}</b></span>' for i,p in L)
-        if k==2: calls+=f'<div class="c2"><div class="c2h">🤝 DOUBLE UP · <b>{on}</b> has 2 in the top 10</div><div class="cc">{ch}<span class="pay">{fpt(tot_)} PTS</span></div></div>'
-        elif k==3: calls+=f'<div class="c3"><div class="c3h"><i>🎰 JACKPOT!</i> {on} hit 3-of-a-kind</div><div class="cc">{ch}<span class="pay">💰 {fpt(tot_)} PTS</span></div></div>'
-        else:
-            ttl=stack_title(k); cls='c4'+(' c6' if k==6 else (' c7' if k>=7 else ''))
-            calls+=f'<div class="{cls}"><div class="c4k">{k} OF A KIND</div><div class="c4h">{ttl}</div><div class="c4l"><b>{on}</b> owns {k} of the top 10</div><div class="cc">{ch}<span class="pay">💰 {fpt(tot_)} PTS</span></div></div>'
+if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.html) and Top 10 Worst (nightly_top10_worst.html)
+    TC={'ATL':'#e03a3e','BOS':'#16a34a','BKN':'#d4d4d8','CHA':'#14b8a6','CHI':'#dc2626','CLE':'#b91c1c','DAL':'#2563eb','DEN':'#facc15','DET':'#ef4444',
+        'GS':'#fbbf24','HOU':'#ef4444','IND':'#facc15','LAC':'#ef4444','LAL':'#eab308','MEM':'#60a5fa','MIA':'#dc2626','MIL':'#22c55e','MIN':'#38bdf8',
+        'NO':'#c9a227','NY':'#f97316','OKC':'#f97316','ORL':'#3b82f6','PHI':'#ef4444','PHX':'#f97316','POR':'#ef4444','SAC':'#a855f7','SA':'#d4d4d8',
+        'TOR':'#ef4444','UTAH':'#facc15','UTA':'#facc15','WSH':'#ef4444','WAS':'#ef4444'}
+    TSHOW={'NY':'NYK','SA':'SAS','GS':'GSW','NO':'NOP','UTAH':'UTA','WSH':'WAS'}
+    def mgr(p):
+        o=tname(p['n']); return 'Free agent' if o=='FA' else ("TINOLA JO'CHICK" if 'ɪɴᴏʟᴀ' in o else o)
+    def trow(i,p,acc,top3,last='stk'):
+        c=TC.get(p['t'],'#94a3b8')
+        sl=f'{p["slot"]}{(" +"+str(p["bonus"])) if p["bonus"] else ""}' if p['slot'] else '&nbsp;'
+        lv=f'{p["stl"]+p["blk"]}' if last=='stk' else f'{p["to"]}'
+        return (f'<div class="r"><div class="rk{" hi" if i<=3 and top3 else ""}">{i}</div>'
+                f'<div class="pc"><div class="pn">{html.escape(p["n"])}</div><div class="pm"><span class="tm" style="border-color:{c}">{TSHOW.get(p["t"],p["t"])}</span><span class="mg">{html.escape(mgr(p))}</span></div></div>'
+                f'<div class="pt" style="color:{acc}">{fpt(p["fp"])}<div class="sl">{sl}</div></div><div class="st b">{p["base"]}</div>'
+                f'<div class="st">{p["pts"]}</div><div class="st">{p["reb"]}</div><div class="st">{p["ast"]}</div><div class="st">{lv}</div><div class="st">{p["fgm"]}-{p["fga"]}</div></div>')
+    def hrow(i,p,acc,last='stk'):
+        return trow(i,p,acc,False,last).replace('class="r"','class="r h"',1)
+    D="'Barlow Condensed','Arial Narrow','Roboto Condensed','TeX Gyre Heros Cn',Arial,sans-serif"
+    def card(title1,title2,col1,col2,acc,box,rows,hm_title,hm_rows,last='STK'):
+        css=f"""*{{box-sizing:border-box;margin:0}}body{{background:#070d1c}}
+#card{{width:1080px;padding:34px 30px 30px;font-family:{D};color:#f1f5f9;background:radial-gradient(70% 30% at 50% 0%,rgba(56,189,248,.12),transparent 70%),linear-gradient(180deg,#0b1428,#070d1c 40%)}}
+.t{{text-align:center;font:900 italic 112px/.95 {D};text-transform:uppercase;letter-spacing:-.01em}}
+.t .a{{background:linear-gradient(180deg,{col1},{col2});-webkit-background-clip:text;background-clip:text;color:transparent}}
+.t .b{{background:linear-gradient(180deg,#ffffff,#cbd5e1);-webkit-background-clip:text;background-clip:text;color:transparent}}
+.s{{text-align:center;font:700 32px {D};letter-spacing:.26em;color:#38bdf8;margin:10px 0 26px;text-transform:uppercase}}
+.box{{position:relative;border-radius:22px;padding:3px;background:linear-gradient(90deg,{acc},#38bdf8 65%,#22d3ee);margin-bottom:26px;box-shadow:0 0 26px rgba(56,189,248,.22),0 0 12px rgba(168,85,247,.12)}}
+.bi{{position:relative;overflow:hidden;border-radius:19px;padding:22px 34px;background:radial-gradient(60% 120% at 85% 50%,rgba(14,116,184,.38),transparent 70%),linear-gradient(100deg,#0a1226 30%,#0c1a36 65%,#0d2547)}}.bi:after{{content:'';position:absolute;top:0;right:0;bottom:0;width:340px;background:repeating-linear-gradient(-55deg,transparent 0 34px,rgba(56,189,248,.10) 34px 38px,transparent 38px 60px,rgba(56,189,248,.05) 60px 76px);-webkit-mask-image:linear-gradient(90deg,transparent,#000 60%);mask-image:linear-gradient(90deg,transparent,#000 60%);pointer-events:none}}.bi>*{{position:relative;z-index:1}}
+.bl{{font:800 32px {D};letter-spacing:.08em;color:{acc};text-transform:uppercase}}.bn{{font:800 84px/1.05 {D};color:#fff}}.bs{{font:700 40px {D};color:#cbd5e1}}.bs b{{color:#fff}}
+.hd,.r{{display:grid;grid-template-columns:58px minmax(0,1fr) 128px 80px 64px 64px 64px 64px 96px;gap:8px;align-items:center}}
+.hd{{padding:0 14px 10px;font:600 24px {D};letter-spacing:.04em;color:#94a3b8;white-space:nowrap}}.hd .p{{color:{acc}}}.hd div:nth-child(n+3){{text-align:center}}
+.r{{padding:10px 14px;margin-bottom:8px;border:1px solid #1e2b45;border-radius:14px;background:linear-gradient(90deg,#0f1a30,#0c1526)}}
+.rk{{width:54px;height:54px;border:2px solid #475569;border-radius:10px;display:flex;align-items:center;justify-content:center;font:900 italic 40px {D};color:#cbd5e1}}
+.rk.hi{{border-color:{acc};color:{acc}}}
+.pc{{min-width:0}}.pn{{font:700 36px/1.05 {D};white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+.pm{{display:flex;align-items:center;gap:10px;margin-top:5px;min-width:0}}
+.tm{{flex:none;display:inline-block;min-width:62px;text-align:center;border:2px solid;border-radius:9px;padding:0 6px;font:800 22px/1.3 {D};color:#fff;background:#0b1222}}
+.mg{{font:500 24px {D};color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+.pt{{font:900 italic 60px/1 {D};text-align:center;border-left:1px solid #22314f}}.sl{{font:700 20px {D};font-style:normal;color:#94a3b8;letter-spacing:.06em;margin-top:2px}}
+.st{{font:600 30px {D};text-align:center;background:#16223a;border-radius:8px;padding:8px 0;color:#e2e8f0}}.st.b{{color:#fff;font-weight:800;background:#1b2b4a}}
+.lg{{margin-top:18px;text-align:center;font:500 22px {D};color:#64748b;letter-spacing:.03em}}.lg span{{white-space:nowrap;margin:0 10px}}
+.hm{{margin-top:26px;border:2px solid #1e3a5f;border-radius:20px;padding:20px 16px 12px;background:#0a1324}}
+.ht{{display:flex;align-items:center;gap:20px;font:800 46px {D};letter-spacing:.12em;color:#22d3ee;margin:0 10px 14px;text-transform:uppercase}}.ht:after{{content:"";flex:1;height:3px;background:#1e5f8a}}
+.r.h .pn{{font-size:34px}}.r.h .pt{{font-size:52px}}"""
+        hd=f'<div class="hd"><div>#</div><div>PLAYER · MANAGER</div><div class="p">BEST SLOT</div><div>BASE</div><div>PTS</div><div>REB</div><div>AST</div><div>{last}</div><div>FG</div></div>'
+        return (f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap"><style>{css}</style></head><body><div id="card">'
+                f'<div class="t"><span class="a">{title1}</span> <span class="b">{title2}</span></div><div class="s">BBL Nightly Report · {html.escape(label)}</div>'
+                f'{box}{hd}{rows}'+(f'<div class="hm"><div class="ht">{hm_title}</div>{hd}{hm_rows}</div>' if hm_rows else '')+'<div class="lg"><span>BEST SLOT = BBL pts in his best slot (G +1/REB · F +1/AST · C +1/3PM)</span> <span>BASE = before the slot bonus</span> <span>'+('STK = STL + BLK' if last=='STK' else 'TO = turnovers')+'</span></div></div></body></html>')
+    # best
+    top=best[:10]; _m=manager_of_night(P); box=''
     if _m:
-        calls=(f'<div class="c4 cmon"><div class="c4k">MANAGER OF THE NIGHT</div><div class="c4h">🏆 {html.escape(display_team(_m[0]))}</div>'
-                f'<div class="c4l"><b>{fpt(_m[2])} BBL pts</b> from his best 5 tonight</div><div class="cc">'+''.join(f'<span>{html.escape(shortn(p["n"]))} <b>{fpt(p["fp"])}</b></span>' for p in _m[1])+f'</div>{_mst}</div>')+calls
-    for e,t,line,chs,st in []:
-        calls+=f'<div class="xc {st}"><div class="xch">{e} {t}</div><div class="xcl">{line}</div><div class="cc">'+''.join(f'<span>{c}</span>' for c in chs)+'</div></div>'
-    hmt=' · '.join(f'<span><b>{i}</b> {html.escape(p["n"])} <i>({html.escape(tname(p["n"]) if tname(p["n"])!="FA" else "Free agent")})</i> <b>{fpt(p["fp"])}</b></span>' for i,p in enumerate(best[10:15],11))
-    LL=('<img class="ll" src="data:image/png;base64,'+base64.b64encode(open('league_logo.png','rb').read()).decode()+'" alt="BBL">') if os.path.exists('league_logo.png') else ''
-    CSS="""*{box-sizing:border-box;margin:0}body{background:#11151c}
-#card{width:1080px;padding:40px 44px 30px;font-family:'Source Sans 3','Segoe UI',Arial,sans-serif;color:#e6e9ef;background:#11151c}
-.head{display:flex;align-items:center;gap:26px;margin-bottom:24px}.ll{width:120px;border-radius:18px}
-.kick{font:600 18px 'JetBrains Mono',Consolas,ui-monospace,monospace;letter-spacing:.2em;color:#fb923c}
-.title{font:700 92px/.9 'Barlow Condensed','Arial Narrow',Arial,sans-serif;text-transform:uppercase;letter-spacing:.005em;margin:8px 0 6px;color:#e6e9ef}
-.sub{font:400 26px 'Source Sans 3','Segoe UI',Arial,sans-serif;color:#98a2b3}
-.cc{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.cc span{font:600 19px 'JetBrains Mono',Consolas,ui-monospace,monospace;border-radius:999px;padding:4px 14px;white-space:nowrap;background:rgba(251,146,60,.13);color:#fdba74}.cc span b{color:#fff}
-.cc .pay{background:#fb923c!important;color:#11151c!important}.cc .pay b{color:#11151c}
-.c2{padding:6px 2px 14px;font:400 23px 'Source Sans 3','Segoe UI',Arial,sans-serif;color:#98a2b3}.c2h b{color:#e6e9ef}.c2 .cc span{background:#202835;color:#98a2b3}.c2 .cc .pay{background:#202835!important;color:#98a2b3!important}
-.c3,.c4,.xc{background:#181e27;border:1px solid #2a3240;border-left:6px solid #fb923c;border-radius:16px;padding:18px 24px;margin:0 0 14px}
-.c3h{font:400 24px 'Source Sans 3','Segoe UI',Arial,sans-serif;color:#98a2b3}.c3h i{font:700 44px/1 'Barlow Condensed','Arial Narrow',Arial,sans-serif;font-style:normal;text-transform:uppercase;color:#fb923c;margin-bottom:4px}
-.c4{border:1px solid #fbbf24;border-left:8px solid #fbbf24;background:linear-gradient(90deg,rgba(251,191,36,.12),#181e27 70%)}
-.c4k{font:600 16px 'JetBrains Mono',Consolas,ui-monospace,monospace;letter-spacing:.2em;color:#98a2b3}.c4h{font:700 54px/1 'Barlow Condensed','Arial Narrow',Arial,sans-serif;text-transform:uppercase;color:#fbbf24;margin:4px 0}.c4l{font:400 24px 'Source Sans 3','Segoe UI',Arial,sans-serif;color:#98a2b3}.c4l b{color:#e6e9ef}
-.c4.cmon{border:1px solid #2a3240;border-left:8px solid #fbbf24;background:#181e27}.c4.cmon .c4h{color:#e6e9ef;font-size:46px}
-.c4.c6{border-color:#f87171;background:linear-gradient(90deg,rgba(248,113,113,.16),#181e27 70%)}.c4.c6 .c4h{color:#f87171}
-.c4.c7{border:2px solid #fde68a;border-left:10px solid #fde68a;background:linear-gradient(90deg,rgba(253,230,138,.18),#181e27 75%)}.c4.c7 .c4h{color:#fde68a}
-.colh{display:grid;grid-template-columns:76px 1fr 190px 110px;gap:16px;padding:16px 20px 8px;font:600 16px 'JetBrains Mono',Consolas,ui-monospace,monospace;letter-spacing:.16em;color:#98a2b3}
-.colh div:nth-child(3),.colh div:nth-child(4){text-align:center}.colh .hl{color:#fb923c}
-.row{display:grid;grid-template-columns:76px 1fr 190px 110px;gap:16px;align-items:center;padding:10px 20px;margin-bottom:8px;border-radius:14px;background:#181e27;border:1px solid #2a3240}
-.row.e3{box-shadow:inset 6px 0 0 #fb923c}.row.e4{box-shadow:inset 7px 0 0 #fbbf24}
-.rk span{display:flex;width:62px;height:62px;align-items:center;justify-content:center;border-radius:12px;font:600 28px 'JetBrains Mono',Consolas,ui-monospace,monospace;color:#98a2b3;background:#202835}
-.rk.m{font-size:52px;line-height:62px;text-align:center}
-.nm{font:700 38px/1.05 'Barlow Condensed','Arial Narrow',Arial,sans-serif;text-transform:uppercase}.nm em{font:600 18px 'JetBrains Mono',Consolas,ui-monospace,monospace;font-style:normal;color:#98a2b3;letter-spacing:.04em;margin-left:4px}
-.mg{display:flex;align-items:center;gap:8px;margin-top:6px;font:400 22px 'Source Sans 3','Segoe UI',Arial,sans-serif;color:#98a2b3}.mg img{border-radius:7px;margin:0!important}
-.mt{padding:2px 0}.mt.t2{border:2px dashed #5d6678;border-radius:999px;padding:1px 12px;color:#e6e9ef;font-weight:600}
-.mt.t3{background:#fb923c;color:#11151c;border-radius:999px;padding:2px 13px;font-weight:700}
-.mt.t4{background:#fbbf24;color:#11151c;border-radius:999px;padding:2px 13px;font-weight:700}
-.fa{color:#98a2b3}
-.bs{text-align:center;position:relative;border-radius:12px;padding:6px 0;background:#202835;border:1px solid #2a3240}
-.bs b{display:block;font:700 66px/1 'Barlow Condensed','Arial Narrow',Arial,sans-serif;color:#fb923c}.bs small{display:block;font:600 16px 'JetBrains Mono',Consolas,ui-monospace,monospace;color:#98a2b3;letter-spacing:.06em;margin-top:2px}
-.bs .em{position:absolute;top:-12px;right:-6px;font-size:32px}
-.bz{text-align:center;font:700 44px 'Barlow Condensed','Arial Narrow',Arial,sans-serif;color:#e6e9ef}
-.hm{margin-top:16px;padding:16px 22px;border-radius:14px;border:1px dashed #2a3240;font:400 22px/1.65 'Source Sans 3','Segoe UI',Arial,sans-serif;color:#98a2b3}
-.hm .h{font:600 16px 'JetBrains Mono',Consolas,ui-monospace,monospace;letter-spacing:.2em;color:#98a2b3;margin-bottom:6px}.hm b{color:#e6e9ef}.hm i{color:#98a2b3;font-style:normal}.hm span{white-space:nowrap}
-.foot{margin-top:14px;font:600 15px/1.5 'JetBrains Mono',Consolas,ui-monospace,monospace;letter-spacing:.06em;color:#5d6678}.foot b{color:#98a2b3}"""
-    page=(f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap"><style>{CSS}</style></head><body><div id="card">'
-          f'<div class="head">{LL}<div><div class="kick">BBL · TOP 10</div><div class="title">BEST OF<br>THE NIGHT</div><div class="sub">{html.escape(label)}</div></div></div>'
-          f'{calls}<div class="colh"><div>#</div><div>PLAYER · MANAGER</div><div class="hl">BEST SLOT</div><div>BASE</div></div>'
-          +''.join(row(i,p) for i,p in enumerate(best[:10],1))+
-          f'<div class="hm"><div class="h">HONORABLE MENTIONS</div>{hmt}</div>'
-          '</div></body></html>')
-    open('nightly_top10.html','w').write(page); print('top10 ok'); sys.exit(0)
+        n_in=sum(1 for p in top if tname(p['n'])==_m[0])
+        box=(f'<div class="box"><div class="bi"><div class="bl">Manager of the night</div><div class="bn">{html.escape(display_team(_m[0]))}</div>'
+             f'<div class="bs"><b>{n_in}</b> player{"s" if n_in!=1 else ""} in Top 10 &nbsp;·&nbsp; <b>{fpt(_m[2])}</b> BBL pts</div></div></div>')
+    OR='#fb923c'
+    open('nightly_top10.html','w',encoding='utf-8').write(card('Top 10','Performances','#ffb547','#f97316',OR,box,
+        ''.join(trow(i,p,OR,True) for i,p in enumerate(top,1)),'Honorable mentions',''.join(hrow(i,p,OR) for i,p in enumerate(best[10:13],11))))
+    # worst
+    wt=worst[:10]; PU='#c084fc'; wbox=''
+    cnt={}
+    for p in wt:
+        o=tname(p['n'])
+        if o!='FA': cnt.setdefault(o,[]).append(p)
+    if cnt:
+        so=max(cnt,key=lambda o:(len(cnt[o]),-sum(p['fp'] for p in cnt[o])))
+        if len(cnt[so])>=2:
+            wbox=(f'<div class="box"><div class="bi"><div class="bl">Stinker of the night</div><div class="bn">{html.escape(display_team(so))}</div>'
+                  f'<div class="bs"><b>{len(cnt[so])}</b> players in Worst 10 &nbsp;·&nbsp; <b>{fpt(sum(p["fp"] for p in cnt[so]))}</b> total BBL pts</div></div></div>')
+    open('nightly_top10_worst.html','w',encoding='utf-8').write(card('Top 10','<span style="background:linear-gradient(180deg,#e9d5ff,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent">Worst</span> Performances','#ffffff','#cbd5e1',PU,wbox,
+        ''.join(trow(i,p,PU,True,'to') for i,p in enumerate(wt,1)),'Dishonorable mentions',''.join(hrow(i,p,PU,'to') for i,p in enumerate(worst[10:13],11)),'TO'))
+    print('top10 ok'); sys.exit(0)
 if CARD and P:   # shareable PNG infographic: phone-first, high-energy poster (rendered from nightly_card.html)
     import re as _re, base64
     hl=_re.sub(r'<[^>]+>','',headline(best[0],True).split('</div>')[0]).strip()

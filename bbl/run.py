@@ -168,7 +168,8 @@ def main():
     shutil.copy2(os.path.join(BBL, "nightly_share.txt"), os.path.join(out, "Best & Worst - Text.txt"))
 
     say("Drawing the images…")
-    jobs = [(os.path.join(BBL, "nightly_top10.html"), "Top 10 - Mobile Friendly.png", "#card", "1080", "1"),
+    jobs = [(os.path.join(BBL, "nightly_top10.html"), "Top 10 Best - Mobile Friendly.png", "#card", "1080", "1"),
+            (os.path.join(BBL, "nightly_top10_worst.html"), "Top 10 Worst - Mobile Friendly.png", "#card", "1080", "1"),
             (F_BEST, "Best of the Night.png", "#page", "900", "1.5"),
             (F_WORST, "Worst of the Night.png", "#page", "900", "1.5"),
             (F_TBEST, "Full Table - Best.png", ".wrap", "1240", "1.25"),
@@ -179,7 +180,7 @@ def main():
         bad += r.returncode != 0
     if bad:
         say("⚠️  Some images couldn't be drawn. Run '1 - Setup' again, then retry.")
-    for f in ("box.txt", "nightly.html", "nightly_share.html", "nightly_share.txt", "nightly_share_subject.txt", "nightly_top10.html", "nightly_web.html", "nightly_web_worst.html"):
+    for f in ("box.txt", "nightly.html", "nightly_share.html", "nightly_share.txt", "nightly_share_subject.txt", "nightly_top10.html", "nightly_top10_worst.html", "nightly_web.html", "nightly_web_worst.html"):
         try:
             os.remove(os.path.join(BBL, f))
         except FileNotFoundError:
