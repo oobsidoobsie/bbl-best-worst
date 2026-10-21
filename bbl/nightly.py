@@ -410,11 +410,11 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
     def hrow(i,p,acc,last='stk'):
         return trow(i,p,acc,False,last).replace('class="r"','class="r h"',1)
     D="'Barlow Condensed','Arial Narrow','Roboto Condensed','TeX Gyre Heros Cn',Arial,sans-serif"
-    def card(title1,title2,col1,col2,acc,box,rows,hm_title,hm_rows,last='STK'):
+    def card(title1,title2,col1,col2,acc,box,rows,hm_title,hm_rows,last='STK',tw=''):
         css=f"""*{{box-sizing:border-box;margin:0}}body{{background:#070d1c}}
 #card{{width:1080px;padding:34px 30px 30px;font-family:{D};color:#f1f5f9;background:radial-gradient(70% 30% at 50% 0%,rgba(56,189,248,.12),transparent 70%),linear-gradient(180deg,#0b1428,#070d1c 40%)}}
 .t{{text-align:center;font:900 italic 112px/.95 {D};text-transform:uppercase;letter-spacing:-.01em}}
-.t .a{{background:linear-gradient(180deg,{col1},{col2});-webkit-background-clip:text;background-clip:text;color:transparent}}
+.t span{{display:inline-block;padding:.04em .14em .06em .04em;margin:0 -.1em 0 -.04em}}.t .w{{background:linear-gradient(180deg,#e9d5ff,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent}}.t .a{{background:linear-gradient(180deg,{col1},{col2});-webkit-background-clip:text;background-clip:text;color:transparent}}
 .t .b{{background:linear-gradient(180deg,#ffffff,#cbd5e1);-webkit-background-clip:text;background-clip:text;color:transparent}}
 .s{{text-align:center;font:700 32px {D};letter-spacing:.26em;color:#38bdf8;margin:10px 0 26px;text-transform:uppercase}}
 .box{{position:relative;border-radius:22px;padding:3px;background:linear-gradient(90deg,{acc},#38bdf8 65%,#22d3ee);margin-bottom:26px;box-shadow:0 0 26px rgba(56,189,248,.22),0 0 12px rgba(168,85,247,.12)}}
@@ -437,7 +437,7 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
 .r.h .pn{{font-size:34px}}.r.h .pt{{font-size:52px}}"""
         hd=f'<div class="hd"><div>#</div><div>PLAYER · MANAGER</div><div class="p">BEST SLOT</div><div>BASE</div><div>PTS</div><div>REB</div><div>AST</div><div>{last}</div><div>FG</div></div>'
         return (f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap"><style>{css}</style></head><body><div id="card">'
-                f'<div class="t"><span class="a">{title1}</span> <span class="b">{title2}</span></div><div class="s">BBL Nightly Report · {html.escape(label)}</div>'
+                f'<div class="t"><span class="a">{title1}</span> '+(f'<span class="w">{tw}</span> ' if tw else '')+f'<span class="b">{title2}</span></div><div class="s">BBL Nightly Report · {html.escape(label)}</div>'
                 f'{box}{hd}{rows}'+(f'<div class="hm"><div class="ht">{hm_title}</div>{hd}{hm_rows}</div>' if hm_rows else '')+'<div class="lg"><span>BEST SLOT = BBL pts in his best slot (G +1/REB · F +1/AST · C +1/3PM)</span> <span>BASE = before the slot bonus</span> <span>'+('STK = STL + BLK' if last=='STK' else 'TO = turnovers')+'</span></div></div></body></html>')
     # best
     top=best[:10]; _m=manager_of_night(P); box=''
@@ -459,8 +459,8 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
         if len(cnt[so])>=2:
             wbox=(f'<div class="box"><div class="bi"><div class="bl">Stinker of the night</div><div class="bn">{html.escape(display_team(so))}</div>'
                   f'<div class="bs"><b>{len(cnt[so])}</b> players in Worst 10 &nbsp;·&nbsp; <b>{fpt(sum(p["fp"] for p in cnt[so]))}</b> total BBL pts</div></div></div>')
-    open('nightly_top10_worst.html','w',encoding='utf-8').write(card('Top 10','<span style="background:linear-gradient(180deg,#e9d5ff,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent">Worst</span> Performances','#ffffff','#cbd5e1',PU,wbox,
-        ''.join(trow(i,p,PU,True,'to') for i,p in enumerate(wt,1)),'Dishonorable mentions',''.join(hrow(i,p,PU,'to') for i,p in enumerate(worst[10:13],11)),'TO'))
+    open('nightly_top10_worst.html','w',encoding='utf-8').write(card('Top 10','Performances','#ffffff','#cbd5e1',PU,wbox,
+        ''.join(trow(i,p,PU,True,'to') for i,p in enumerate(wt,1)),'Dishonorable mentions',''.join(hrow(i,p,PU,'to') for i,p in enumerate(worst[10:13],11)),'TO','Worst'))
     print('top10 ok'); sys.exit(0)
 if CARD and P:   # shareable PNG infographic: phone-first, high-energy poster (rendered from nightly_card.html)
     import re as _re, base64
