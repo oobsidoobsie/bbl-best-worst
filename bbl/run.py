@@ -168,8 +168,8 @@ def main():
     shutil.copy2(os.path.join(BBL, "nightly_share.txt"), os.path.join(out, "Best & Worst - Text.txt"))
 
     say("Drawing the images…")
-    jobs = [(os.path.join(BBL, "nightly_top10.html"), "Top 10 Best - Mobile Friendly.png", "#card", "1080", "1"),
-            (os.path.join(BBL, "nightly_top10_worst.html"), "Top 10 Worst - Mobile Friendly.png", "#card", "1080", "1"),
+    jobs = [(os.path.join(BBL, "nightly_top10.html"), "Top 10 Best - Mobile Friendly.png", "#card", "1080", "2"),
+            (os.path.join(BBL, "nightly_top10_worst.html"), "Top 10 Worst - Mobile Friendly.png", "#card", "1080", "2"),
             (F_BEST, "Best of the Night.png", "#page", "900", "1.5"),
             (F_WORST, "Worst of the Night.png", "#page", "900", "1.5"),
             (F_TBEST, "Full Table - Best.png", ".wrap", "1240", "1.25"),

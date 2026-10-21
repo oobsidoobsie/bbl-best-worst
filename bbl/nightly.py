@@ -418,43 +418,49 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
         return trow(i,p,acc,False,last).replace('class="r"','class="r h"',1)
     D="'Barlow Condensed','Arial Narrow','Roboto Condensed','TeX Gyre Heros Cn',Arial,sans-serif"
     def card(title1,title2,col1,col2,acc,box,rows,hm_title,hm_rows,last='STK',tw=''):
-        css=f"""*{{box-sizing:border-box;margin:0}}body{{background:#070d1c}}
-#card{{width:1080px;padding:34px 30px 30px;font-family:{D};color:#f1f5f9;background:radial-gradient(70% 30% at 50% 0%,rgba(56,189,248,.12),transparent 70%),linear-gradient(180deg,#0b1428,#070d1c 40%)}}
-.t{{text-align:center;font:900 italic 112px/.95 {D};text-transform:uppercase;letter-spacing:-.01em}}
+        # 4:5 portrait (1080x1350 layout, saved at 2x = 2160x2700)
+        css=f"""*{{box-sizing:border-box;margin:0}}html,body{{background:#070d1c}}
+#card{{width:1080px;height:1350px;overflow:hidden;padding:24px 26px 16px;display:flex;flex-direction:column;justify-content:space-between;font-family:{D};color:#f1f5f9;background:radial-gradient(70% 22% at 50% 0%,rgba(56,189,248,.13),transparent 70%),linear-gradient(180deg,#0b1428,#070d1c 40%)}}
+.top{{flex:none}}
+.t{{text-align:center;font:900 italic 80px/1 {D};text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap}}
 .t span{{display:inline-block;padding:.04em .14em .06em .04em;margin:0 -.1em 0 -.04em}}.t .w{{background:linear-gradient(180deg,#e9d5ff,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent}}.t .a{{background:linear-gradient(180deg,{col1},{col2});-webkit-background-clip:text;background-clip:text;color:transparent}}
 .t .b{{background:linear-gradient(180deg,#ffffff,#cbd5e1);-webkit-background-clip:text;background-clip:text;color:transparent}}
-.s{{text-align:center;font:700 32px {D};letter-spacing:.26em;color:#38bdf8;margin:10px 0 26px;text-transform:uppercase}}
-.box{{position:relative;border-radius:22px;padding:3px;background:linear-gradient(90deg,{acc},#38bdf8 65%,#22d3ee);margin-bottom:26px;box-shadow:0 0 26px rgba(56,189,248,.22),0 0 12px rgba(168,85,247,.12)}}
-.bi{{position:relative;overflow:hidden;border-radius:19px;padding:22px 34px;background:radial-gradient(60% 120% at 85% 50%,rgba(14,116,184,.38),transparent 70%),linear-gradient(100deg,#0a1226 30%,#0c1a36 65%,#0d2547)}}.bi:after{{content:'';position:absolute;top:0;right:0;bottom:0;width:340px;background:repeating-linear-gradient(-55deg,transparent 0 34px,rgba(56,189,248,.10) 34px 38px,transparent 38px 60px,rgba(56,189,248,.05) 60px 76px);-webkit-mask-image:linear-gradient(90deg,transparent,#000 60%);mask-image:linear-gradient(90deg,transparent,#000 60%);pointer-events:none}}.bi>*{{position:relative;z-index:1}}
-.bl{{font:800 32px {D};letter-spacing:.08em;color:{acc};text-transform:uppercase}}.bn{{font:800 84px/1.05 {D};color:#fff}}.bs{{font:700 40px {D};color:#cbd5e1}}.bs b{{color:#fff}}
-.hd,.r{{display:grid;grid-template-columns:58px minmax(0,1fr) 128px 80px 64px 64px 64px 64px 96px;gap:8px;align-items:center}}
-.hd{{padding:0 14px 10px;font:600 24px {D};letter-spacing:.04em;color:#94a3b8;white-space:nowrap}}.hd .p{{color:{acc}}}.hd div:nth-child(n+3){{text-align:center}}
-.r{{padding:10px 14px;margin-bottom:8px;border:1px solid #1e2b45;border-radius:14px;background:linear-gradient(90deg,#0f1a30,#0c1526)}}
-.rk{{width:54px;height:54px;border:2px solid #475569;border-radius:10px;display:flex;align-items:center;justify-content:center;font:900 italic 40px {D};color:#cbd5e1}}
+.s{{text-align:center;font:700 21px {D};letter-spacing:.26em;color:#38bdf8;margin:4px 0 0;text-transform:uppercase}}
+.box{{position:relative;border-radius:18px;padding:3px;background:linear-gradient(90deg,{acc},#38bdf8 65%,#22d3ee);box-shadow:0 0 22px rgba(56,189,248,.22),0 0 10px rgba(168,85,247,.12)}}
+.bi{{position:relative;overflow:hidden;border-radius:15px;padding:12px 26px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;background:radial-gradient(60% 120% at 85% 50%,rgba(14,116,184,.38),transparent 70%),linear-gradient(100deg,#0a1226 30%,#0c1a36 65%,#0d2547)}}.bi:after{{content:'';position:absolute;top:0;right:0;bottom:0;width:300px;background:repeating-linear-gradient(-55deg,transparent 0 30px,rgba(56,189,248,.10) 30px 34px,transparent 34px 54px,rgba(56,189,248,.05) 54px 68px);-webkit-mask-image:linear-gradient(90deg,transparent,#000 60%);mask-image:linear-gradient(90deg,transparent,#000 60%);pointer-events:none}}.bi>*{{position:relative;z-index:1}}
+.bl{{font:800 19px {D};letter-spacing:.08em;color:{acc};text-transform:uppercase}}.bn{{font:800 50px/1.02 {D};color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}.bs{{flex:none;font:700 28px {D};color:#cbd5e1;padding-bottom:4px;text-align:right}}.bs b{{color:#fff}}.bw{{min-width:0}}
+.hd,.r{{display:grid;grid-template-columns:44px minmax(0,1fr) 98px 64px 56px 56px 56px 56px 82px;gap:7px;align-items:center}}
+.hd{{padding:0 12px 5px;font:600 18px {D};letter-spacing:.04em;color:#94a3b8;white-space:nowrap}}.hd .p{{color:{acc}}}.hd div:nth-child(n+3){{text-align:center}}
+.r{{padding:6px 12px;margin-bottom:6px;border:1px solid #1e2b45;border-radius:12px;background:linear-gradient(90deg,#0f1a30,#0c1526)}}.rows .r:last-child{{margin-bottom:0}}
+.rk{{width:40px;height:40px;border:2px solid #475569;border-radius:8px;display:flex;align-items:center;justify-content:center;font:900 italic 28px {D};color:#cbd5e1}}
 .rk.hi{{border-color:{acc};color:{acc}}}
-.pc{{min-width:0}}.pn{{font:700 36px/1.05 {D};white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
-.pm{{display:flex;align-items:center;gap:10px;margin-top:5px;min-width:0}}
-.tm{{flex:none;display:inline-block;min-width:62px;text-align:center;border:2px solid;border-radius:9px;padding:0 6px;font:800 22px/1.3 {D};color:#fff;background:#0b1222}}
-.mg{{font:500 24px {D};color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
-.pt{{font:900 italic 60px/1 {D};text-align:center;border-left:1px solid #22314f}}.sl{{font:700 20px {D};font-style:normal;color:#94a3b8;letter-spacing:.06em;margin-top:2px}}
-.st{{font:600 30px {D};text-align:center;background:#16223a;border-radius:8px;padding:8px 0;color:#e2e8f0}}.st.b{{color:#fff;font-weight:800;background:#1b2b4a}}.st{{position:relative}}
-.st.hot{{color:#fff;font-weight:800;background:linear-gradient(180deg,#4a1d0c,#2a1410);box-shadow:inset 0 0 0 2px #f97316,0 0 14px rgba(249,115,22,.35)}}
-.st.cold{{color:#fff;font-weight:800;background:linear-gradient(180deg,#0c3a55,#0b2236);box-shadow:inset 0 0 0 2px #38bdf8,0 0 14px rgba(56,189,248,.3)}}
-.st.ugly{{color:#fff;font-weight:800;background:linear-gradient(180deg,#2d3a0e,#1a240b);box-shadow:inset 0 0 0 2px #84cc16,0 0 14px rgba(132,204,22,.3)}}
-.em{{position:absolute;top:-14px;right:-10px;font:26px/1 'Noto Color Emoji','Segoe UI Emoji','Apple Color Emoji',sans-serif;letter-spacing:-6px}}
-.lg{{margin-top:18px;text-align:center;font:500 22px {D};color:#64748b;letter-spacing:.03em}}.lg span{{white-space:nowrap;margin:0 10px}}
-.hm{{margin-top:26px;border:2px solid #1e3a5f;border-radius:20px;padding:20px 16px 12px;background:#0a1324}}
-.ht{{display:flex;align-items:center;gap:20px;font:800 46px {D};letter-spacing:.12em;color:#22d3ee;margin:0 10px 14px;text-transform:uppercase}}.ht:after{{content:"";flex:1;height:3px;background:#1e5f8a}}
-.r.h .pn{{font-size:34px}}.r.h .pt{{font-size:52px}}"""
+.pc{{min-width:0}}.pn{{font:700 27px/1.05 {D};white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+.pm{{display:flex;align-items:center;gap:8px;margin-top:3px;min-width:0}}
+.tm{{flex:none;display:inline-block;min-width:46px;text-align:center;border:2px solid;border-radius:7px;padding:0 5px;font:800 15px/1.3 {D};color:#fff;background:#0b1222}}
+.mg{{font:500 18px {D};color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+.pt{{font:900 italic 42px/1 {D};text-align:center;border-left:1px solid #22314f}}.sl{{font:700 14px {D};font-style:normal;color:#94a3b8;letter-spacing:.06em;margin-top:1px}}
+.st{{position:relative;font:600 23px {D};text-align:center;background:#16223a;border-radius:7px;padding:5px 0;color:#e2e8f0}}.st.b{{color:#fff;font-weight:800;background:#1b2b4a}}
+.st.hot{{color:#fff;font-weight:800;background:linear-gradient(180deg,#4a1d0c,#2a1410);box-shadow:inset 0 0 0 2px #f97316,0 0 10px rgba(249,115,22,.35)}}
+.st.cold{{color:#fff;font-weight:800;background:linear-gradient(180deg,#0c3a55,#0b2236);box-shadow:inset 0 0 0 2px #38bdf8,0 0 10px rgba(56,189,248,.3)}}
+.st.ugly{{color:#fff;font-weight:800;background:linear-gradient(180deg,#2d3a0e,#1a240b);box-shadow:inset 0 0 0 2px #84cc16,0 0 10px rgba(132,204,22,.3)}}
+.em{{position:absolute;top:-11px;right:-8px;font:19px/1 'Noto Color Emoji','Segoe UI Emoji','Apple Color Emoji',sans-serif;letter-spacing:-5px}}
+.hm{{border:2px solid #1e3a5f;border-radius:16px;padding:8px 10px 8px;background:#0a1324}}
+.ht{{display:flex;align-items:center;gap:16px;font:800 25px {D};letter-spacing:.12em;color:#22d3ee;margin:0 4px 6px;text-transform:uppercase}}.ht:after{{content:"";flex:1;height:2px;background:#1e5f8a}}
+.r.h{{padding:4px 10px;margin-bottom:5px}}.r.h:last-child{{margin-bottom:0}}.r.h .rk{{width:34px;height:34px;font-size:23px}}
+.r.h .pc{{display:flex;align-items:center;gap:8px}}.r.h .pn{{font-size:23px;flex:0 1 auto;min-width:0}}.r.h .pm{{margin-top:0;flex:0 1 auto}}
+.r.h .pt{{font-size:30px;display:flex;align-items:baseline;justify-content:center;gap:4px}}.r.h .sl{{font-size:12px}}.r.h .st{{font-size:20px;padding:3px 0}}
+.lg{{text-align:center;font:500 15px {D};color:#64748b;letter-spacing:.03em}}.lg span{{white-space:nowrap;margin:0 8px}}"""
         hd=f'<div class="hd"><div>#</div><div>PLAYER · MANAGER</div><div class="p">BEST SLOT</div><div>BASE</div><div>PTS</div><div>REB</div><div>AST</div><div>{last}</div><div>FG</div></div>'
+        fit=("<script>document.fonts.ready.then(()=>{for(const el of document.querySelectorAll('.t,.bn')){let s=parseFloat(getComputedStyle(el).fontSize);"
+             "while(el.scrollWidth>el.clientWidth+1&&s>20){s-=1;el.style.fontSize=s+'px';}}});</script>")
         return (f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap"><style>{css}</style></head><body><div id="card">'
-                f'<div class="t"><span class="a">{title1}</span> '+(f'<span class="w">{tw}</span> ' if tw else '')+f'<span class="b">{title2}</span></div><div class="s">BBL Nightly Report · {html.escape(label)}</div>'
-                f'{box}{hd}{rows}'+(f'<div class="hm"><div class="ht">{hm_title}</div>{hd}{hm_rows}</div>' if hm_rows else '')+'<div class="lg"><span>BEST SLOT = BBL pts in his best slot (G +1/REB · F +1/AST · C +1/3PM)</span> <span>BASE = before the slot bonus</span> <span>'+('STK = STL + BLK' if last=='STK' else 'TO = turnovers')+'</span> <span>'+('🔥 big night in that stat · 🧊 cold' if last=='STK' else '🥶 cold · 🤮 ugly')+'</span></div></div></body></html>')
+                f'<div class="top"><div class="t"><span class="a">{title1}</span> '+(f'<span class="w">{tw}</span> ' if tw else '')+f'<span class="b">{title2}</span></div><div class="s">BBL Nightly Report · {html.escape(label)}</div></div>'
+                f'{box}<div class="rows">{hd}{rows}</div>'+(f'<div class="hm"><div class="ht">{hm_title}</div>{hm_rows}</div>' if hm_rows else '')+'<div class="lg"><span>BEST SLOT = BBL pts in his best slot (G +1/REB · F +1/AST · C +1/3PM)</span> <span>BASE = before the slot bonus</span> <span>'+('STK = STL + BLK' if last=='STK' else 'TO = turnovers')+'</span> <span>'+('🔥 big night in that stat · 🧊 cold' if last=='STK' else '🥶 cold · 🤮 ugly')+'</span></div></div>'+fit+'</body></html>')
     # best
     top=best[:10]; _m=manager_of_night(P); box=''
     if _m:
         n_in=sum(1 for p in top if tname(p['n'])==_m[0])
-        box=(f'<div class="box"><div class="bi"><div class="bl">Manager of the night</div><div class="bn">{html.escape(display_team(_m[0]))}</div>'
+        box=(f'<div class="box"><div class="bi"><div class="bw"><div class="bl">Manager of the night</div><div class="bn">{html.escape(display_team(_m[0]))}</div></div>'
              f'<div class="bs"><b>{n_in}</b> player{"s" if n_in!=1 else ""} in Top 10 &nbsp;·&nbsp; <b>{fpt(_m[2])}</b> BBL pts</div></div></div>')
     OR='#fb923c'
     open('nightly_top10.html','w',encoding='utf-8').write(card('Top 10','Performances','#ffb547','#f97316',OR,box,
@@ -468,7 +474,7 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
     if cnt:
         so=max(cnt,key=lambda o:(len(cnt[o]),-sum(p['fp'] for p in cnt[o])))
         if len(cnt[so])>=2:
-            wbox=(f'<div class="box"><div class="bi"><div class="bl">Stinker of the night</div><div class="bn">{html.escape(display_team(so))}</div>'
+            wbox=(f'<div class="box"><div class="bi"><div class="bw"><div class="bl">Stinker of the night</div><div class="bn">{html.escape(display_team(so))}</div></div>'
                   f'<div class="bs"><b>{len(cnt[so])}</b> players in Worst 10 &nbsp;·&nbsp; <b>{fpt(sum(p["fp"] for p in cnt[so]))}</b> total BBL pts</div></div></div>')
     open('nightly_top10_worst.html','w',encoding='utf-8').write(card('Top 10','Performances','#ffffff','#cbd5e1',PU,wbox,
         ''.join(trow(i,p,PU,True,'to') for i,p in enumerate(wt,1)),'Dishonorable mentions',''.join(hrow(i,p,PU,'to') for i,p in enumerate(worst[10:13],11)),'TO','Worst'))

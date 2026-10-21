@@ -5,7 +5,7 @@ Builds the **Best & Worst performances of the night** for the BBL (CBS fantasy b
 - **Best of the Night** (`.html` and `.png`): Player of the night, Manager of the night, callouts, podium, Top 10 and honorable mentions
 - **Worst of the Night** (`.html` and `.png`): the Brick layer of the night and the worst 10 (20+ minutes)
 - **Full Table - Best** and **Full Table - Worst** (`.html` and `.png`): the detailed stat tables (best slot, base, minutes, every stat)
-- **Top 10 Best - Mobile Friendly.png**: a tall phone-sized Top 10 image with Manager of the Night, best-slot points, base score, PTS/REB/AST/STK/FG and honorable mentions
+- **Top 10 Best - Mobile Friendly.png**: a 4:5 (2160×2700) phone-sized Top 10 image with Manager of the Night, best-slot points, base score, PTS/REB/AST/STK/FG and honorable mentions
 - **Top 10 Worst - Mobile Friendly.png**: the same for the worst 10 (players with 20+ minutes), with Stinker of the Night when a manager has 2+ players in it, and TO instead of STK
 - **Best & Worst - Text.txt**: the same lists as plain text
 
