@@ -66,7 +66,7 @@ class ManagerOfNightActiveRosterTests(unittest.TestCase):
         report = self.run_report(with_status=True)
         self.assertRegex(
             report,
-            r"MANAGER OF THE NIGHT</span> <b style=\"font-size:16px\">Alpha</b> · <b>60</b>",
+            r'MANAGER OF THE NIGHT</span> <b style="font-size:16px">Alpha</b> · <b>60</b>',
         )
         # The benchmark remains in the general player rankings; only the award is filtered.
         self.assertIn("Bench Star", report)
@@ -76,7 +76,7 @@ class ManagerOfNightActiveRosterTests(unittest.TestCase):
         report = self.run_report(with_status=False)
         self.assertIn("Manager of the Night not calculated.", report)
         self.assertIn("missing active/bench status", report)
-        self.assertNotRegex(report, r"MANAGER OF THE NIGHT</span> <b style=\"font-size:16px\">")
+        self.assertNotRegex(report, r'MANAGER OF THE NIGHT</span> <b style="font-size:16px">')
 
 if __name__ == "__main__":
     unittest.main()
