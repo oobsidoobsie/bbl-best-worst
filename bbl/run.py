@@ -180,6 +180,13 @@ def main():
         bad += r.returncode != 0
     if bad:
         say("⚠️  Some images couldn't be drawn. Run '1 - Setup' again, then retry.")
+    # Optional email delivery; sends exactly the two mobile-friendly Top 10 PNGs.
+    # An email problem must not undo or fail the locally generated reports.
+    try:
+        from email_reports import send_top10_email
+        send_top10_email(ROOT, out, label, say)
+    except Exception as e:
+        say(f"⚠️  Email delivery setup error: {type(e).__name__}: {str(e)[:200]}")
     for f in ("box.txt", "nightly.html", "nightly_share.html", "nightly_share.txt", "nightly_share_subject.txt", "nightly_top10.html", "nightly_top10_worst.html", "nightly_web.html", "nightly_web_worst.html"):
         try:
             os.remove(os.path.join(BBL, f))
