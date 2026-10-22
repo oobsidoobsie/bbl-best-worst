@@ -101,12 +101,12 @@ Double-click **`2 - BBL Tonight`** and press **Enter**. The results folder opens
 | Fantasy owners, CBS positions, team logos | Your CBS league pages, read by the bookmark in **your** signed-in browser | Uses your existing CBS sign-in; the code never sees or stores your password |
 
 1. `bbl/fetch_box.py` asks ESPN for that date's games, then downloads the box score of every **finished** game.
-2. The bookmark (`rosters/export_rosters.js`) only **reads** CBS pages: standings, each team page, and the player lists for positions. It never changes your lineup or roster.
+2. The bookmark (`rosters/export_rosters.js`) only **reads** CBS pages: standings, each team page, and the player lists for positions. It never changes your lineup or roster. It also exports each player's CBS roster status as a fifth field: `ACTIVE`, `RESERVE`, or `UNKNOWN`.
 3. `bbl/nightly.py` scores every player, picks his best eligible slot, ranks the lists and builds the pages:
    - **Top 10:** ties go to the higher base score, then fewer minutes.
    - **Worst list:** players with 20+ minutes only; ties go to the lower base score, then more minutes.
    - **Milestones:** 80+ 🔥, 90+ ☄️, 100+ 👑.
-   - **Manager of the night:** the fantasy team whose 5 best players that night scored the most BBL points.
+   - **Manager of the night:** the fantasy team whose 5 best **active-roster** players that night scored the most BBL points. Reserve/bench and injured-reserve players are excluded from this award only; all players remain in the nightly Best/Worst rankings.
    - **Callouts:** 3 players from one manager in the top 10 = 🎰 JACKPOT!, 4 = 💎 MEGA JACKPOT!!, 5 = 👑 GRAND JACKPOT!!!, 6 = 🌋 ERUPTION, 7+ = 🏆 TOTAL DOMINATION. A free agent in the top 3 gets a 👀 tag, a #1 who wins by 15+ gets a 🚀 note, and the worst player gets the 🥶 Brick layer card.
 4. `bbl/render.py` takes screenshots of the pages to make the PNGs.
 
@@ -140,3 +140,8 @@ bbl/                            the code (ESPN box scores, scoring, pages, image
 rosters/                        CBS roster bookmark + its install page
 tests/                          sample data and a parser check
 ```
+
+
+### Manager of the Night: active roster only
+
+After updating to this version, reinstall the **🏀 BBL roster export** bookmark by opening `rosters/Install roster bookmark.html` and dragging its button to your browser bookmarks bar. Then sign in to CBS and click it to export a fresh `bbl_rosters.txt`. The export message shows counts of active, bench/reserve, and unknown players. If any players who scored that night still have unknown status, the report will show a warning instead of guessing a winner. The player-of-the-night ranking, Top 10, Worst 10, manager-stack callouts, and other player totals are unchanged.
