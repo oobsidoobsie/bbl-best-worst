@@ -1,0 +1,10 @@
+# Copy this file to email_config.txt and fill in your own values.
+# Email is deliberately disabled until you set enabled=yes.
+enabled=no
+to_email=
+from_email=
+smtp_host=smtp.gmail.com
+smtp_port=587
+smtp_ssl=no
+smtp_username=
+subject_prefix=BBL Best & Worst

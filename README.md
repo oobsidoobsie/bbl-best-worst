@@ -47,6 +47,24 @@ Double-click **`2 - BBL Tonight (Windows)`** and press **Enter**. The results fo
 
 **Optional:** put your team name in `config.txt` (`my_team=Pucs`) to get a ★ next to it in the team legend.
 
+### Optional: email the two Top 10 images to yourself
+
+BBL Best & Worst can email **only** these two attachments after a report run:
+
+- `Top 10 Best - Mobile Friendly.png`
+- `Top 10 Worst - Mobile Friendly.png`
+
+It does not email the other four PNGs. Email delivery is off until you explicitly configure it.
+
+1. Copy `email_config.example.txt` to `email_config.txt` in the project folder.
+2. Edit the local `email_config.txt`: set `enabled=yes`, `to_email=` to your destination, `from_email=` to the sender address, and fill in the SMTP host, port and username from your email provider.
+3. Create `email_secret.txt` in the project folder and put your SMTP password or provider-issued app password on its first non-comment line. Do **not** paste that password into this chat or commit it to GitHub.
+4. To test delivery, run `2 - BBL Tonight (Windows).bat demo`. This sends the two **sample-data** images from the demo run. To send real reports, run the tool normally after refreshing your CBS roster export.
+
+The personal `email_config.txt` and `email_secret.txt` files are excluded by `.gitignore`. If your provider requires an app password, create one in that provider's account-security settings; regular account passwords often won't work with SMTP. If using an SMTP server on port 465, set `smtp_ssl=yes`; for port 587, leave `smtp_ssl=no` (STARTTLS).
+
+An email connection failure is logged without stopping report generation. The script sends an email only if both requested PNG files exist.
+
 ## Mac
 
 ### Setup (once, about 10 minutes)
