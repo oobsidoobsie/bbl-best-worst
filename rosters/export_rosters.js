@@ -7,7 +7,7 @@
 
 const ACTIVE_SLOTS = new Set(['PG','SG','SF','PF','G','F','C','UTIL','U','G/F','F/G','F/C','C/F','G-F','F-G','F-C','C-F','G-C','C-G']);
 const RESERVE_SLOTS = new Set(['BN','BENCH','RES','RESERVE','IR','IL','IL+','INJ','INJURED','INJURED RESERVE','INJURY RESERVE','NA','SUSP','SUSPENDED']);
-const norm = (s) => (s || '').replace(/\\s+/g, ' ').trim().toUpperCase();
+const norm = (s) => (s || '').replace(/\s+/g, ' ').trim().toUpperCase();
 
 function rosterStatus(tr, cells, playerName, sectionStatus) {
   // Prefer an explicit status cell if CBS exposes one.
@@ -27,8 +27,8 @@ function rosterStatus(tr, cells, playerName, sectionStatus) {
       (td.getAttribute('data-roster-status') || '')
     )
   ].join(' ').toLowerCase();
-  if (/\\b(reserve|bench|inactive|injured|injury|ir|il|suspended)\\b/.test(meta)) return 'RESERVE';
-  if (/\\b(active|starter|starting|lineup)\\b/.test(meta)) return 'ACTIVE';
+  if (/\b(reserve|bench|inactive|injured|injury|ir|il|suspended)\b/.test(meta)) return 'RESERVE';
+  if (/\b(active|starter|starting|lineup)\b/.test(meta)) return 'ACTIVE';
 
   // The cell immediately before the player name is usually the assigned roster slot.
   // Active slots (PG/SG/G/F/C/UTIL) count; bench/reserve/IR slots do not.
@@ -71,16 +71,16 @@ function rosterStatus(tr, cells, playerName, sectionStatus) {
       if (lg) LOGO[tn] = lg.split('?')[0];
       let sectionStatus = 'UNKNOWN';
       for (const tr of d.querySelectorAll('tr')) {
-        const c = [...tr.cells].map((x) => x.textContent.trim().replace(/\\s+/g, ' '));
-        const m = c.join(' | ').match(/([A-Z][^|•]*?) ([CFG](?:,[CFG])*) • (\\w+)/);
+        const c = [...tr.cells].map((x) => x.textContent.trim().replace(/\s+/g, ' '));
+        const m = c.join(' | ').match(/([A-Z][^|•]*?) ([CFG](?:,[CFG])*) • (\w+)/);
         if (m && c.length > 4 && !OWN[m[1].trim()]) {
           const name = m[1].trim();
           const status = rosterStatus(tr, c, m[1], sectionStatus);
           OWN[name] = { tn, pos: m[2], team: m[3], status };
         } else {
           const heading = norm(c.join(' '));
-          if (/^(BENCH|RESERVES?|INJURED RESERVE|INJURY RESERVE|INJURED|IL|IR)(?: \\(\\d+\\))?$/.test(heading)) sectionStatus = 'RESERVE';
-          else if (/^(ACTIVE|ACTIVE ROSTER|LINEUP|STARTING LINEUP)(?: \\(\\d+\\))?$/.test(heading)) sectionStatus = 'ACTIVE';
+          if (/^(BENCH|RESERVES?|INJURED RESERVE|INJURY RESERVE|INJURED|IL|IR)(?: \(\d+\))?$/.test(heading)) sectionStatus = 'RESERVE';
+          else if (/^(ACTIVE|ACTIVE ROSTER|LINEUP|STARTING LINEUP)(?: \(\d+\))?$/.test(heading)) sectionStatus = 'ACTIVE';
         }
       }
     }
