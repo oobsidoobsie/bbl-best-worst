@@ -3,3 +3,5 @@ output/
 rosters/bbl_rosters.txt
 __pycache__/
 .DS_Store
+email_config.txt
+email_secret.txt
