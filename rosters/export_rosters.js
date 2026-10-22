@@ -2,7 +2,8 @@
 // It only READS pages you can already see while signed in (standings, each team page,
 // and CBS's player lists for positions) and saves them to a file called bbl_rosters.txt
 // in your Downloads folder. It never changes anything on CBS and never touches your password.
-// Output lines: name|nba_team|positions|owner   (owner = TAKEN:<fantasy team> or FA)
+// Output lines: name|nba_team|positions|owner|roster_status
+// roster_status = ACTIVE, RESERVE or UNKNOWN; owner = TAKEN:<fantasy team> or FA
 //               #LOGO|<fantasy team>|<small logo as data URI>
 
 const ACTIVE_SLOTS = new Set(['PG','SG','SF','PF','G','F','C','UTIL','U','G/F','F/G','F/C','C/F','G-F','F-G','F-C','C-F','G-C','C-G']);
