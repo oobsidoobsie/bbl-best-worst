@@ -115,7 +115,11 @@ function rosterStatus(tr, cells, playerName, sectionStatus) {
     a.href = URL.createObjectURL(new Blob([txt], { type: 'text/plain' }));
     a.download = 'bbl_rosters.txt';
     document.body.appendChild(a); a.click(); a.remove();
-    done(`saved bbl_rosters.txt to Downloads ✓ (${Object.keys(OWN).length} rostered players, ${Object.keys(TEAMS).length} teams)`, 9000);
+    const statusCounts = Object.values(OWN).reduce((counts, item) => {
+      counts[item.status] = (counts[item.status] || 0) + 1;
+      return counts;
+    }, {});
+    done(`saved bbl_rosters.txt ✓ (${Object.keys(OWN).length} players; ${statusCounts.ACTIVE || 0} active, ${statusCounts.RESERVE || 0} bench/reserve, ${statusCounts.UNKNOWN || 0} unknown; ${Object.keys(TEAMS).length} teams). File is in Downloads.`, 12000);
   } catch (e) {
     done('something went wrong: ' + e.message, 12000);
   }
