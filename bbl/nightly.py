@@ -7,12 +7,13 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 box, poolf, label = sys.argv[1], sys.argv[2], sys.argv[3]
 lines=open(box).read().strip().splitlines()
 hdr=lines[0].lstrip('#').split('|'); ngames,ndone,nlive=map(int,hdr)
-owner={}; LOGO={}; CBSPOS={}
+owner={}; LOGO={}; CBSPOS={}; ROSTER_STATUS={}
 for l in open(poolf):
     p=l.rstrip('\n').split('|')
     if p[0]=='#LOGO' and len(p)>=3: LOGO[p[1]]=p[2]; continue
     if len(p)>=3: CBSPOS[p[0]]=p[2]
     if len(p)>=4: owner[p[0]]='Yours' if p[3]=='MINE' else (p[3][6:] if p[3].startswith('TAKEN:') else 'FA')
+    if len(p)>=5: ROSTER_STATUS[p[0]]=p[4].strip().upper()
 P=[]
 for l in lines[1:]:
     f=l.split('|')
@@ -27,7 +28,7 @@ for l in lines[1:]:
     bon={'G':reb,'F':ast,'C':tpm}
     opts=[(bon[s],s) for s in 'GFC' if s in elig]
     b,slot=max(opts) if opts else (0,'')
-    P.append(dict(n=n,t=t,m=m,pts=pts,fgm=fgm,fga=fga,tpm=tpm,tpa=tpa,ftm=ftm,fta=fta,reb=reb,ast=ast,to=to,stl=stl,blk=blk,pf=pf,base=fp,fp=fp+b,slot=slot,bonus=b))
+    P.append(dict(n=n,t=t,m=m,pts=pts,fgm=fgm,fga=fga,tpm=tpm,tpa=tpa,ftm=ftm,fta=fta,reb=reb,ast=ast,to=to,stl=stl,blk=blk,pf=pf,base=fp,fp=fp+b,slot=slot,bonus=b,roster_status=ROSTER_STATUS.get(n,'UNKNOWN')))
 def pct(a,b): return f'{a}-{b}'
 def hot(p):
     e={}
@@ -150,6 +151,7 @@ def brick_line(worst):
             f'{p["pts"]} pts on {p["fgm"]}-{p["fga"]} FG in {p["m"]} min · <b>{fpt(p["fp"])} BBL pts</b></p>')
 def mon_line(P):
     m=manager_of_night(P)
+    if not manager_status_ready(P): return manager_status_warning()
     if not m: return ''
     o,L,t=m
     return (f'<div style="margin:4px 0 10px;padding:10px 14px;border-radius:10px;border:1px solid rgba(251,191,36,.45);border-left:5px solid #fbbf24">'
@@ -158,12 +160,23 @@ def mon_line(P):
             f'<div style="font-size:13px;color:var(--muted,#667085);margin-top:2px">'+' · '.join(f'{html.escape(shortn(p["n"]))} {fpt(p["fp"])}' for p in L)+'</div>'
             +''.join(f'<div style="font-size:13px;margin-top:4px"><b style="color:#d97706">{stack_title(len(S))}</b> {len(S)} in the top 10</div>' for so,S in stacks(sorted(P,key=lambda p:(-p['fp'],-p['base'],p['m']))[:10],3) if so==o)+'</div>')
 def display_team(t): return "TINOLA JO'CHIĆK" if 'ɪɴᴏʟᴀ' in t else t
+def manager_status_ready(P):
+    """Return false if any rostered player who scored tonight lacks an explicit active/reserve status."""
+    rostered=[p for p in P if tname(p['n'])!='FA']
+    return all(p.get('roster_status') in ('ACTIVE','RESERVE') for p in rostered)
+def manager_status_warning():
+    return ('<div style="margin:4px 0 10px;padding:10px 14px;border-radius:10px;'
+            'border:1px solid rgba(251,191,36,.45);border-left:5px solid #fbbf24">'
+            '<b>⚠️ Manager of the Night not calculated.</b> The roster export is missing active/bench status. '
+            'Update the BBL roster-export bookmark from this version, export rosters again from CBS, and rerun the report.</div>')
 def manager_of_night(P):
-    '''The fantasy team whose 5 best performers tonight (one night's lineup) scored the most BBL points.'''
+    '''The 5 highest-scoring players in each manager's active fantasy slots only.'''
+    if not manager_status_ready(P): return None
     T={}
     for p in P:
         o=tname(p['n'])
-        if o!='FA': T.setdefault(o,[]).append(p)
+        if o!='FA' and p.get('roster_status')=='ACTIVE':
+            T.setdefault(o,[]).append(p)
     if not T: return None
     best5={o:sorted(L,key=lambda p:-p['fp'])[:5] for o,L in T.items()}
     o=max(best5,key=lambda o:(sum(p['fp'] for p in best5[o]),len(best5[o])))
@@ -324,6 +337,9 @@ if WEB and P:   # shareable page in the Command Center theme (slate, orange, Bar
         mon=(f'<div class="card mon"><div><div class="lab">🏆 Manager of the night</div><div class="mt">{html.escape(display_team(mo))}</div>'
              f'<div class="sub">Best 5 tonight: '+' · '.join(f'{html.escape(shortn(p["n"]))} <b>{fpt(p["fp"])}</b>' for p in ml)+f'</div>{MERGED}</div>'
              f'<div class="huge2">{fpt(mt)}<small>BBL PTS</small></div></div>')
+    elif not manager_status_ready(P):
+        mon=('<div class="card mon"><div><div class="lab">🏆 Manager of the night</div>'
+             '<div class="mt">Not calculated</div><div class="sub">Active/bench status is missing. Update the roster-export bookmark, export rosters from CBS again, and rerun.</div></div></div>')
     gap=best[0]['fp']-best[1]['fp'] if len(best)>1 else 0
     RUN=f' · <span class="run">🚀 won by {fpt(gap)}</span>' if gap>=15 else ''
     pods=''.join(f'<div class="pod{" p1" if i==1 else ""}"><div class="rk">#{i}</div><div class="nm">{html.escape(p["n"])}</div><div class="tm">{p["t"]} · {own_(p)}</div><div class="big">{big_(p)}</div><div class="sl">{sl_(p)}</div><div class="st">{stl_(p)}</div></div>' for i,p in enumerate(best[:3],1))
@@ -462,6 +478,8 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
         n_in=sum(1 for p in top if tname(p['n'])==_m[0])
         box=(f'<div class="box"><div class="bi"><div class="bw"><div class="bl">Manager of the night</div><div class="bn">{html.escape(display_team(_m[0]))}</div></div>'
              f'<div class="bs"><b>{n_in}</b> player{"s" if n_in!=1 else ""} in Top 10 &nbsp;·&nbsp; <b>{fpt(_m[2])}</b> BBL pts</div></div></div>')
+    elif not manager_status_ready(P):
+        box='<div class="box"><div class="bi"><div class="bw"><div class="bl">Manager of the night</div><div class="bn">Not calculated</div></div><div class="bs">Active/bench status is missing. Refresh the CBS roster export and rerun.</div></div></div>'
     OR='#fb923c'
     open('nightly_top10.html','w',encoding='utf-8').write(card('Top 10','Performances','#ffb547','#f97316',OR,box,
         ''.join(trow(i,p,OR,True) for i,p in enumerate(top,1)),'Honorable mentions',''.join(hrow(i,p,OR) for i,p in enumerate(best[10:13],11))))
