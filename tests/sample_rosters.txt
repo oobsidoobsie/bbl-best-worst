@@ -1,291 +1,291 @@
 # sample rosters (BBL, Oct 2026) for --demo
-Shai Gilgeous-Alexander|OKC|G|TAKEN:My Shaila
-Luka Doncic|LAL|G|TAKEN:SOGGY
-Cade Cunningham|DET|G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ
-Tyrese Maxey|PHI|G|TAKEN:Tank You Very Much
-Cooper Flagg|DAL|F,G|TAKEN:Rudy Jobert
-Scottie Barnes|TOR|F,G|TAKEN:Binkas&Yams
-Anthony Edwards|MIN|G|TAKEN:Binkas&Yams
-Tyrese Haliburton|IND|G|TAKEN:Oobsidoobsie
-Donovan Mitchell|CLE|G|TAKEN:Deep Bag
-Kevin Durant|HOU|F,G|TAKEN:Pucs
-James Harden|CLE|G|TAKEN:Binkas&Yams
-LaMelo Ball|MIN|G|TAKEN:Tank You Very Much
-Jaylen Brown|PHI|F,G|TAKEN:Rudy Jobert
-Amen Thompson|HOU|G|TAKEN:SOGGY
-Deni Avdija|POR|F,G|TAKEN:Rudy Jobert
-Josh Giddey|CHI|F,G|TAKEN:Tank You Very Much
-Jamal Murray|DEN|G|TAKEN:My Shaila
-Kyrie Irving|DAL|G|TAKEN:Phil the new champion
-Jalen Brunson|NY|G|TAKEN:Pucs
-Josh Hart|NY|F,G|TAKEN:Rudy Jobert
-Devin Booker|PHO|G|TAKEN:Oobsidoobsie
-Damian Lillard|POR|G|TAKEN:Binkas&Yams
-Stephen Curry|GS|G|TAKEN:Tank You Very Much
-Jalen Williams|OKC|F,G|TAKEN:Pucs
-Dyson Daniels|ATL|F,G|TAKEN:SOGGY
-Darius Acuff Jr.|SAC|G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ
-Trey Murphy III|NO|F,G|TAKEN:My Shaila
-Austin Reaves|LAL|G|TAKEN:My Shaila
-Derrick White|BOS|G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ
-Desmond Bane|ORL|F,G|TAKEN:Rudy Jobert
-RJ Barrett|TOR|F,G|TAKEN:SOGGY
-VJ Edgecombe|PHI|G|TAKEN:Phil the new champion
-De'Aaron Fox|SA|G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ
-Tyler Herro|MIL|G|TAKEN:Binkas&Yams
-Darryn Peterson|UTA|G|TAKEN:Oobsidoobsie
-Immanuel Quickley|TOR|G|TAKEN:Pucs
-Brandon Ingram|LAC|F,G|TAKEN:Pucs
-Dejounte Murray|NO|G|TAKEN:Oobsidoobsie
-Ja Morant|POR|G|TAKEN:Phil the new champion
-Stephon Castle|SA|G|TAKEN:Pucs
-Dylan Harper|SA|G|TAKEN:Phil the new champion
-Brandon Miller|CHA|F,G|TAKEN:Oobsidoobsie
-Andrew Nembhard|IND|G|TAKEN:SOGGY
-Darius Garland|LAC|G|TAKEN:Deep Bag
-Jalen Green|PHO|F,G|TAKEN:Rudy Jobert
-Jalen Suggs|ORL|G|TAKEN:Phil the new champion
-CJ McCollum|ATL|G|TAKEN:Tank You Very Much
-Keyonte George|UTA|G|TAKEN:Tank You Very Much
-Paul George|BOS|F,G|TAKEN:Rudy Jobert
-Trae Young|WAS|G|TAKEN:Deep Bag
-Coby White|CHA|G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ
-Mikel Brown Jr.|BKN|G|FA
-Keaton Wagler|LAC|G|FA
-Kon Knueppel|CHA|G|TAKEN:Deep Bag
-Christian Braun|DEN|F,G|FA
-Payton Pritchard|BOS|G|TAKEN:Pucs
-Cameron Johnson|DEN|F,G|TAKEN:Deep Bag
-Zach LaVine|SAC|F,G|TAKEN:Tank You Very Much
-DeMar DeRozan|DEN|F,G|TAKEN:Binkas&Yams
-Ayo Dosunmu|MIN|F,G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ
-Norman Powell|CHI|F,G|TAKEN:Rudy Jobert
-Kingston Flemings|ATL|G|FA
-Ben Simmons|SAC|F,G|TAKEN:Rudy Jobert
-Fred VanVleet|HOU|G|TAKEN:Rudy Jobert
-Brandin Podziemski|GS|G|TAKEN:Oobsidoobsie
-Toumani Camara|POR|F,G|FA
-Ty Jerome|MEM|G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ
-Cedric Coward|MEM|F,G|TAKEN:My Shaila
-Jaime Jaquez Jr.|MIL|F,G|TAKEN:Pucs
-Nickeil Alexander-Walker|ATL|F,G|TAKEN:My Shaila
-Bradley Beal|LAC|F,G|FA
-Davion Mitchell|MIA|G|FA
-Quentin Grimes|LAL|F,G|TAKEN:SOGGY
-Kyshawn George|WAS|F,G|FA
-Ryan Rollins|MIL|G|TAKEN:My Shaila
-Aaron Nesmith|IND|F,G|FA
-Cason Wallace|OKC|F,G|FA
-Kelly Oubre Jr.|IND|F,G|FA
-Collin Sexton|LAL|G|FA
-Ace Bailey|UTA|F,G|FA
-Herbert Jones|NO|C,F,G|FA
-Isaiah Collier|UTA|G|FA
-Naji Marshall|DAL|F,G|TAKEN:Pucs
-Anthony Black|ORL|F,G|TAKEN:Binkas&Yams
-Tari Eason|HOU|F,G|FA
-Jeremiah Fears|NO|G|FA
-Klay Thompson|MIA|F,G|FA
-Jaylon Tyson|CLE|F,G|TAKEN:Pucs
-Jrue Holiday|POR|F,G|FA
-Collin Gillespie|PHO|G|FA
-Kevin Porter|MIL|G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ
-T.J. McConnell|IND|G|FA
-Tre Jones|CHI|G|FA
-De'Anthony Melton|GS|G|FA
-Egor Demin|BKN|G|FA
-Duncan Robinson|DET|F,G|FA
-Bilal Coulibaly|WAS|F,G|FA
-Kevin Huerter|DET|F,G|FA
-Anfernee Simons|PHI|G|FA
-Zaccharie Risacher|DAL|F,G|FA
-Malik Monk|SAC|F,G|FA
-Jake LaRavia|LAL|F,G|FA
-Bennedict Mathurin|NO|F,G|FA
-Isaiah Joe|DET|F,G|FA
-Jordan Goodwin|PHO|F,G|FA
-Pelle Larsson|MIA|F,G|FA
-Sam Merrill|CLE|F,G|FA
-Kris Dunn|LAC|G|FA
-Grayson Allen|CHA|F,G|FA
-Luke Kennard|PHO|F,G|FA
-Keldon Johnson|SA|F,G|FA
-Scotty Pippen Jr.|MEM|G|FA
-Julian Champagnie|SA|F,G|FA
-Scoot Henderson|POR|G|FA
-Gui Santos|GS|F,G|FA
-Daniss Jenkins|DET|G|FA
-Dennis Schroder|CHA|G|FA
-Jamal Shead|TOR|G|FA
-Bub Carrington|WAS|G|FA
-Dru Smith|MIA|G|FA
-Ajay Mitchell|OKC|G|TAKEN:Oobsidoobsie
-Alex Caruso|OKC|F,G|FA
-Max Christie|DAL|F,G|FA
-Reed Sheppard|HOU|G|FA
-Ja'Kobe Walter|TOR|F,G|FA
-Max Strus|LAC|F,G|FA
-Tim Hardaway Jr.|MIA|F,G|FA
-Brice Sensabaugh|UTA|F,G|FA
-Mike Conley|BOS|G|FA
-Gary Payton II|GS|F,G|FA
-Jose Alvarado|NY|G|FA
-Khris Middleton|WAS|F,G|FA
-Cam Spencer|MEM|F,G|FA
-Craig Porter Jr.|CLE|G|FA
-Nique Clifford|SAC|F,G|FA
-Ron Holland|DET|F,G|FA
-Matisse Thybulle|LAL|F,G|FA
-Kentavious Caldwell-Pope|PHI|F,G|FA
-Luguentz Dort|ATL|F,G|FA
-Miles McBride|NY|G|FA
-Baylor Scheierman|BOS|F,G|FA
-Marcus Smart|HOU|G|FA
-Jared McCain|OKC|G|FA
-Tyus Jones|DEN|G|FA
-Bogdan Bogdanovic|HOU|F,G|FA
-Aaron Wiggins|ATL|F,G|FA
-Tre Johnson|WAS|F,G|FA
-Keon Ellis|BKN|F,G|FA
-Will Riley|WAS|F,G|FA
-Isaac Okoro|CHI|F,G|FA
-Corey Kispert|ATL|F,G|FA
-Ben Sheppard|IND|F,G|FA
-Walter Clayton Jr.|MEM|G|FA
-Ben Saraf|BKN|G|FA
-Jordan Clarkson|NY|F,G|FA
-Vit Krejci|POR|F,G|FA
-Giannis Antetokounmpo|MIA|F|TAKEN:Phil the new champion
-Jayson Tatum|BOS|F|TAKEN:Deep Bag
-Jalen Johnson|ATL|F|TAKEN:Rudy Jobert
-LeBron James|PHI|F|TAKEN:Binkas&Yams
-Anthony Davis|WAS|C,F|TAKEN:Oobsidoobsie
-Alperen Sengun|HOU|C,F|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ
-Evan Mobley|CLE|C,F|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ
-Paolo Banchero|ORL|F|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ
-Kawhi Leonard|TOR|F|TAKEN:SOGGY
-Karl-Anthony Towns|NY|C,F|TAKEN:My Shaila
-Domantas Sabonis|SAC|C,F|TAKEN:Deep Bag
-Bam Adebayo|MIA|C,F|TAKEN:Tank You Very Much
-Franz Wagner|ORL|F|TAKEN:Tank You Very Much
-Pascal Siakam|IND|C,F|TAKEN:Pucs
-Caleb Wilson|CHI|F|TAKEN:Phil the new champion
-Zion Williamson|NO|C,F|TAKEN:Tank You Very Much
-Cameron Boozer|MEM|C,F|TAKEN:Oobsidoobsie
-AJ Dybantsa|WAS|F|TAKEN:Oobsidoobsie
-Chet Holmgren|OKC|C,F|TAKEN:Binkas&Yams
-OG Anunoby|NY|F|TAKEN:Phil the new champion
-Mikal Bridges|NY|F|TAKEN:SOGGY
-John Collins|DET|C,F|TAKEN:Phil the new champion
-Jaden McDaniels|MIN|F|TAKEN:My Shaila
-Miles Bridges|PHO|F|TAKEN:Pucs
-Lauri Markkanen|UTA|F|TAKEN:My Shaila
-Julius Randle|BKN|F|TAKEN:Deep Bag
-Andrew Wiggins|MIA|F|TAKEN:SOGGY
-Jaren Jackson Jr.|UTA|C,F|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ
-Draymond Green|GS|C,F|FA
-Ausar Thompson|DET|F|TAKEN:Oobsidoobsie
-PJ Washington|DAL|C,F|TAKEN:Binkas&Yams
-Tobias Harris|SA|F|FA
-Michael Porter Jr.|BKN|F|TAKEN:Phil the new champion
-Aaron Gordon|DEN|C,F|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ
-Kel'el Ware|MIL|C,F|TAKEN:Deep Bag
-Keegan Murray|SAC|F|TAKEN:SOGGY
-Derik Queen|NO|C,F|TAKEN:Pucs
-Peyton Watson|CLE|F|TAKEN:Tank You Very Much
-Naz Reid|CHA|C,F|TAKEN:My Shaila
-Matas Buzelis|CHI|F|TAKEN:Deep Bag
-Jabari Smith|HOU|C,F|TAKEN:Tank You Very Much
-Dillon Brooks|PHO|F|FA
-Jonathan Kuminga|MIN|F|TAKEN:Phil the new champion
-Jimmy Butler|GS|F|FA
-Devin Vassell|SA|F|TAKEN:Binkas&Yams
-Morez Johnson Jr.|DAL|C,F|FA
-Bobby Portis|MIA|C,F|FA
-Rui Hachimura|LAC|F|FA
-Nate Ament|MIL|F|FA
-Yaxel Lendeborg|GS|F|TAKEN:Tank You Very Much
-Kyle Kuzma|MIL|F|FA
-Saddiq Bey|NO|F|FA
-De'Andre Hunter|SAC|F|FA
-Santi Aldama|DAL|C,F|FA
-Derrick Jones Jr.|LAC|F|FA
-Al Horford|GS|C,F|FA
-Kristaps Porzingis|GS|C,F|FA
-Kyle Filipowski|UTA|C,F|FA
-Jerami Grant|MEM|F|FA
-Collin Murray-Boyles|TOR|C,F|FA
-Obi Toppin|IND|C,F|FA
-Robert Williams III|POR|C,F|FA
-Jaylen Wells|MEM|F|FA
-Royce O'Neale|CHA|F|FA
-Precious Achiuwa|SAC|C,F|FA
-Jalen Smith|CHI|C,F|FA
-Jaylin Williams|OKC|C,F|FA
-Sam Hauser|BOS|F|FA
-Danny Wolf|BKN|C,F|FA
-Luke Kornet|SA|C,F|FA
-Sandro Mamukelashvili|LAL|C,F|FA
-Justin Champagnie|WAS|C,F|FA
-Kyle Anderson|TOR|F|FA
-Patrick Williams|CHI|F|FA
-Marvin Bagley III|DEN|C,F|FA
-Jay Huff|IND|C,F|FA
-Nae'Qwan Tomlin|CLE|F|FA
-Jarace Walker|IND|F|FA
-Isaiah Stewart|MEM|C,F|FA
-Noah Clowney|BKN|F|FA
-Grant Williams|CHA|C,F|FA
-Georges Niang|GS|F|FA
-Ryan Dunn|PHO|F|FA
-Karlo Matkovic|NO|C,F|FA
-Tristan da Silva|ORL|F|FA
-Dom Barlow|PHI|C,F|FA
-Taylor Hendricks|MEM|C,F|FA
-Zach Collins|CHI|C,F|FA
-Hannes Steinbach|CHA|C,F|FA
-Leonard Miller|CHI|C,F|FA
-Nikola Jokic|DEN|C|TAKEN:Pucs
-Victor Wembanyama|SA|C|TAKEN:Oobsidoobsie
-Ivica Zubac|IND|C|TAKEN:Binkas&Yams
-Jalen Duren|DET|C|TAKEN:Deep Bag
-Jarrett Allen|CLE|C|TAKEN:Phil the new champion
-Walker Kessler|LAL|C|TAKEN:SOGGY
-Joel Embiid|PHI|C|TAKEN:My Shaila
-Rudy Gobert|MIN|C|TAKEN:Rudy Jobert
-Nicolas Claxton|CHI|C|TAKEN:SOGGY
-Onyeka Okongwu|ATL|C|TAKEN:Deep Bag
-Jakob Poeltl|TOR|C|FA
-Alex Sarr|WAS|C|TAKEN:Rudy Jobert
-Isaiah Hartenstein|OKC|C|TAKEN:Deep Bag
-Dereck Lively II|DAL|C|FA
-Donovan Clingan|POR|C|TAKEN:SOGGY
-Myles Turner|MIL|C|TAKEN:Phil the new champion
-Wendell Carter Jr.|ORL|C|TAKEN:Binkas&Yams
-Zach Edey|MEM|C|TAKEN:Oobsidoobsie
-Yves Missi|NO|C|FA
-Jusuf Nurkic|UTA|C|TAKEN:Oobsidoobsie
-Neemias Queta|BOS|C|TAKEN:Binkas&Yams
-Maxime Raynaud|SAC|C|TAKEN:Rudy Jobert
-Moussa Diabate|CHA|C|FA
-Nikola Vucevic|ORL|C|FA
-Day'Ron Sharpe|BKN|C|TAKEN:My Shaila
-Mitchell Robinson|BOS|C|FA
-Aday Mara|OKC|C|FA
-Deandre Ayton|WAS|C|FA
-Daniel Gafford|DAL|C|FA
-Brook Lopez|LAC|C|FA
-Oso Ighodaro|PHO|C|FA
-Isaiah Jackson|LAC|C|FA
-Paul Reed|DET|C|FA
-Andre Drummond|NY|C|FA
-Goga Bitadze|ORL|C|FA
-Ryan Kalkbrenner|CHA|C|FA
-Moe Wagner|BKN|C|FA
-Jock Landale|ATL|C|FA
-Khaman Maluach|PHO|C|FA
-Nikola Jovic|MIA|C,F|FA
-Ryan Conwell|MIA|G|FA
+Shai Gilgeous-Alexander|OKC|G|TAKEN:My Shaila|ACTIVE
+Luka Doncic|LAL|G|TAKEN:SOGGY|ACTIVE
+Cade Cunningham|DET|G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ|ACTIVE
+Tyrese Maxey|PHI|G|TAKEN:Tank You Very Much|ACTIVE
+Cooper Flagg|DAL|F,G|TAKEN:Rudy Jobert|ACTIVE
+Scottie Barnes|TOR|F,G|TAKEN:Binkas&Yams|ACTIVE
+Anthony Edwards|MIN|G|TAKEN:Binkas&Yams|ACTIVE
+Tyrese Haliburton|IND|G|TAKEN:Oobsidoobsie|ACTIVE
+Donovan Mitchell|CLE|G|TAKEN:Deep Bag|ACTIVE
+Kevin Durant|HOU|F,G|TAKEN:Pucs|ACTIVE
+James Harden|CLE|G|TAKEN:Binkas&Yams|ACTIVE
+LaMelo Ball|MIN|G|TAKEN:Tank You Very Much|ACTIVE
+Jaylen Brown|PHI|F,G|TAKEN:Rudy Jobert|ACTIVE
+Amen Thompson|HOU|G|TAKEN:SOGGY|ACTIVE
+Deni Avdija|POR|F,G|TAKEN:Rudy Jobert|ACTIVE
+Josh Giddey|CHI|F,G|TAKEN:Tank You Very Much|ACTIVE
+Jamal Murray|DEN|G|TAKEN:My Shaila|ACTIVE
+Kyrie Irving|DAL|G|TAKEN:Phil the new champion|ACTIVE
+Jalen Brunson|NY|G|TAKEN:Pucs|ACTIVE
+Josh Hart|NY|F,G|TAKEN:Rudy Jobert|ACTIVE
+Devin Booker|PHO|G|TAKEN:Oobsidoobsie|ACTIVE
+Damian Lillard|POR|G|TAKEN:Binkas&Yams|ACTIVE
+Stephen Curry|GS|G|TAKEN:Tank You Very Much|ACTIVE
+Jalen Williams|OKC|F,G|TAKEN:Pucs|ACTIVE
+Dyson Daniels|ATL|F,G|TAKEN:SOGGY|ACTIVE
+Darius Acuff Jr.|SAC|G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ|ACTIVE
+Trey Murphy III|NO|F,G|TAKEN:My Shaila|ACTIVE
+Austin Reaves|LAL|G|TAKEN:My Shaila|ACTIVE
+Derrick White|BOS|G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ|ACTIVE
+Desmond Bane|ORL|F,G|TAKEN:Rudy Jobert|ACTIVE
+RJ Barrett|TOR|F,G|TAKEN:SOGGY|ACTIVE
+VJ Edgecombe|PHI|G|TAKEN:Phil the new champion|ACTIVE
+De'Aaron Fox|SA|G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ|ACTIVE
+Tyler Herro|MIL|G|TAKEN:Binkas&Yams|ACTIVE
+Darryn Peterson|UTA|G|TAKEN:Oobsidoobsie|ACTIVE
+Immanuel Quickley|TOR|G|TAKEN:Pucs|ACTIVE
+Brandon Ingram|LAC|F,G|TAKEN:Pucs|ACTIVE
+Dejounte Murray|NO|G|TAKEN:Oobsidoobsie|ACTIVE
+Ja Morant|POR|G|TAKEN:Phil the new champion|ACTIVE
+Stephon Castle|SA|G|TAKEN:Pucs|ACTIVE
+Dylan Harper|SA|G|TAKEN:Phil the new champion|ACTIVE
+Brandon Miller|CHA|F,G|TAKEN:Oobsidoobsie|ACTIVE
+Andrew Nembhard|IND|G|TAKEN:SOGGY|ACTIVE
+Darius Garland|LAC|G|TAKEN:Deep Bag|ACTIVE
+Jalen Green|PHO|F,G|TAKEN:Rudy Jobert|ACTIVE
+Jalen Suggs|ORL|G|TAKEN:Phil the new champion|ACTIVE
+CJ McCollum|ATL|G|TAKEN:Tank You Very Much|ACTIVE
+Keyonte George|UTA|G|TAKEN:Tank You Very Much|ACTIVE
+Paul George|BOS|F,G|TAKEN:Rudy Jobert|ACTIVE
+Trae Young|WAS|G|TAKEN:Deep Bag|ACTIVE
+Coby White|CHA|G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ|ACTIVE
+Mikel Brown Jr.|BKN|G|FA|UNKNOWN
+Keaton Wagler|LAC|G|FA|UNKNOWN
+Kon Knueppel|CHA|G|TAKEN:Deep Bag|ACTIVE
+Christian Braun|DEN|F,G|FA|UNKNOWN
+Payton Pritchard|BOS|G|TAKEN:Pucs|ACTIVE
+Cameron Johnson|DEN|F,G|TAKEN:Deep Bag|ACTIVE
+Zach LaVine|SAC|F,G|TAKEN:Tank You Very Much|ACTIVE
+DeMar DeRozan|DEN|F,G|TAKEN:Binkas&Yams|ACTIVE
+Ayo Dosunmu|MIN|F,G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ|ACTIVE
+Norman Powell|CHI|F,G|TAKEN:Rudy Jobert|ACTIVE
+Kingston Flemings|ATL|G|FA|UNKNOWN
+Ben Simmons|SAC|F,G|TAKEN:Rudy Jobert|ACTIVE
+Fred VanVleet|HOU|G|TAKEN:Rudy Jobert|ACTIVE
+Brandin Podziemski|GS|G|TAKEN:Oobsidoobsie|ACTIVE
+Toumani Camara|POR|F,G|FA|UNKNOWN
+Ty Jerome|MEM|G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ|ACTIVE
+Cedric Coward|MEM|F,G|TAKEN:My Shaila|ACTIVE
+Jaime Jaquez Jr.|MIL|F,G|TAKEN:Pucs|ACTIVE
+Nickeil Alexander-Walker|ATL|F,G|TAKEN:My Shaila|ACTIVE
+Bradley Beal|LAC|F,G|FA|UNKNOWN
+Davion Mitchell|MIA|G|FA|UNKNOWN
+Quentin Grimes|LAL|F,G|TAKEN:SOGGY|ACTIVE
+Kyshawn George|WAS|F,G|FA|UNKNOWN
+Ryan Rollins|MIL|G|TAKEN:My Shaila|ACTIVE
+Aaron Nesmith|IND|F,G|FA|UNKNOWN
+Cason Wallace|OKC|F,G|FA|UNKNOWN
+Kelly Oubre Jr.|IND|F,G|FA|UNKNOWN
+Collin Sexton|LAL|G|FA|UNKNOWN
+Ace Bailey|UTA|F,G|FA|UNKNOWN
+Herbert Jones|NO|C,F,G|FA|UNKNOWN
+Isaiah Collier|UTA|G|FA|UNKNOWN
+Naji Marshall|DAL|F,G|TAKEN:Pucs|ACTIVE
+Anthony Black|ORL|F,G|TAKEN:Binkas&Yams|ACTIVE
+Tari Eason|HOU|F,G|FA|UNKNOWN
+Jeremiah Fears|NO|G|FA|UNKNOWN
+Klay Thompson|MIA|F,G|FA|UNKNOWN
+Jaylon Tyson|CLE|F,G|TAKEN:Pucs|ACTIVE
+Jrue Holiday|POR|F,G|FA|UNKNOWN
+Collin Gillespie|PHO|G|FA|UNKNOWN
+Kevin Porter|MIL|G|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ|ACTIVE
+T.J. McConnell|IND|G|FA|UNKNOWN
+Tre Jones|CHI|G|FA|UNKNOWN
+De'Anthony Melton|GS|G|FA|UNKNOWN
+Egor Demin|BKN|G|FA|UNKNOWN
+Duncan Robinson|DET|F,G|FA|UNKNOWN
+Bilal Coulibaly|WAS|F,G|FA|UNKNOWN
+Kevin Huerter|DET|F,G|FA|UNKNOWN
+Anfernee Simons|PHI|G|FA|UNKNOWN
+Zaccharie Risacher|DAL|F,G|FA|UNKNOWN
+Malik Monk|SAC|F,G|FA|UNKNOWN
+Jake LaRavia|LAL|F,G|FA|UNKNOWN
+Bennedict Mathurin|NO|F,G|FA|UNKNOWN
+Isaiah Joe|DET|F,G|FA|UNKNOWN
+Jordan Goodwin|PHO|F,G|FA|UNKNOWN
+Pelle Larsson|MIA|F,G|FA|UNKNOWN
+Sam Merrill|CLE|F,G|FA|UNKNOWN
+Kris Dunn|LAC|G|FA|UNKNOWN
+Grayson Allen|CHA|F,G|FA|UNKNOWN
+Luke Kennard|PHO|F,G|FA|UNKNOWN
+Keldon Johnson|SA|F,G|FA|UNKNOWN
+Scotty Pippen Jr.|MEM|G|FA|UNKNOWN
+Julian Champagnie|SA|F,G|FA|UNKNOWN
+Scoot Henderson|POR|G|FA|UNKNOWN
+Gui Santos|GS|F,G|FA|UNKNOWN
+Daniss Jenkins|DET|G|FA|UNKNOWN
+Dennis Schroder|CHA|G|FA|UNKNOWN
+Jamal Shead|TOR|G|FA|UNKNOWN
+Bub Carrington|WAS|G|FA|UNKNOWN
+Dru Smith|MIA|G|FA|UNKNOWN
+Ajay Mitchell|OKC|G|TAKEN:Oobsidoobsie|ACTIVE
+Alex Caruso|OKC|F,G|FA|UNKNOWN
+Max Christie|DAL|F,G|FA|UNKNOWN
+Reed Sheppard|HOU|G|FA|UNKNOWN
+Ja'Kobe Walter|TOR|F,G|FA|UNKNOWN
+Max Strus|LAC|F,G|FA|UNKNOWN
+Tim Hardaway Jr.|MIA|F,G|FA|UNKNOWN
+Brice Sensabaugh|UTA|F,G|FA|UNKNOWN
+Mike Conley|BOS|G|FA|UNKNOWN
+Gary Payton II|GS|F,G|FA|UNKNOWN
+Jose Alvarado|NY|G|FA|UNKNOWN
+Khris Middleton|WAS|F,G|FA|UNKNOWN
+Cam Spencer|MEM|F,G|FA|UNKNOWN
+Craig Porter Jr.|CLE|G|FA|UNKNOWN
+Nique Clifford|SAC|F,G|FA|UNKNOWN
+Ron Holland|DET|F,G|FA|UNKNOWN
+Matisse Thybulle|LAL|F,G|FA|UNKNOWN
+Kentavious Caldwell-Pope|PHI|F,G|FA|UNKNOWN
+Luguentz Dort|ATL|F,G|FA|UNKNOWN
+Miles McBride|NY|G|FA|UNKNOWN
+Baylor Scheierman|BOS|F,G|FA|UNKNOWN
+Marcus Smart|HOU|G|FA|UNKNOWN
+Jared McCain|OKC|G|FA|UNKNOWN
+Tyus Jones|DEN|G|FA|UNKNOWN
+Bogdan Bogdanovic|HOU|F,G|FA|UNKNOWN
+Aaron Wiggins|ATL|F,G|FA|UNKNOWN
+Tre Johnson|WAS|F,G|FA|UNKNOWN
+Keon Ellis|BKN|F,G|FA|UNKNOWN
+Will Riley|WAS|F,G|FA|UNKNOWN
+Isaac Okoro|CHI|F,G|FA|UNKNOWN
+Corey Kispert|ATL|F,G|FA|UNKNOWN
+Ben Sheppard|IND|F,G|FA|UNKNOWN
+Walter Clayton Jr.|MEM|G|FA|UNKNOWN
+Ben Saraf|BKN|G|FA|UNKNOWN
+Jordan Clarkson|NY|F,G|FA|UNKNOWN
+Vit Krejci|POR|F,G|FA|UNKNOWN
+Giannis Antetokounmpo|MIA|F|TAKEN:Phil the new champion|ACTIVE
+Jayson Tatum|BOS|F|TAKEN:Deep Bag|ACTIVE
+Jalen Johnson|ATL|F|TAKEN:Rudy Jobert|ACTIVE
+LeBron James|PHI|F|TAKEN:Binkas&Yams|ACTIVE
+Anthony Davis|WAS|C,F|TAKEN:Oobsidoobsie|ACTIVE
+Alperen Sengun|HOU|C,F|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ|ACTIVE
+Evan Mobley|CLE|C,F|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ|ACTIVE
+Paolo Banchero|ORL|F|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ|ACTIVE
+Kawhi Leonard|TOR|F|TAKEN:SOGGY|ACTIVE
+Karl-Anthony Towns|NY|C,F|TAKEN:My Shaila|ACTIVE
+Domantas Sabonis|SAC|C,F|TAKEN:Deep Bag|ACTIVE
+Bam Adebayo|MIA|C,F|TAKEN:Tank You Very Much|ACTIVE
+Franz Wagner|ORL|F|TAKEN:Tank You Very Much|ACTIVE
+Pascal Siakam|IND|C,F|TAKEN:Pucs|ACTIVE
+Caleb Wilson|CHI|F|TAKEN:Phil the new champion|ACTIVE
+Zion Williamson|NO|C,F|TAKEN:Tank You Very Much|ACTIVE
+Cameron Boozer|MEM|C,F|TAKEN:Oobsidoobsie|ACTIVE
+AJ Dybantsa|WAS|F|TAKEN:Oobsidoobsie|ACTIVE
+Chet Holmgren|OKC|C,F|TAKEN:Binkas&Yams|ACTIVE
+OG Anunoby|NY|F|TAKEN:Phil the new champion|ACTIVE
+Mikal Bridges|NY|F|TAKEN:SOGGY|ACTIVE
+John Collins|DET|C,F|TAKEN:Phil the new champion|ACTIVE
+Jaden McDaniels|MIN|F|TAKEN:My Shaila|ACTIVE
+Miles Bridges|PHO|F|TAKEN:Pucs|ACTIVE
+Lauri Markkanen|UTA|F|TAKEN:My Shaila|ACTIVE
+Julius Randle|BKN|F|TAKEN:Deep Bag|ACTIVE
+Andrew Wiggins|MIA|F|TAKEN:SOGGY|ACTIVE
+Jaren Jackson Jr.|UTA|C,F|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ|ACTIVE
+Draymond Green|GS|C,F|FA|UNKNOWN
+Ausar Thompson|DET|F|TAKEN:Oobsidoobsie|ACTIVE
+PJ Washington|DAL|C,F|TAKEN:Binkas&Yams|ACTIVE
+Tobias Harris|SA|F|FA|UNKNOWN
+Michael Porter Jr.|BKN|F|TAKEN:Phil the new champion|ACTIVE
+Aaron Gordon|DEN|C,F|TAKEN:ᴛɪɴᴏʟᴀ ᴊᴏ'ᴄʜɪćᴋ|ACTIVE
+Kel'el Ware|MIL|C,F|TAKEN:Deep Bag|ACTIVE
+Keegan Murray|SAC|F|TAKEN:SOGGY|ACTIVE
+Derik Queen|NO|C,F|TAKEN:Pucs|ACTIVE
+Peyton Watson|CLE|F|TAKEN:Tank You Very Much|ACTIVE
+Naz Reid|CHA|C,F|TAKEN:My Shaila|ACTIVE
+Matas Buzelis|CHI|F|TAKEN:Deep Bag|ACTIVE
+Jabari Smith|HOU|C,F|TAKEN:Tank You Very Much|ACTIVE
+Dillon Brooks|PHO|F|FA|UNKNOWN
+Jonathan Kuminga|MIN|F|TAKEN:Phil the new champion|ACTIVE
+Jimmy Butler|GS|F|FA|UNKNOWN
+Devin Vassell|SA|F|TAKEN:Binkas&Yams|ACTIVE
+Morez Johnson Jr.|DAL|C,F|FA|UNKNOWN
+Bobby Portis|MIA|C,F|FA|UNKNOWN
+Rui Hachimura|LAC|F|FA|UNKNOWN
+Nate Ament|MIL|F|FA|UNKNOWN
+Yaxel Lendeborg|GS|F|TAKEN:Tank You Very Much|ACTIVE
+Kyle Kuzma|MIL|F|FA|UNKNOWN
+Saddiq Bey|NO|F|FA|UNKNOWN
+De'Andre Hunter|SAC|F|FA|UNKNOWN
+Santi Aldama|DAL|C,F|FA|UNKNOWN
+Derrick Jones Jr.|LAC|F|FA|UNKNOWN
+Al Horford|GS|C,F|FA|UNKNOWN
+Kristaps Porzingis|GS|C,F|FA|UNKNOWN
+Kyle Filipowski|UTA|C,F|FA|UNKNOWN
+Jerami Grant|MEM|F|FA|UNKNOWN
+Collin Murray-Boyles|TOR|C,F|FA|UNKNOWN
+Obi Toppin|IND|C,F|FA|UNKNOWN
+Robert Williams III|POR|C,F|FA|UNKNOWN
+Jaylen Wells|MEM|F|FA|UNKNOWN
+Royce O'Neale|CHA|F|FA|UNKNOWN
+Precious Achiuwa|SAC|C,F|FA|UNKNOWN
+Jalen Smith|CHI|C,F|FA|UNKNOWN
+Jaylin Williams|OKC|C,F|FA|UNKNOWN
+Sam Hauser|BOS|F|FA|UNKNOWN
+Danny Wolf|BKN|C,F|FA|UNKNOWN
+Luke Kornet|SA|C,F|FA|UNKNOWN
+Sandro Mamukelashvili|LAL|C,F|FA|UNKNOWN
+Justin Champagnie|WAS|C,F|FA|UNKNOWN
+Kyle Anderson|TOR|F|FA|UNKNOWN
+Patrick Williams|CHI|F|FA|UNKNOWN
+Marvin Bagley III|DEN|C,F|FA|UNKNOWN
+Jay Huff|IND|C,F|FA|UNKNOWN
+Nae'Qwan Tomlin|CLE|F|FA|UNKNOWN
+Jarace Walker|IND|F|FA|UNKNOWN
+Isaiah Stewart|MEM|C,F|FA|UNKNOWN
+Noah Clowney|BKN|F|FA|UNKNOWN
+Grant Williams|CHA|C,F|FA|UNKNOWN
+Georges Niang|GS|F|FA|UNKNOWN
+Ryan Dunn|PHO|F|FA|UNKNOWN
+Karlo Matkovic|NO|C,F|FA|UNKNOWN
+Tristan da Silva|ORL|F|FA|UNKNOWN
+Dom Barlow|PHI|C,F|FA|UNKNOWN
+Taylor Hendricks|MEM|C,F|FA|UNKNOWN
+Zach Collins|CHI|C,F|FA|UNKNOWN
+Hannes Steinbach|CHA|C,F|FA|UNKNOWN
+Leonard Miller|CHI|C,F|FA|UNKNOWN
+Nikola Jokic|DEN|C|TAKEN:Pucs|ACTIVE
+Victor Wembanyama|SA|C|TAKEN:Oobsidoobsie|ACTIVE
+Ivica Zubac|IND|C|TAKEN:Binkas&Yams|ACTIVE
+Jalen Duren|DET|C|TAKEN:Deep Bag|ACTIVE
+Jarrett Allen|CLE|C|TAKEN:Phil the new champion|ACTIVE
+Walker Kessler|LAL|C|TAKEN:SOGGY|ACTIVE
+Joel Embiid|PHI|C|TAKEN:My Shaila|ACTIVE
+Rudy Gobert|MIN|C|TAKEN:Rudy Jobert|ACTIVE
+Nicolas Claxton|CHI|C|TAKEN:SOGGY|ACTIVE
+Onyeka Okongwu|ATL|C|TAKEN:Deep Bag|ACTIVE
+Jakob Poeltl|TOR|C|FA|UNKNOWN
+Alex Sarr|WAS|C|TAKEN:Rudy Jobert|ACTIVE
+Isaiah Hartenstein|OKC|C|TAKEN:Deep Bag|ACTIVE
+Dereck Lively II|DAL|C|FA|UNKNOWN
+Donovan Clingan|POR|C|TAKEN:SOGGY|ACTIVE
+Myles Turner|MIL|C|TAKEN:Phil the new champion|ACTIVE
+Wendell Carter Jr.|ORL|C|TAKEN:Binkas&Yams|ACTIVE
+Zach Edey|MEM|C|TAKEN:Oobsidoobsie|ACTIVE
+Yves Missi|NO|C|FA|UNKNOWN
+Jusuf Nurkic|UTA|C|TAKEN:Oobsidoobsie|ACTIVE
+Neemias Queta|BOS|C|TAKEN:Binkas&Yams|ACTIVE
+Maxime Raynaud|SAC|C|TAKEN:Rudy Jobert|ACTIVE
+Moussa Diabate|CHA|C|FA|UNKNOWN
+Nikola Vucevic|ORL|C|FA|UNKNOWN
+Day'Ron Sharpe|BKN|C|TAKEN:My Shaila|ACTIVE
+Mitchell Robinson|BOS|C|FA|UNKNOWN
+Aday Mara|OKC|C|FA|UNKNOWN
+Deandre Ayton|WAS|C|FA|UNKNOWN
+Daniel Gafford|DAL|C|FA|UNKNOWN
+Brook Lopez|LAC|C|FA|UNKNOWN
+Oso Ighodaro|PHO|C|FA|UNKNOWN
+Isaiah Jackson|LAC|C|FA|UNKNOWN
+Paul Reed|DET|C|FA|UNKNOWN
+Andre Drummond|NY|C|FA|UNKNOWN
+Goga Bitadze|ORL|C|FA|UNKNOWN
+Ryan Kalkbrenner|CHA|C|FA|UNKNOWN
+Moe Wagner|BKN|C|FA|UNKNOWN
+Jock Landale|ATL|C|FA|UNKNOWN
+Khaman Maluach|PHO|C|FA|UNKNOWN
+Nikola Jovic|MIA|C,F|FA|UNKNOWN
+Ryan Conwell|MIA|G|FA|UNKNOWN
 #LOGO|Rudy Jobert|data:image/webp;base64,UklGRqwFAABXRUJQVlA4WAoAAAAgAAAALwAALwAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggvgMAAPASAJ0BKjAAMAA+TRyLRCKhoRjuZAAoBMS2AGAw4GsNGp3suB5E8FXoP2yPmA6DflAdYz6EH7AdaL5OlYj5B/Mh+LEmtVbvJkn/VcYGkjx0/437bvpK/mvGz9N/933BP5P/Tv9313P2Q9iv9d190sUU4Ex9zICn3C4drwxm4fTlUZ3hUl6KiVtEST1p90ppxf1zuZ4ZggGtnO2JEKUDfgAA/v/+fKv7IC4U17k+6tEWbo5fLnTfsKkINsKfVoixN0qHOLUvdkYgexxGb96+Rdo9PgykTVUCBAURXLRbQBo8u3S9XBzh+GA/ddfteyzsxecA3etDaJcoT3xaiSyYkyWrXKtTkagtvbaCQhjPOfHKngCWi0pRmP/Lx9Ts1uNfS9YKSvunR+E/eISar0SfqaEN/xAB/y3Lond2A/UlVFvpDA27s64QP/vED4dx5n/nsN4IvUrHyCl/UQznvlXAFhTMe3N7++3J4FtOnRRoxF3biXEsndqOwZyKTFmiDnJilHu20Xo5o0fivYWv7zkPkMTjBWnzkP96FiD78HMjpMC8smdA5SXzhfoM8PaXWzRyy2X412uk8f6z04isqW+LcQFzZzf867Rny/9AoIztbu/0mj5NEfdDCTb/phRVBoOl8f15h1bo78uFJx8hdB5mGFDCWfr7Norz+h58Q9yWwXxIUwBIL/Ah2RCcOe2u6fQonC/ZvCGHVd1G+yBrm7p8t9n1m0MtO62LfkFT1eqwZp+gS/vZsyzLpSJ/Gn870qG139091yfL0uNS8SgpYFaEcKRfQymNzAnNvS79tmvZwv/+WGMPviGnq4FWRG6zmsfXhS8P7Sfe9ykQwPjF5SHEGolB2zpq9//pJJzO/peS773Mqvqt05f9pgRU+TvRhal/N5wr9/8U3vaDN3HWR8oz56BIAfA0o8xA5+UOCR78kRWwFWMEy+jVidk4TJbGjalk+HY8GZtVWHl9kwRVS0qX2N8ky8kj+EPx9zfUupOBZq2/26rtLr5CTxdIGbphlbRNQsKmdwZyC2VfzOIrmrjmvuDfjAay97fcdUIbVm8dPOfzJ2vM5z5hNjSs+GnkcMxAi+4+sN9Nj+w2LHPHoT7jxnalD9muvRHH215kxNqmylNzikkG1x2wYb9onHpLvGgshtwn8yJ60Jm9EVKNAbi60eYXu9Bx5r3WR0VMm+VpesT+1RZwGyu4E7/risREhetE5MWB4Rgv5xh2oBCV3+eE9XM9J5gn5zR2pckEGilh/fxu1g+VEgWl+0T/FMHQAAA=
 #LOGO|My Shaila|data:image/webp;base64,UklGRggFAABXRUJQVlA4WAoAAAAgAAAALwAALwAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggGgMAABARAJ0BKjAAMAA+USKNRSOiIROWSDgFBKALlP4sxI2BXKuTEwJ4Wdp7+147X/K8YHcO/3X8duYGmIf2b/OfaB8Y/+l5R/oP/n+4H/I/6V/l/zV/u3IgfqOzKuyKlanoXuVrXQ5kwXq5ldJ+OQKNDg0vQAzgU45EeyQwJ//e2ibTpdjp51Gt/SYpXrtvtka9yqAA/v6f9KfRoKowN69B1Kn2UX37qAzzc7haPym/89aZbDQdz/JUAe9DDVZO8f81WKw+xz/07G4AoZVsui2pUw3lW0/tPDp9P//Tbq2/Fp1IvYH/kjOu39Pow/+hjrhcs4xY2Hvlpqm27GKYmoVjjOYcvYWrP/5yuMx+m09tV80MkDd+ePf+qnNqrht+iXohbAro93HV2fntQidfEnH+CtODY89FDSt330y+d8DnXhHnxFpUAmOTn8CXiXgxOn9tOvNLHXcMShfiRaKxhig+USDnKZpjOedz+bkmip7VtMO+o4QVL+LS5U0ihJKJw2TkMmBasD8l6AL1P79hMmc59ap7RmVZETC97BmO5OdP8Rolb43KKUoCfpP775gF9JC0VvtXh2wgo7R9ykKLwzRqQXKWibqrrA+/JF3XvXTGoiB5/CG9oUfwZ8jQy5n0pc2+NQaiFw/+JZELS/1XcSlZ6M75zsVO/6mTP5uVD7TuYVz130LsWcnIpoZRIInSysb/hAFAPXHNLfkf+p4KNiwsXv2Nthhj26kJ1Pz/DTTwiUP6p9+Ebo4WkFkylql6nh5Uf7W6ksX9mnegdsLegQ41h55IeOMXh/6X5mtellg3MUEUy/e0LYLwWJcfAAjhRDQJlPrPGmM/BDkcVxnuFEnurbOxtWnRf+8Lbna3n2G9YRT+V/2PhKlLyXHni2H1NBvfbhk0EyCpMpkKMpdlYarnQda+9Mkla0c2nxUNbwe27ZOGJXsfzcM5vgdBepbiRG2DKiescAcJHbrso2GpvCuH1yCA1b4zP00iw+krY9yrd+NxcyhPtEKqtFp9Rl8KKt5PzdDACkkNHww0+C8qy92Ee/msDbQB2ICMAAAA
 #LOGO|Tank You Very Much|data:image/webp;base64,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
