@@ -5,7 +5,7 @@ Usage: python3 fetch_box.py YYYYMMDD OUT.txt
 Output (what nightly.py reads):
   first line  #games|completed|in_progress
   then one line per player who played:
-  name|team|min|pts|fgm|fga|tpm|tpa|ftm|fta|reb|ast|to|stl|blk|pf|espn_position
+  name|team|min|pts|fgm|fga|tpm|tpa|ftm|fta|reb|ast|to|stl|blk|pf|espn_position|espn_id (for the headshot)
 Only finished games are included. No login or API key is needed.
 """
 import json, sys, time, urllib.request
@@ -48,7 +48,8 @@ def rows_from_summary(g):
             out.append("|".join(str(x) for x in [
                 a["athlete"]["displayName"], ab, v.get("minutes", "0"), v.get("points", "0"),
                 fgm, fga, tpm, tpa, ftm, fta, v.get("rebounds", "0"), v.get("assists", "0"),
-                v.get("turnovers", "0"), v.get("steals", "0"), v.get("blocks", "0"), v.get("fouls", "0"), pos]))
+                v.get("turnovers", "0"), v.get("steals", "0"), v.get("blocks", "0"), v.get("fouls", "0"), pos,
+                (a.get("athlete") or {}).get("id", "")]))
     return out
 
 

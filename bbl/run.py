@@ -148,7 +148,7 @@ def main():
         for l in open(cfg, encoding="utf-8"):
             if l.strip().lower().startswith("my_team="):
                 my = l.split("=", 1)[1].strip()
-    env = dict(os.environ, BBL_CC_LINK="", BBL_MY_TEAM=my)
+    env = dict(os.environ, BBL_CC_LINK="", BBL_MY_TEAM=my, BBL_DATE=date)
     say("Building the tables…")
     nightly(box, label, None, env)
     nightly(box, label, "share", env)

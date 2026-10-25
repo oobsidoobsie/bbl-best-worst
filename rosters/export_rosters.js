@@ -5,6 +5,7 @@
 // Output lines: name|nba_team|positions|owner|roster_status
 // roster_status = ACTIVE, RESERVE or UNKNOWN; owner = TAKEN:<fantasy team> or FA
 //               #LOGO|<fantasy team>|<small logo as data URI>
+//               #STATUS|<YYYYMMDD>|<fantasy team>|<player>|ACTIVE or RESERVE   (lineups for last night and today)
 
 const ACTIVE_SLOTS = new Set(['PG','SG','SF','PF','G','F','C','UTIL','U','G/F','F/G','F/C','C/F','G-F','F-G','F-C','C-F','G-C','C-G']);
 const RESERVE_SLOTS = new Set(['BN','BENCH','RES','RESERVE','IR','IL','IL+','INJ','INJURED','INJURED RESERVE','INJURY RESERVE','NA','SUSP','SUSPENDED']);
@@ -85,6 +86,30 @@ function rosterStatus(tr, cells, playerName, sectionStatus) {
         }
       }
     }
+    // Each team's lineup for last night and today (CBS keeps daily lineups by date), so the report can count
+    // only the players who were actually in an active slot on the night it covers: #STATUS|YYYYMMDD|team|player|ACTIVE/RESERVE
+    const STAT = [];
+    const ymd = (d) => d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+    const periodOf = (d) => {   // BBL 2026-27: P1 = Oct 20-25, then Monday-Sunday weeks
+      const p1end = new Date(2026, 9, 25), p2 = new Date(2026, 9, 26);
+      return d <= p1end ? 1 : 2 + Math.floor((d - p2) / (7 * 86400000));
+    };
+    const today = new Date(); today.setHours(12, 0, 0, 0);
+    const days = [new Date(today.getTime() - 86400000), today].filter((d) => d >= new Date(2026, 9, 20));
+    for (const day of days) {
+      let j = 0;
+      for (const [id, tn] of Object.entries(TEAMS)) {
+        say(`lineups ${ymd(day)} · ${++j}/${Object.keys(TEAMS).length}…`);
+        try {
+          const d = await page('/teams/' + id + '/' + periodOf(day) + '/' + ymd(day));
+          for (const tr of d.querySelectorAll('tr.playerRow')) {
+            const a = tr.querySelector('a[href*="/players/playerpage/"]');
+            if (!a) continue;
+            STAT.push(['#STATUS', ymd(day), tn, a.textContent.trim(), tr.classList.contains('benchPlayer') ? 'RESERVE' : 'ACTIVE'].join('|'));
+          }
+        } catch (e) { /* that day's lineup page didn't load: the report falls back to the status at export time */ }
+      }
+    }
     const P = {};
     for (const pos of ['G', 'F', 'C']) {
       say(`player positions (${pos})…`);
@@ -111,7 +136,7 @@ function rosterStatus(tr, cells, playerName, sectionStatus) {
     const lines = Object.entries(P).map(([n, p]) =>
       [n, p.team, p.pos, OWN[n] ? 'TAKEN:' + OWN[n].tn : 'FA', OWN[n] ? OWN[n].status : 'UNKNOWN'].join('|'));
     const txt = '# BBL rosters exported ' + new Date().toISOString() + ' from ' + location.hostname + '\n' + lines.join('\n') + '\n' +
-      Object.entries(LOGO).map(([t, u]) => '#LOGO|' + t + '|' + u).join('\n') + '\n';
+      Object.entries(LOGO).map(([t, u]) => '#LOGO|' + t + '|' + u).join('\n') + '\n' + STAT.join('\n') + '\n';
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([txt], { type: 'text/plain' }));
     a.download = 'bbl_rosters.txt';

@@ -7,13 +7,33 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 box, poolf, label = sys.argv[1], sys.argv[2], sys.argv[3]
 lines=open(box).read().strip().splitlines()
 hdr=lines[0].lstrip('#').split('|'); ngames,ndone,nlive=map(int,hdr)
-owner={}; LOGO={}; CBSPOS={}; ROSTER_STATUS={}
+owner={}; LOGO={}; CBSPOS={}; ROSTER_STATUS={}; DSTAT={}
 for l in open(poolf):
     p=l.rstrip('\n').split('|')
     if p[0]=='#LOGO' and len(p)>=3: LOGO[p[1]]=p[2]; continue
+    if p[0]=='#STATUS' and len(p)>=5: DSTAT.setdefault(p[1],{})[p[3]]=p[4].strip().upper(); continue   # #STATUS|YYYYMMDD|team|player|ACTIVE/RESERVE
     if len(p)>=3: CBSPOS[p[0]]=p[2]
     if len(p)>=4: owner[p[0]]='Yours' if p[3]=='MINE' else (p[3][6:] if p[3].startswith('TAKEN:') else 'FA')
-    if len(p)>=5: ROSTER_STATUS[p[0]]=p[4].strip().upper()
+    if len(p)>=5 and p[4].strip().upper() in ('ACTIVE','RESERVE','UNKNOWN'): ROSTER_STATUS[p[0]]=p[4].strip().upper()
+    elif len(p)>8 and p[8].strip().upper() in ('A','R','I'): ROSTER_STATUS[p[0]]='ACTIVE' if p[8].strip().upper()=='A' else 'RESERVE'   # Command Center pool: A/R/I lineup section
+import unicodedata as _ud
+def nkey(n):
+    n=_ud.normalize('NFKD',n).encode('ascii','ignore').decode().lower()
+    n=re.sub(r"[.'’\-]",'',n); n=re.sub(r'\b(jr|sr|ii|iii|iv)\b','',n)
+    return ' '.join(n.split())
+# lineup for the night being reported (saved by the roster bookmark per date); falls back to the status at export time
+_RD=os.environ.get('BBL_DATE','')
+if _RD in DSTAT:
+    _ds={nkey(k):v for k,v in DSTAT[_RD].items()}
+    for k in list(owner):
+        if owner[k]!='FA': ROSTER_STATUS[k]=_ds.get(nkey(k),'RESERVE')
+_NK={nkey(k):k for k in owner}
+for l in lines[1:]:   # ESPN spells some names differently from CBS: copy the CBS owner/position/status over
+    n_=l.split('|')[0]; k_=_NK.get(nkey(n_))
+    if k_ and n_ not in owner:
+        owner[n_]=owner[k_]
+        if k_ in CBSPOS: CBSPOS[n_]=CBSPOS[k_]
+        if k_ in ROSTER_STATUS: ROSTER_STATUS[n_]=ROSTER_STATUS[k_]
 P=[]
 for l in lines[1:]:
     f=l.split('|')
@@ -28,7 +48,7 @@ for l in lines[1:]:
     bon={'G':reb,'F':ast,'C':tpm}
     opts=[(bon[s],s) for s in 'GFC' if s in elig]
     b,slot=max(opts) if opts else (0,'')
-    P.append(dict(n=n,t=t,m=m,pts=pts,fgm=fgm,fga=fga,tpm=tpm,tpa=tpa,ftm=ftm,fta=fta,reb=reb,ast=ast,to=to,stl=stl,blk=blk,pf=pf,base=fp,fp=fp+b,slot=slot,bonus=b,roster_status=ROSTER_STATUS.get(n,'UNKNOWN')))
+    P.append(dict(n=n,t=t,m=m,pts=pts,fgm=fgm,fga=fga,tpm=tpm,tpa=tpa,ftm=ftm,fta=fta,reb=reb,ast=ast,to=to,stl=stl,blk=blk,pf=pf,base=fp,fp=fp+b,slot=slot,bonus=b,roster_status=ROSTER_STATUS.get(n,'UNKNOWN'),eid=(f[17].strip() if len(f)>17 else '')))
 def pct(a,b): return f'{a}-{b}'
 def hot(p):
     e={}
@@ -413,8 +433,21 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
         'NO':'#c9a227','NY':'#f97316','OKC':'#f97316','ORL':'#3b82f6','PHI':'#ef4444','PHX':'#f97316','POR':'#ef4444','SAC':'#a855f7','SA':'#d4d4d8',
         'TOR':'#ef4444','UTAH':'#facc15','UTA':'#facc15','WSH':'#ef4444','WAS':'#ef4444'}
     TSHOW={'NY':'NYK','SA':'SAS','GS':'GSW','NO':'NOP','UTAH':'UTA','WSH':'WAS'}
+    PHOTO={}   # optional local headshots: photos.txt lines name|image url or data URI (otherwise ESPN's headshot by player id)
+    if os.path.exists('photos.txt'):
+        for l in open('photos.txt',encoding='utf-8'):
+            q=l.rstrip('\n').split('|',1)
+            if len(q)==2: PHOTO[q[0]]=q[1]
     def mgr(p):
         o=tname(p['n']); return 'Free agent' if o=='FA' else ("TINOLA JO'CHICK" if 'ɪɴᴏʟᴀ' in o else o)
+    def ini(n): return ''.join(w[0] for w in n.replace('.','').split()[:2]).upper()
+    def photo(p,cls='ph'):
+        u=PHOTO.get(p['n']) or (f'https://a.espncdn.com/i/headshots/nba/players/full/{p["eid"]}.png' if p.get('eid') else '')
+        im=f'<img src="{u}" alt="" onerror="this.remove()">' if u else ''
+        return f'<div class="{cls}"><span>{ini(p["n"])}</span>{im}</div>'
+    def mlogo(o,cls='ml'):
+        u=LOGO.get(o) or next((v for k,v in LOGO.items() if 'ɪɴᴏʟᴀ' in k and 'ɪɴᴏʟᴀ' in o),'')
+        return f'<img class="{cls}" src="{u}" alt="">' if u else ''
     def trow(i,p,acc,top3,last='stk'):
         c=TC.get(p['t'],'#94a3b8')
         sl=f'{p["slot"]}{(" +"+str(p["bonus"])) if p["bonus"] else ""}' if p['slot'] else '&nbsp;'
@@ -427,7 +460,7 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
             hc=' hot' if ('🔥' in m) else (' ugly' if '🤮' in m else ' cold')
             return f'<div class="{cls}{hc}">{v}<span class="em">{m}</span></div>'
         return (f'<div class="r"><div class="rk{" hi" if i<=3 and top3 else ""}">{i}</div>'
-                f'<div class="pc"><div class="pn">{html.escape(p["n"])}</div><div class="pm"><span class="tm" style="border-color:{c}">{TSHOW.get(p["t"],p["t"])}</span><span class="mg">{html.escape(mgr(p))}</span></div></div>'
+                +photo(p)+f'<div class="pc"><div class="pn">{html.escape(p["n"])}</div><div class="pm"><span class="tm" style="border-color:{c}">{TSHOW.get(p["t"],p["t"])}</span>{mlogo(tname(p["n"])) if tname(p["n"])!="FA" else ""}<span class="mg">{html.escape(mgr(p))}</span></div></div>'
                 f'<div class="pt" style="color:{acc}">{fpt(p["fp"])}<div class="sl">{sl}</div></div><div class="st b">{p["base"]}</div>'
                 +sb('pts',p['pts'])+sb('reb',p['reb'])+sb('ast',p['ast'])+sb('stk' if last=='stk' else 'to',lv)+sb('fg',f'{p["fgm"]}-{p["fga"]}')+'</div>')
     def hrow(i,p,acc,last='stk'):
@@ -435,7 +468,8 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
     D="'Barlow Condensed','Arial Narrow','Roboto Condensed','TeX Gyre Heros Cn',Arial,sans-serif"
     def card(title1,title2,col1,col2,acc,box,rows,hm_title,hm_rows,last='STK',tw=''):
         # 4:5 portrait (1080x1350 layout, saved at 2x = 2160x2700)
-        css=f"""*{{box-sizing:border-box;margin:0}}html,body{{background:#070d1c}}
+        css=f"""@font-face{{font-family:'Barlow Condensed';src:url('fonts/BarlowCondensed-Medium.ttf');font-weight:500;font-style:normal}}@font-face{{font-family:'Barlow Condensed';src:url('fonts/BarlowCondensed-SemiBold.ttf');font-weight:600;font-style:normal}}@font-face{{font-family:'Barlow Condensed';src:url('fonts/BarlowCondensed-Bold.ttf');font-weight:700;font-style:normal}}@font-face{{font-family:'Barlow Condensed';src:url('fonts/BarlowCondensed-ExtraBold.ttf');font-weight:800;font-style:normal}}@font-face{{font-family:'Barlow Condensed';src:url('fonts/BarlowCondensed-Black.ttf');font-weight:900;font-style:normal}}@font-face{{font-family:'Barlow Condensed';src:url('fonts/BarlowCondensed-ExtraBoldItalic.ttf');font-weight:800;font-style:italic}}@font-face{{font-family:'Barlow Condensed';src:url('fonts/BarlowCondensed-BlackItalic.ttf');font-weight:900;font-style:italic}}
+*{{box-sizing:border-box;margin:0}}html,body{{background:#070d1c}}
 #card{{width:1080px;height:1350px;overflow:hidden;padding:24px 26px 16px;display:flex;flex-direction:column;justify-content:space-between;font-family:{D};color:#f1f5f9;background:radial-gradient(70% 22% at 50% 0%,rgba(56,189,248,.13),transparent 70%),linear-gradient(180deg,#0b1428,#070d1c 40%)}}
 .top{{flex:none}}
 .t{{text-align:center;font:900 italic 80px/1 {D};text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap}}
@@ -445,8 +479,9 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
 .box{{position:relative;border-radius:18px;padding:3px;background:linear-gradient(90deg,{acc},#38bdf8 65%,#22d3ee);box-shadow:0 0 22px rgba(56,189,248,.22),0 0 10px rgba(168,85,247,.12)}}
 .bi{{position:relative;overflow:hidden;border-radius:15px;padding:12px 26px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;background:radial-gradient(60% 120% at 85% 50%,rgba(14,116,184,.38),transparent 70%),linear-gradient(100deg,#0a1226 30%,#0c1a36 65%,#0d2547)}}.bi:after{{content:'';position:absolute;top:0;right:0;bottom:0;width:300px;background:repeating-linear-gradient(-55deg,transparent 0 30px,rgba(56,189,248,.10) 30px 34px,transparent 34px 54px,rgba(56,189,248,.05) 54px 68px);-webkit-mask-image:linear-gradient(90deg,transparent,#000 60%);mask-image:linear-gradient(90deg,transparent,#000 60%);pointer-events:none}}.bi>*{{position:relative;z-index:1}}
 .bl{{font:800 19px {D};letter-spacing:.08em;color:{acc};text-transform:uppercase}}.bn{{font:800 50px/1.02 {D};color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}.bs{{flex:none;font:700 28px {D};color:#cbd5e1;padding-bottom:4px;text-align:right}}.bs b{{color:#fff}}.bw{{min-width:0}}
-.hd,.r{{display:grid;grid-template-columns:44px minmax(0,1fr) 98px 64px 56px 56px 56px 56px 82px;gap:7px;align-items:center}}
-.hd{{padding:0 12px 5px;font:600 18px {D};letter-spacing:.04em;color:#94a3b8;white-space:nowrap}}.hd .p{{color:{acc}}}.hd div:nth-child(n+3){{text-align:center}}
+.hd,.r{{display:grid;grid-template-columns:42px 52px minmax(0,1fr) 92px 62px 54px 54px 54px 54px 80px;gap:7px;align-items:center}}
+.ph{{position:relative;width:52px;height:52px;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 35%,#1e3354,#0b1426);border:2px solid #24385c;display:flex;align-items:center;justify-content:center}}.ph span{{font:800 18px {D};color:#64748b}}.ph img{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 15%;transform:scale(1.12) translateY(4%)}}.r.h .ph{{width:34px;height:34px}}.r.h .ph span{{font-size:13px}}.ml{{width:20px;height:20px;border-radius:5px;object-fit:cover;opacity:.55;flex:none}}.blogo{{width:76px;height:76px;border-radius:14px;object-fit:cover;opacity:.42;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.08)}}.bx{{display:flex;align-items:center;gap:18px}}
+.hd{{padding:0 12px 5px;font:600 18px {D};letter-spacing:.04em;color:#94a3b8;white-space:nowrap}}.hd .p{{color:{acc}}}.hd div:nth-child(n+4){{text-align:center}}
 .r{{padding:6px 12px;margin-bottom:6px;border:1px solid #1e2b45;border-radius:12px;background:linear-gradient(90deg,#0f1a30,#0c1526)}}.rows .r:last-child{{margin-bottom:0}}
 .rk{{width:40px;height:40px;border:2px solid #475569;border-radius:8px;display:flex;align-items:center;justify-content:center;font:900 italic 28px {D};color:#cbd5e1}}
 .rk.hi{{border-color:{acc};color:{acc}}}
@@ -466,7 +501,7 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
 .r.h .pc{{display:flex;align-items:center;gap:8px}}.r.h .pn{{font-size:23px;flex:0 1 auto;min-width:0}}.r.h .pm{{margin-top:0;flex:0 1 auto}}
 .r.h .pt{{font-size:30px;display:flex;align-items:baseline;justify-content:center;gap:4px}}.r.h .sl{{font-size:12px}}.r.h .st{{font-size:20px;padding:3px 0}}
 .lg{{text-align:center;font:500 15px {D};color:#64748b;letter-spacing:.03em}}.lg span{{white-space:nowrap;margin:0 8px}}"""
-        hd=f'<div class="hd"><div>#</div><div>PLAYER · MANAGER</div><div class="p">BEST SLOT</div><div>BASE</div><div>PTS</div><div>REB</div><div>AST</div><div>{last}</div><div>FG</div></div>'
+        hd=f'<div class="hd"><div>#</div><div></div><div>PLAYER · MANAGER</div><div class="p">BEST SLOT</div><div>BASE</div><div>PTS</div><div>REB</div><div>AST</div><div>{last}</div><div>FG</div></div>'
         fit=("<script>document.fonts.ready.then(()=>{for(const el of document.querySelectorAll('.t,.bn')){let s=parseFloat(getComputedStyle(el).fontSize);"
              "while(el.scrollWidth>el.clientWidth+1&&s>20){s-=1;el.style.fontSize=s+'px';}}});</script>")
         return (f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap"><style>{css}</style></head><body><div id="card">'
@@ -475,9 +510,9 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
     # best
     top=best[:10]; _m=manager_of_night(P); box=''
     if _m:
-        n_in=sum(1 for p in top if tname(p['n'])==_m[0])
+        n_in=sum(1 for p in top if tname(p['n'])==_m[0] and p.get('roster_status')=='ACTIVE')
         box=(f'<div class="box"><div class="bi"><div class="bw"><div class="bl">Manager of the night</div><div class="bn">{html.escape(display_team(_m[0]))}</div></div>'
-             f'<div class="bs"><b>{n_in}</b> player{"s" if n_in!=1 else ""} in Top 10 &nbsp;·&nbsp; <b>{fpt(_m[2])}</b> BBL pts</div></div></div>')
+             f'<div class="bx"><div class="bs">Active lineup: <b>{fpt(_m[2])}</b> BBL pts &nbsp;·&nbsp; <b>{n_in}</b> in Top 10</div>{mlogo(_m[0],"blogo")}</div></div></div>')
     elif not manager_status_ready(P):
         box='<div class="box"><div class="bi"><div class="bw"><div class="bl">Manager of the night</div><div class="bn">Not calculated</div></div><div class="bs">Active/bench status is missing. Refresh the CBS roster export and rerun.</div></div></div>'
     OR='#fb923c'
@@ -488,12 +523,17 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
     cnt={}
     for p in wt:
         o=tname(p['n'])
-        if o!='FA': cnt.setdefault(o,[]).append(p)
+        if o!='FA' and p.get('roster_status')=='ACTIVE': cnt.setdefault(o,[]).append(p)
     if cnt:
         so=max(cnt,key=lambda o:(len(cnt[o]),-sum(p['fp'] for p in cnt[o])))
-        if len(cnt[so])>=2:
-            wbox=(f'<div class="box"><div class="bi"><div class="bw"><div class="bl">Stinker of the night</div><div class="bn">{html.escape(display_team(so))}</div></div>'
-                  f'<div class="bs"><b>{len(cnt[so])}</b> players in Worst 10 &nbsp;·&nbsp; <b>{fpt(sum(p["fp"] for p in cnt[so]))}</b> total BBL pts</div></div></div>')
+        L_=cnt[so]
+        txt=(f'Started <b>{html.escape(L_[0]["n"])}</b> &nbsp;·&nbsp; <b>{fpt(L_[0]["fp"])}</b> BBL pts' if len(L_)==1 else
+             f'Active lineup: <b>{len(L_)}</b> starters in Worst 10 &nbsp;·&nbsp; <b>{fpt(sum(p["fp"] for p in L_))}</b> BBL pts')
+        wbox=(f'<div class="box"><div class="bi"><div class="bw"><div class="bl">Stinker of the night</div><div class="bn">{html.escape(display_team(so))}</div></div>'
+              f'<div class="bx"><div class="bs">{txt}</div>{mlogo(so,"blogo")}</div></div></div>')
+    else:
+        wbox=('<div class="box"><div class="bi"><div class="bw"><div class="bl">Stinker of the night</div><div class="bn">Nobody</div></div>'
+              '<div class="bx"><div class="bs">No active-lineup player in the Worst 10</div></div></div></div>')
     open('nightly_top10_worst.html','w',encoding='utf-8').write(card('Top 10','Performances','#ffffff','#cbd5e1',PU,wbox,
         ''.join(trow(i,p,PU,True,'to') for i,p in enumerate(wt,1)),'Dishonorable mentions',''.join(hrow(i,p,PU,'to') for i,p in enumerate(worst[10:13],11)),'TO','Worst'))
     print('top10 ok'); sys.exit(0)

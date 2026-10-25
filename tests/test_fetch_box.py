@@ -8,12 +8,12 @@ KEYS = ["minutes","points","fieldGoalsMade-fieldGoalsAttempted","threePointField
 SUMMARY = {"boxscore": {"players": [
   {"team": {"abbreviation": "ORL"}, "statistics": [{"keys": KEYS, "athletes": [
     {"didNotPlay": False, "stats": ["26","24","5-11","1-2","13-16","7","4","1","0","1","3","4","1","+9"],
-     "athlete": {"displayName": "Paolo Banchero", "position": {"abbreviation": "F"}}},
+     "athlete": {"id": "4432573", "displayName": "Paolo Banchero", "position": {"abbreviation": "F"}}},
     {"didNotPlay": True, "stats": [], "athlete": {"displayName": "Anthony Black", "position": {"abbreviation": "G"}}}]}]},
   {"team": {"abbreviation": "MIA"}, "statistics": [{"keys": KEYS, "athletes": [
     {"didNotPlay": False, "stats": ["30","21","9-17","3-7","0-0","1","7","4","1","0","0","1","4","-20"],
-     "athlete": {"displayName": "Ryan Conwell", "position": {"abbreviation": "G"}}}]}]}]}}
+     "athlete": {"id": "5107157", "displayName": "Ryan Conwell", "position": {"abbreviation": "G"}}}]}]}]}}
 rows = rows_from_summary(SUMMARY)
-assert rows == ["Paolo Banchero|ORL|26|24|5|11|1|2|13|16|7|4|1|0|1|1|F",
-                "Ryan Conwell|MIA|30|21|9|17|3|7|0|0|1|7|4|1|0|4|G"], rows
+assert rows == ["Paolo Banchero|ORL|26|24|5|11|1|2|13|16|7|4|1|0|1|1|F|4432573",
+                "Ryan Conwell|MIA|30|21|9|17|3|7|0|0|1|7|4|1|0|4|G|5107157"], rows
 print("fetch_box parser OK:", len(rows), "players, DNP skipped")
