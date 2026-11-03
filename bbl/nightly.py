@@ -478,7 +478,9 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
 .s{{text-align:center;font:700 21px {D};letter-spacing:.26em;color:#38bdf8;margin:4px 0 0;text-transform:uppercase}}
 .box{{position:relative;border-radius:18px;padding:3px;background:linear-gradient(90deg,{acc},#38bdf8 65%,#22d3ee);box-shadow:0 0 22px rgba(56,189,248,.22),0 0 10px rgba(168,85,247,.12)}}
 .bi{{position:relative;overflow:hidden;border-radius:15px;padding:12px 26px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;background:radial-gradient(60% 120% at 85% 50%,rgba(14,116,184,.38),transparent 70%),linear-gradient(100deg,#0a1226 30%,#0c1a36 65%,#0d2547)}}.bi:after{{content:'';position:absolute;top:0;right:0;bottom:0;width:300px;background:repeating-linear-gradient(-55deg,transparent 0 30px,rgba(56,189,248,.10) 30px 34px,transparent 34px 54px,rgba(56,189,248,.05) 54px 68px);-webkit-mask-image:linear-gradient(90deg,transparent,#000 60%);mask-image:linear-gradient(90deg,transparent,#000 60%);pointer-events:none}}.bi>*{{position:relative;z-index:1}}
-.bl{{font:800 19px {D};letter-spacing:.08em;color:{acc};text-transform:uppercase}}.bn{{font:800 50px/1.02 {D};color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}.bs{{flex:none;font:700 28px {D};color:#cbd5e1;padding-bottom:4px;text-align:right}}.bs b{{color:#fff}}.bw{{min-width:0}}
+.bl{{font:800 19px {D};letter-spacing:.08em;color:{acc};text-transform:uppercase}}.bn{{font:800 50px/1.02 {D};color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}.bs{{flex:none;font:600 21px {D};color:#94a3b8;padding-bottom:6px;text-align:right}}.bs b{{color:#fff}}.bw{{min-width:0}}
+.sts{{flex:none;display:flex;align-items:flex-start}}.stt{{padding:0 22px;text-align:center;border-left:1px solid rgba(148,163,184,.22)}}.stt:first-child{{border-left:0}}
+.sv{{font:900 italic 48px/1 {D};color:#fff}}.sk{{font:700 14px {D};letter-spacing:.12em;text-transform:uppercase;color:#94a3b8;margin-top:5px;white-space:nowrap}}.sn{{font:500 15px {D};color:#64748b;margin-top:1px;white-space:nowrap}}
 .hd,.r{{display:grid;grid-template-columns:42px 52px minmax(0,1fr) 92px 62px 54px 54px 54px 54px 80px;gap:7px;align-items:center}}
 .ph{{position:relative;width:52px;height:52px;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 35%,#1e3354,#0b1426);border:2px solid #24385c;display:flex;align-items:center;justify-content:center}}.ph span{{font:800 18px {D};color:#64748b}}.ph img{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 15%;transform:scale(1.12) translateY(4%)}}.r.h .ph{{width:34px;height:34px}}.r.h .ph span{{font-size:13px}}.ml{{width:20px;height:20px;border-radius:5px;object-fit:cover;opacity:.55;flex:none}}.blogo{{width:76px;height:76px;border-radius:14px;object-fit:cover;opacity:.42;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.08)}}.bx{{display:flex;align-items:center;gap:18px}}
 .hd{{padding:0 12px 5px;font:600 18px {D};letter-spacing:.04em;color:#94a3b8;white-space:nowrap}}.hd .p{{color:{acc}}}.hd div:nth-child(n+4){{text-align:center}}
@@ -507,12 +509,14 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
         return (f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap"><style>{css}</style></head><body><div id="card">'
                 f'<div class="top"><div class="t"><span class="a">{title1}</span> '+(f'<span class="w">{tw}</span> ' if tw else '')+f'<span class="b">{title2}</span></div><div class="s">BBL Nightly Report · {html.escape(label)}</div></div>'
                 f'{box}<div class="rows">{hd}{rows}</div>'+(f'<div class="hm"><div class="ht">{hm_title}</div>{hm_rows}</div>' if hm_rows else '')+'<div class="lg"><span>BEST SLOT = BBL pts in his best slot (G +1/REB · F +1/AST · C +1/3PM)</span> <span>BASE = before the slot bonus</span> <span>'+('STK = STL + BLK' if last=='STK' else 'TO = turnovers')+'</span> <span>'+('🔥 big night in that stat · 🧊 cold' if last=='STK' else '🥶 cold · 🤮 ugly')+'</span></div></div>'+fit+'</body></html>')
+    def stats(*S):   # manager box: big number, small label, optional footnote
+        return '<div class="sts">'+''.join(f'<div class="stt"><div class="sv">{v}</div><div class="sk">{k}</div>'+(f'<div class="sn">{n}</div>' if n else '')+'</div>' for v,k,n in S)+'</div>'
     # best
     top=best[:10]; _m=manager_of_night(P); box=''
     if _m:
-        n_in=sum(1 for p in top if tname(p['n'])==_m[0] and p.get('roster_status')=='ACTIVE')
+        mine=[p for p in top if tname(p['n'])==_m[0]]; n_in=len(mine); n_bn=sum(1 for p in mine if p.get('roster_status')!='ACTIVE')
         box=(f'<div class="box"><div class="bi"><div class="bw"><div class="bl">Manager of the night</div><div class="bn">{html.escape(display_team(_m[0]))}</div></div>'
-             f'<div class="bx"><div class="bs">Active lineup: <b>{fpt(_m[2])}</b> BBL pts &nbsp;·&nbsp; <b>{n_in}</b> in Top 10</div>{mlogo(_m[0],"blogo")}</div></div></div>')
+             f'<div class="bx">{stats((fpt(_m[2]),"Lineup pts",""),(n_in,"In top 10",f"incl. {n_bn} benched" if n_bn else ""))}{mlogo(_m[0],"blogo")}</div></div></div>')
     elif not manager_status_ready(P):
         box='<div class="box"><div class="bi"><div class="bw"><div class="bl">Manager of the night</div><div class="bn">Not calculated</div></div><div class="bs">Active/bench status is missing. Refresh the CBS roster export and rerun.</div></div></div>'
     OR='#fb923c'
@@ -527,10 +531,10 @@ if TOP10 and P:   # mobile-friendly images: Top 10 Performances (nightly_top10.h
     if cnt:
         so=max(cnt,key=lambda o:(len(cnt[o]),-sum(p['fp'] for p in cnt[o])))
         L_=cnt[so]
-        txt=(f'Started <b>{html.escape(L_[0]["n"])}</b> &nbsp;·&nbsp; <b>{fpt(L_[0]["fp"])}</b> BBL pts' if len(L_)==1 else
-             f'Active lineup: <b>{len(L_)}</b> starters in Worst 10 &nbsp;·&nbsp; <b>{fpt(sum(p["fp"] for p in L_))}</b> BBL pts')
+        txt=(stats((fpt(L_[0]["fp"]),"BBL pts",f'started {html.escape(L_[0]["n"])}')) if len(L_)==1 else
+             stats((len(L_),"Starters in worst 10",""),(fpt(sum(p["fp"] for p in L_)),"BBL pts","")))
         wbox=(f'<div class="box"><div class="bi"><div class="bw"><div class="bl">Stinker of the night</div><div class="bn">{html.escape(display_team(so))}</div></div>'
-              f'<div class="bx"><div class="bs">{txt}</div>{mlogo(so,"blogo")}</div></div></div>')
+              f'<div class="bx">{txt}{mlogo(so,"blogo")}</div></div></div>')
     else:
         wbox=('<div class="box"><div class="bi"><div class="bw"><div class="bl">Stinker of the night</div><div class="bn">Nobody</div></div>'
               '<div class="bx"><div class="bs">No active-lineup player in the Worst 10</div></div></div></div>')
